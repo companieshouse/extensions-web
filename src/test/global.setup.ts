@@ -1,0 +1,23 @@
+export default async () => {
+  process.env.DEFAULT_SESSION_EXPIRATION = "3600";
+  process.env.COOKIE_SECRET = "secret";
+  process.env.CACHE_SERVER = "cache_server";
+  process.env.COOKIE_NAME = "cookie_name";
+  process.env.COOKIE_DOMAIN = "cookie_domain";
+  process.env.COOKIE_SECURE_ONLY = "cookie_secure";
+  process.env.SESSION_CREATE = "off";
+  process.env.LOG_LEVEL = "fatal";
+  process.env.API_LOCAL_URL = "http://localhost:9333";
+  process.env.CHS_API_KEY = "key1";
+  process.env.EXTENSIONS_API_URL = "http://localhost:9333";
+  process.env.ACCESSIBILITY_TEST_MODE = "off";
+  process.env.NODE_ENV = "test";
+  process.env.EXTENSIONS_PROCESSOR_API_URL = "http://localhost:9333";
+  process.env.PERMISSION_NAME_DOWNLOAD = "dummy_download_permission";
+  process.env.PERMISSION_NAME_VIEW = "dummy_view_permission";
+  process.env.MAXIMUM_EXTENSION_REQUESTS_PER_DAY = "50";
+  process.env.FEATURE_REQUEST_COUNT="off";
+  process.env.MAX_FILE_SIZE_BYTES = "10";
+  process.env.PIWIK_URL = "test";
+  process.env.PIWIK_SITE_ID = "test";
+};

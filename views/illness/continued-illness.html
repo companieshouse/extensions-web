@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
+  Extension due to ill health: Is the person still ill?
+{% endblock %}
+
+{% block backLink %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/extensions/back-link",
+    attributes: {
+      "data-event-id": "back-button"
+    }
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if errorList.length > 0 %}
+        {{ govukErrorSummary({
+          titleText: ERROR_SUMMARY_TITLE,
+          errorList: errorList
+        }) }}
+      {% endif %}
+      <form method="post">
+        {% if errorList.length > 0 %}
+          {% set continuedIllnessError = {
+          text: continuedIllnessErr.text
+        } %}
+        {% else %}
+          {% set continuedIllnessError = false %}
+        {% endif %}
+
+        {% set hintHTML %}
+        You told us the illness started on
+          {{ startDate }}
+        {% endset %}
+
+        {{ govukRadios({
+          classes: "govuk-radios--inline",
+          idPrefix: "continued-illness",
+          name: "continuedIllness",
+          errorMessage: continuedIllnessError,
+          fieldset: {
+            legend: {
+              text: "Is the person still ill?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+          html: hintHTML
+          },
+            items: [
+            {
+              value: "yes",
+              text: "Yes",
+              checked: isYesChecked
+            },
+            {
+              value: "no",
+              text: "No",
+              checked: isNoChecked
+            }
+            ]
+          }) }}
+
+        {{ govukButton({
+          text: "Continue",
+          attributes: {
+            "data-event-id": "continue-button",
+            id: "submit"
+          }
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

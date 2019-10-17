@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+    {% if errorList.length > 0 %}
+        Error:
+    {% endif %}
+    Applying for an extension due to accounting issues: Tell us when the issue happened
+{% endblock %}
+
+{% block backLink %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/extensions/back-link",
+    attributes: {
+      "data-event-id": "back-button"
+    }
+  }) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+      <form action="" method="post">
+          {% if errorList.length > 0 %}
+          {{ govukErrorSummary({
+          titleText: "There was a problem with the date you gave us",
+          errorList: errorList
+          }) }}
+      {% endif %}
+
+      {% set inputClasses_year = "govuk-input--width-4" %}
+      {% set inputClasses_month = "govuk-input--width-2" %}
+      {% set inputClasses_day = "govuk-input--width-2" %}
+
+      {% if isDateYearError %}
+        {% set inputClasses_year = inputClasses_year + " govuk-input--error" %}
+      {% endif %}
+      {% if isDateMonthError %}
+        {% set inputClasses_month = inputClasses_month + " govuk-input--error" %}
+      {% endif %}
+      {% if isDateDayError %}
+        {% set inputClasses_day = inputClasses_day + " govuk-input--error" %}
+      {% endif %}
+
+      {% if errorList.length > 0 %}
+        {% if errorList.length === 1 %}
+          {% set accountDateErrorMsg = {
+            text: errorList[0].text
+          } %}
+        {% else %}
+          {% set accountDateErrorMsg = {
+            text: ""
+          } %}
+        {% endif %}
+      {% else %}
+        {% set accountDateErrorMsg = false %}
+      {% endif %}
+
+      {{ govukDateInput({
+        id: "accounts-date",
+        namePrefix: "accounts-date",
+        errorMessage: accountsDateError,
+        fieldset: {
+          legend: {
+            text: "When did the accounting issue happen?",
+            isPageHeading: true,
+            classes: "govuk-fieldset__legend--xl"
+          }
+        },
+        hint: {
+          text: "For example, 31 8 2018"
+        },
+        items: [
+          {
+            classes: inputClasses_day,
+            name: "day",
+            value: accountsDay
+          },
+          {
+            classes: inputClasses_month,
+            name: "month",
+            value: accountsMonth
+          },
+          {
+            classes: inputClasses_year,
+            name: "year",
+            value: accountsYear
+          }
+        ]
+      })  }}
+
+      {{ govukButton({
+          text: "Continue",
+          attributes: {
+            "data-event-id": "continue-button",
+            id: "submit"
+          }
+      }) }}
+    </form>
+  </div>
+</div>
+
+{% endblock %}

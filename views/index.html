@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Extend your filing deadline
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: "Home",
+        href: "https://www.gov.uk/"
+      },
+      {
+        text: "Business and self-employed",
+        href: "https://www.gov.uk/browse/business"
+      },
+      {
+        text: "Running a limited company",
+        href: "https://www.gov.uk/browse/business/limited-company"
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        Apply to extend your accounts filing deadline
+      </h1>
+      <p class="govuk-body-l">Use this service to apply for more time to file your annual accounts with Companies House.</p>
+      <p>It may take up to 30 minutes to complete this application.</p>
+      <a id="start-now" href="/extensions/company-number" role="button" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8" data-event-id="start-now-button">Start now</a>
+      <h2 class="govuk-heading-m">Before you start</h2>
+      <p>
+        You should
+        <a href="https://www.gov.uk/government/publications/life-of-a-company-annual-requirements/life-of-a-company-part-1-accounts#how-to-request-extra-time-to-file-your-companys-accounts" target="_blank">read the guidance on extending your filing deadline</a>
+      </p>
+      <h3 class="govuk-heading-s">You'll need:</h3>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>the company number</li>
+        <li>an email address</li>
+        <li>information about your extension reasons</li>
+        <li>any documents that support your application (optional)</li>
+      </ul>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <aside class="app-related-items" role="complementary">
+        <h2 class="govuk-heading-m" id="subsection-title">
+          Related content
+        </h2>
+        <nav role="navigation" aria-labelledby="subsection-title">
+          <ul class="govuk-list govuk-body-s">
+            <li>
+              <a href="https://www.gov.uk/file-an-annual-return-with-companies-house">
+                File your confirmation statement (annual return) with Companies House
+              </a>
+            </li>
+            <li>
+              <a href="https://www.gov.uk/running-a-limited-company">
+                Running a limited company
+              </a>
+            </li>
+            <li>
+              <a href="https://www.gov.uk/browse/business/limited-company" class="govuk-!-font-weight-bold">
+                More Running a limited company
+                <span class="govuk-visually-hidden">Running a limited company</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+    </div>
+  </div>
+{% endblock %}

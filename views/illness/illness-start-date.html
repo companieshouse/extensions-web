@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
+  Extension due to ill health: Tell us when the illness started
+{% endblock %}
+
+{% block backLink %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/extensions/back-link",
+    attributes: {
+      "data-event-id": "back-button"
+    }
+  }) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form action="/extensions/illness/illness-start-date" method="post">
+      {% if errorList.length > 0 %}
+        {{ govukErrorSummary({
+          titleText: ERROR_SUMMARY_TITLE,
+          errorList: errorList
+        }) }}
+      {% endif %}
+
+      {% set classes_year = "govuk-input--width-4" %}
+      {% set classes_month = "govuk-input--width-2" %}
+      {% set classes_day = "govuk-input--width-2" %}
+
+      {% if isStartDateYearError %}
+        {% set classes_year = classes_year + " govuk-input--error" %}
+      {% endif %}
+      {% if isStartDateMonthError %}
+        {% set classes_month = classes_month + " govuk-input--error" %}
+      {% endif %}
+      {% if isStartDateDayError %}
+        {% set classes_day = classes_day + " govuk-input--error" %}
+      {% endif %}
+
+      {% if errorList.length > 0 %}
+        {% if errorList.length === 1 %}
+          {% set startDateErrorMsg = {
+            text: errorList[0].text
+          } %}
+        {% else %}
+          {% set startDateErrorMsg = {
+            text: ""
+          } %}
+        {% endif %}
+      {% else %}
+        {% set startDateErrorMsg = false %}
+      {% endif %}
+
+      {{ govukDateInput({
+        id: "illness-start",
+        namePrefix: "illness-start",
+        value: info,
+        errorMessage: startDateErrorMsg,
+        fieldset: {
+          legend: {
+            text: "When did the illness start?",
+            isPageHeading: true,
+            classes: "govuk-fieldset__legend--xl"
+          }
+        },
+        hint: {
+          text: "For example, 31 8 2018"
+        },
+        items: [
+          {
+            classes: classes_day,
+            name: "day",
+            value: illnessStartDay
+          },
+          {
+            classes: classes_month,
+            name: "month",
+            value: illnessStartMonth
+          },
+          {
+            classes: classes_year,
+            name: "year",
+            value: illnessStartYear
+          }
+        ]
+      }) }}
+
+      {{ govukButton({
+        text: "Continue",
+        attributes: {
+          "data-event-id": "continue-button",
+          id: "submit"
+        }
+      }) }}
+    </form>
+  </div>
+</div>
+
+{% endblock %}

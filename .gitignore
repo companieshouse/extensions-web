@@ -1,0 +1,12 @@
+dist/
+node_modules/
+*.zip
+.idea/
+**/application*.css*
+.DS_Store
+.envrc
+.vscode/
+coverage/
+.scannerwork
+pacts/
+logs/

@@ -1,0 +1,117 @@
+import * as crypto from "crypto";
+import { COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION } from "./config";
+import * as keys from "./keys";
+import { unmarshalSignInInfo } from "./store/util";
+import {IMap, IUserProfile, IExtensionSession} from "./types";
+
+export default class Session {
+
+  /**
+   * Static factory to create a new session instance using the default store
+   * (redis).
+   */
+  public static newInstance(): Session {
+    const session = new Session();
+    const now = Math.floor((new Date()).getTime() / 1000);
+    session.data = {
+      [keys.ID]: session.sessionKey(),
+      [keys.EXPIRES]: now + parseInt(DEFAULT_SESSION_EXPIRATION, 10),
+      [keys.LAST_ACCESS]: now,
+    };
+    return session;
+  }
+
+  /**
+   * Static factory to create a new session instance when there is already a
+   * cookie id.
+   */
+  public static newWithCookieId(cookieId: string): Session {
+    return new Session(cookieId);
+  }
+
+  private _cookieId: string;
+
+  private _data: IMap<any>;
+
+  private constructor(cookieId?: string) {
+    if (!cookieId) {
+      this.generateNewCookieId();
+    } else {
+      this._cookieId = cookieId;
+    }
+  }
+
+  public sessionKey(): string {
+    return this._cookieId.substr(0, 28);
+  }
+
+  public setClientSignature(userAgent: string, clientIp: string) {
+    const hash = crypto.createHash("sha1");
+    const data = hash.update(userAgent + clientIp + COOKIE_SECRET);
+    this.data[keys.CLIENT_SIG] = data.digest("hex");
+  }
+
+  public isSignedIn(): boolean {
+    const signInInfo = unmarshalSignInInfo(this._data);
+    if (!signInInfo) {
+      return false;
+    }
+
+    return signInInfo.signedIn as boolean;
+  }
+
+  public userProfile(): IUserProfile | undefined {
+    const signInInfo = unmarshalSignInInfo(this._data);
+    if (signInInfo && signInInfo.userProfile) {
+      return signInInfo.userProfile;
+    }
+  }
+
+  public extensionSession(): IExtensionSession {
+    return this._data[keys.EXTENSION_SESSION];
+  }
+
+  public accessToken(): string | undefined {
+    const signInInfo = unmarshalSignInInfo(this._data);
+    if (signInInfo && signInInfo.accessToken && signInInfo.accessToken.token) {
+      return signInInfo.accessToken.token;
+    }
+  }
+
+  public appendData(key: string, value: any): void {
+    this.data[key] = value;
+  }
+
+  get cookieId(): string {
+    return this._cookieId;
+  }
+
+  set data(data: IMap<any>) {
+    this._data = data;
+  }
+
+  get data(): IMap<any> {
+    return this._data;
+  }
+
+  /**
+   * Generates a new cookie id.
+   */
+  private generateNewCookieId() {
+    const key = this.generateSessionKey();
+    this._cookieId = key + this.generateSignature(key);
+  }
+
+  private generateSignature(sessionKey: string): string {
+    const hash = crypto.createHash("sha1");
+    const data = hash.update(sessionKey + COOKIE_SECRET);
+    const buff = data.digest();
+    const sig = buff.toString("base64");
+    return sig.substr(0, sig.indexOf("="));
+  }
+
+  private generateSessionKey(): string {
+    const bytes = crypto.randomBytes(21);
+    return bytes.toString("base64");
+  }
+}

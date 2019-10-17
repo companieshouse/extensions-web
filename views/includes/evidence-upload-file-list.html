@@ -1,0 +1,19 @@
+{% if reason and reason.attachments and reason.attachments.length > 0 %}
+<dl class="govuk-upload-list">
+  {% for attachment in reason.attachments | reverse %}
+  <div class="ch-upload-list__row uploaded-file-{{loop.index0}}">
+    <dt class="ch-upload-list__key govuk-visually-hidden">
+      Uploaded file
+    </dt>
+    <dd class="ch-upload-list__value">
+      <a href="#" class="govuk-link">{{ attachment.name }}</a>
+    </dd>
+    <dd class="ch-upload-list__actions">
+      <a class="govuk-link" href="/extensions/remove-document?documentID={{ attachment.id }}">
+        Remove
+      </a>
+    </dd>
+  </div>
+  {% endfor %}
+</dl>
+{% endif %}

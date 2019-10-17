@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+Add evidence to support your application
+{% endblock %}
+
+{% block backLink %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/extensions/back-link",
+    attributes: {
+      "data-event-id": "back-button"
+    }
+   }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post" enctype="multipart/form-data" id="file-upload-form">
+
+        <div id="errorSummaryDiv">
+          {% include "includes/evidence-upload-error-summary.html" %}
+        </div>
+
+
+        <h1 class="govuk-heading-xl">
+          Add documents to support your application
+        </h1>
+        <p class="govuk-body"></p>
+
+
+        <div id="fileUploadDiv">
+          {% include "includes/evidence-upload-file-picker.html" %}
+        </div>
+
+
+        <div class="upload-status-heading">
+          <h2 class="govuk-heading-s">Uploading document</h2>
+        </div>
+        <div class="upload-status" role="alert">
+          <h2 class="govuk-heading-m upload-status__title">document.docx</h2>
+          <p class="govuk-body upload-status__status">
+            <span class='upload-status__value' aria-live="assertive"></span>
+          </p>
+          <a href='#' class="govuk-link upload-status__link">Cancel</a>
+          <div class="progress-bar">
+            <div class="indicator"></div>
+          </div>
+        </div>
+
+        <div id="fileListDiv">
+          {% include "includes/evidence-upload-file-list.html" %}
+        </div>
+
+      </form>
+
+      <form method="post" id="continue-check-form">
+        {{ govukButton({
+          text: "Continue",
+          attributes: {
+            "data-event-id": "continue-button",
+            id: "submit"
+          }
+        }) }}
+        {{ govukInput({
+          id: "continue-check",
+          name: "continueCheck",
+          type: "hidden",
+          value: "continueCheck"
+        }) }}
+      </form>
+      <p>
+        <a href="/extensions/evidence-upload-continue-no-docs" id="continue-no-docs" class="govuk-link">Continue without adding documents</a>
+      </p>
+    </div>
+  </div>
+
+{% endblock %}

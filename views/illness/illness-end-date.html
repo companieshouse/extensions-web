@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
+  Extension due to ill health: Tell us when the illness ended
+{% endblock %}
+
+{% block backLink %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/extensions/back-link",
+    attributes: {
+      "data-event-id": "back-button"
+    }
+  }) }}
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form method="post">
+      {% if errorList.length > 0 %}
+        {{ govukErrorSummary({
+          titleText: ERROR_SUMMARY_TITLE,
+          errorList: errorList
+        }) }}
+      {% endif %}
+
+      {% set classes_year = "govuk-input--width-4" %}
+      {% set classes_month = "govuk-input--width-2" %}
+      {% set classes_day = "govuk-input--width-2" %}
+
+      {% if isEndDateYearError %}
+        {% set classes_year = classes_year + " govuk-input--error" %}
+      {% endif %}
+      {% if isEndDateMonthError %}
+        {% set classes_month = classes_month + " govuk-input--error" %}
+      {% endif %}
+      {% if isEndDateDayError %}
+        {% set classes_day = classes_day + " govuk-input--error" %}
+      {% endif %}
+
+      {% if errorList.length > 0 %}
+        {% if errorList.length === 1 %}
+          {% set endDateErrorMsg = {
+            text: errorList[0].text
+          } %}
+        {% else %}
+          {% set endDateErrorMsg = {
+            text: ""
+          } %}
+        {% endif %}
+      {% else %}
+        {% set endDateErrorMsg = false %}
+      {% endif %}
+
+      {% set hintHTML %}
+        You told us the illness started on
+          {{ startDate }}
+      {% endset %}
+
+      {{ govukDateInput({
+        id: "illness-end",
+        namePrefix: "illness-end",
+        value: info,
+        errorMessage: endDateErrorMsg,
+        fieldset: {
+          legend: {
+            text: "When did the illness end?",
+            isPageHeading: true,
+            classes: "govuk-fieldset__legend--xl"
+          }
+        },
+        hint: {
+          html: hintHTML
+        },
+        items: [
+          {
+            classes: classes_day,
+            name: "day",
+            value: illnessEndDay
+          },
+          {
+            classes: classes_month,
+            name: "month",
+            value: illnessEndMonth
+          },
+          {
+            classes: classes_year,
+            name: "year",
+            value: illnessEndYear
+          }
+        ]
+      }) }}
+
+      {{ govukButton({
+        text: "Continue",
+        attributes: {
+          "data-event-id": "continue-button",
+          id: "submit"
+        }
+      }) }}
+    </form>
+  </div>
+</div>
+
+{% endblock %}

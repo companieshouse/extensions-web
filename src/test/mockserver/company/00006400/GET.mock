@@ -1,0 +1,81 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "company_name": "THE GIRLS' DAY SCHOOL TRUST",
+  "registered_office_address": {
+    "address_line_1": "10 Bressenden Place",
+    "postal_code": "SW1E 5DH",
+    "locality": "London",
+    "country": "England"
+  },
+  "accounts": {
+    "next_due": "2020-05-31",
+    "accounting_reference_date": {
+      "day": "31",
+      "month": "08"
+    },
+    "next_made_up_to": "2019-08-31",
+    "overdue": false,
+    "last_accounts": {
+      "period_start_on": "2017-09-01",
+      "type": "group",
+      "period_end_on": "2018-08-31",
+      "made_up_to": "2018-08-31"
+    },
+    "next_accounts": {
+      "overdue": false,
+      "due_on": "2020-05-31",
+      "period_end_on": "2019-08-31",
+      "period_start_on": "2018-09-01"
+    }
+  },
+  "type": "private-limited-shares-section-30-exemption",
+  "jurisdiction": "england-wales",
+  "undeliverable_registered_office_address": false,
+  "has_been_liquidated": false,
+  "last_full_members_list_date": "2016-02-01",
+  "company_number": "00006400",
+  "date_of_creation": "1872-06-26",
+  "sic_codes": [
+    "85100",
+    "85200",
+    "85310"
+  ],
+  "etag": "0f313b1cfa242c80bd39e73834b145f800038573",
+  "has_insolvency_history": false,
+  "company_status": "active",
+  "has_charges": true,
+  "previous_company_names": [
+    {
+      "effective_from": "1998-04-28",
+      "ceased_on": "2003-09-01",
+      "name": "THE GIRLS' DAY SCHOOL TRUST (1872)"
+    },
+    {
+      "ceased_on": "1998-04-28",
+      "name": "THE GIRLS' PUBLIC DAY SCHOOL TRUST (1872)",
+      "effective_from": "1993-08-25"
+    },
+    {
+      "name": "GIRL'S PUBLIC DAY SCHOOL TRUST(THE)",
+      "ceased_on": "1993-08-25",
+      "effective_from": "1872-06-26"
+    }
+  ],
+  "confirmation_statement": {
+    "overdue": false,
+    "next_due": "2020-02-15",
+    "last_made_up_to": "2019-02-01",
+    "next_made_up_to": "2020-02-01"
+  },
+  "links": {
+    "self": "/company/00006400",
+    "filing_history": "/company/00006400/filing-history",
+    "officers": "/company/00006400/officers",
+    "charges": "/company/00006400/charges",
+    "persons_with_significant_control": "/company/00006400/persons-with-significant-control"
+  },
+  "registered_office_is_in_dispute": false,
+  "can_file": true
+}

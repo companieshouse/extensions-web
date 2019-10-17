@@ -1,0 +1,35 @@
+{% from "govuk/components/button/macro.njk"        import govukButton %}
+{% from "govuk/components/file-upload/macro.njk"   import govukFileUpload %}
+
+{% set uploadText %}
+  {% if reason and reason.attachments and reason.attachments.length > 0 %}
+    Add another document
+  {% else %}
+    Add a document
+  {% endif %}
+{% endset %}
+
+{% if evidenceUploadErr.flag %}
+  {% set evidenceUploadErrorMessage = {
+    text: evidenceUploadErr.text
+  } %}
+  {% else %}
+    {% set evidenceUploadErrorMessage = false %}
+{% endif %}
+
+<div class='file-upload'>
+  {{ govukFileUpload({
+    id: "file-upload",
+    name: "file-upload",
+    label: {
+      text: uploadText
+    },
+    errorMessage: evidenceUploadErrorMessage
+  }) }}
+  <noscript>
+    {{ govukButton({
+      text: "Add document",
+      classes: "govuk-button--secondary"
+    }) }}
+  </noscript>
+</div>

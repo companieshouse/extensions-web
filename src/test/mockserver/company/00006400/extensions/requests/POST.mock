@@ -1,0 +1,21 @@
+HTTP/1.1 201 OK
+Content-Type: application/json; charset=utf-8
+
+{
+    "etag": null,
+    "id": "5cc84e5e1e8ff21f5863c22d",
+    "links": {
+        "self": "/company/00006400/extensions/requests/5cc84e5e1e8ff21f5863c22d"
+    },
+    "status": "OPEN",
+    "reasons": [],
+    "created_on": "2019-04-30T14:32:14.638",
+    "created_by": {
+        "id": "MGQ1MGNlYmFkYzkxZTM2",
+        "forename": null,
+        "surname": null,
+        "email": null
+    },
+    "accounting_period_start_on": "2019-04-18",
+    "accounting_period_end_on": "2019-04-18"
+}

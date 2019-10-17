@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
+  Choose a reason for your extension
+{% endblock %}
+
+{% block backLink %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/extensions/back-link",
+    attributes: {
+      "data-event-id": "back-button"
+    }
+  }) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form method="post">
+
+      {% if errorList.length > 0 %}
+        {{ govukErrorSummary({
+          titleText: ERROR_SUMMARY_TITLE,
+          errorList: errorList
+        }) }}
+      {% endif %}
+
+      {% if extensionReasonErr.flag %}
+        {% set extensionReasonErrorMessage = {
+          text: extensionReasonErr.text
+        } %}
+        {% if extensionReasonErr.type === "invalid" %}
+          {% set otherReasonError = true %}
+        {% else %}
+          {% set otherReasonError = false %}
+        {% endif %}
+      {% else %}
+        {% set extensionReasonErrorMessage = false %}
+      {% endif %}
+
+      {% set otherInput %}
+        {{ govukInput({
+          id: "other-reason",
+          name: "otherReason",
+          classes: "",
+          attributes: {
+            "data-event-id": "other-reason-input"
+          },
+          errorMessage: otherReasonError,
+          label: {
+            text: "Short description of the reason"
+          }
+        }) }}
+      {% endset %}
+
+      {{ govukRadios({
+        idPrefix: "choose-reason",
+        name: "extensionReason",
+        errorMessage: extensionReasonErrorMessage,
+        fieldset: {
+          legend: {
+            text: "Why are you applying for an extension?",
+            isPageHeading: true,
+            classes: "govuk-fieldset__legend--xl"
+          }
+        },
+        items: [
+          {
+            value: "illness",
+            text: "Illness",
+            attributes: {
+              "data-event-id": "illness-option"
+            }
+          },
+          {
+            value: "accounting issues",
+            text: "Accounting issues",
+            attributes: {
+                "data-event-id": "accounting-issues-option"
+            }
+          },
+          {
+            value: "other",
+            text: "I'm applying for another reason",
+            checked: otherReasonError,
+            conditional: {
+              html: otherInput
+            },
+            attributes: {
+              "data-event-id": "other-option"
+            }
+          }
+        ]
+      }) }}
+
+      {{ govukButton({
+        text: "Continue",
+        attributes: {
+          "data-event-id": "continue-button",
+          id: "submit"
+        }
+      }) }}
+    </form>
+  </div>
+</div>
+
+{% endblock %}

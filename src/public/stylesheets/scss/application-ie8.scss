@@ -1,0 +1,9 @@
+// global styles for <a> and <p> tags
+$govuk-global-styles: true;
+
+$govuk-assets-path: '/';
+$govuk-images-path: "/images/extensions/";
+$govuk-fonts-path: "/fonts/extensions/";
+
+// Import GOV.UK Frontend
+@import "node_modules/govuk-frontend/govuk/all-ie8";

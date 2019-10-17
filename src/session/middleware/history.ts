@@ -1,0 +1,78 @@
+import {NextFunction, Request, Response} from "express";
+import * as keys from "../keys";
+import * as sessionService from "../../services/session.service";
+import {updateNavigationBackFlag} from "../../services/session.service";
+import {EXTENSIONS,
+  REMOVE_DOCUMENT,
+  EVIDENCE_UPLOAD_CONTINUE_NO_DOCS,
+  BACK_LINK,
+  REASON_ID,
+  OAUTH_LOGIN_URL} from "../../model/page.urls";
+import {PageHistory} from "../types";
+import Session from "../session";
+
+export default async (req: Request, res: Response, next: NextFunction) => {
+  if (req.method.toString() === "GET" && !containsProhibitedUrls(
+    [BACK_LINK, EVIDENCE_UPLOAD_CONTINUE_NO_DOCS],
+    req.baseUrl)) {
+    const hasNavigatedBack: boolean = req.chSession.data[keys.NAVGIGATION_BACK_FLAG];
+    const referringPageURL = getReferringPageUrl(req);
+    if (!hasNavigatedBack || referringPageURL.endsWith("extensions")) {
+      let restart: boolean = false;
+      if (referringPageURL.endsWith("extensions")) {
+        restart = true;
+        updateNavigationBackFlag(req.chSession, false);
+      }
+      updatePageHistory(referringPageURL, req.chSession, req.baseUrl, restart);
+    } else {
+      updateNavigationBackFlag(req.chSession, false);
+    }
+  }
+  next();
+};
+
+const getReferringPageUrl = (req: Request): string => {
+  let referringPageURL = req.header("Referer") as string;
+  if (referringPageURL.includes(OAUTH_LOGIN_URL)) {
+    referringPageURL = EXTENSIONS;
+  }
+  return referringPageURL;
+};
+
+const updatePageHistory = async (referringPageURL: string, chSession: Session,
+                                 baseUrl: string, restart: boolean): Promise<void> => {
+  const pageHistory: PageHistory = await sessionService.createHistoryIfNone(chSession, restart);
+  referringPageURL = makeReferringPageURLRelative(referringPageURL);
+  if (!(historyAlreadyContainsUrl(pageHistory, referringPageURL) ||
+    referringPageIsCurrentPage(referringPageURL, baseUrl) ||
+    containsProhibitedUrls([REASON_ID, REMOVE_DOCUMENT], referringPageURL))) {
+    await sessionService.updateHistory(pageHistory, chSession, referringPageURL);
+  }
+};
+
+const historyAlreadyContainsUrl = (pageHistory: PageHistory, referringPageURL: string): boolean => {
+    for (const index in pageHistory.page_history) {
+      if (pageHistory.page_history[index] === referringPageURL) {
+        return true;
+      }
+    }
+    return false;
+};
+
+const referringPageIsCurrentPage = (referringPageURL: string, currrentUrl: string): boolean => {
+   return referringPageURL === currrentUrl;
+};
+
+const containsProhibitedUrls = (prohibited: string[], url: string): boolean => {
+  for (const index in prohibited) {
+    if (url.includes(prohibited[index])) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const makeReferringPageURLRelative = (referringPageURL: string): string => {
+  referringPageURL = referringPageURL.substring(referringPageURL.indexOf("/extensions"));
+  return referringPageURL.replace(".html", "");
+};

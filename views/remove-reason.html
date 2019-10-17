@@ -1,0 +1,171 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Remove extension reason
+{% endblock %}
+
+{% block backLink %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/extensions/back-link",
+    attributes: {
+      "data-event-id": "back-button"
+    }
+  }) }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post">
+
+        {% if errorList.length > 0 %}
+          {{ govukErrorSummary({
+                titleText: ERROR_SUMMARY_TITLE,
+                errorList: errorList
+              }) }}
+        {% endif %}
+
+        {% if errorList.length > 0 %}
+          {% set Err = {
+            text: Err.text
+          } %}
+        {% else %}
+          {% set Err = false %}
+        {% endif %}
+
+        {% if errorList.length > 0 %}
+          {% if Err.type === 'invalid' %}
+            {% set otherReasonError = true %}
+          {% else %}
+            {% set otherReasonError = false %}
+          {% endif %}
+        {% endif %}
+
+        {{ govukRadios({
+          classes: "govuk-radios--inline",
+          idPrefix: "remove-reason",
+          name: "removeReason",
+          errorMessage: Err,
+          fieldset: {
+            legend: {
+              text: "Do you want to remove this reason?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
+            },
+            {
+              value: "no",
+              text: "No"
+            }
+          ]
+        }) }}
+        {% if extensionLength === 1 %}
+          {{ govukInsetText({
+            text: "You must have at least one reason to apply for an extension. By removing this reason, you'll need to enter another reason."
+          }) }}
+        {% endif %}
+
+        {% if reason.reason === 'illness' %}
+          <h3 class="govuk-heading-m">{{ reasonDisplayNumber }}: Illness</h3>
+          <dl class="app-check-your-answers app-check-your-answers--long">
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Who was ill?
+              </dt>
+              <dd class="app-check-your-answers__answer">
+                {{ reason.affected_person | capitalize }}
+              </dd>
+            </div>
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Illness start date
+              </dt>
+              <dd class="app-check-your-answers__answer">
+                {{ reason.start_on }}
+              </dd>
+            </div>
+            {% if reason.continued_illness === 'yes' %}
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Continuing illness?
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.continued_illness | capitalize }}
+                </dd>
+              </div>
+            {% else %}
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Illness end date
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.end_on }}
+                </dd>
+              </div>
+            {% endif %}
+            {% if reason.reason_information != null %}
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Further information
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.reason_information | safe | nl2br }}
+                </dd>
+              </div>
+            {% endif %}
+            {% if reason.attachments === 'yes' %}
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Supporting documents
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  <a href='' class='govuk-link'>evidence-letter.jpg</a>
+                </dd>
+              </div>
+            {% endif %}
+          </dl>
+        {% else %}
+          <h3 class="govuk-heading-m">{{ reasonDisplayNumber }}:
+            {{ reason.reason }}</h3>
+          <dl class="app-check-your-answers app-check-your-answers--long">
+            {% if reason.reason_information != null %}
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Further information
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.reason_information | safe | nl2br }}
+                </dd>
+              </div>
+            {% endif %}
+            {% if reason.attachments === 'yes' %}
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Supporting documents
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  <a href='' class='govuk-link'>evidence-letter.jpg</a>
+                </dd>
+              </div>
+            {% endif %}
+          </dl>
+        {% endif %}
+
+        {{ govukButton({
+          text: "Continue",
+          preventDoubleClick: true,
+          attributes: {
+            "data-event-id": "continue-button",
+            id: "submit"
+          }
+        }) }}
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
