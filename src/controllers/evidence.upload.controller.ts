@@ -30,6 +30,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
   return res.render(templatePaths.EVIDENCE_UPLOAD,
     {
       reason: thisReason,
+      templateName: templatePaths.EVIDENCE_UPLOAD,
     });
 };
 
