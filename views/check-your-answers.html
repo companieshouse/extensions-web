@@ -4,16 +4,6 @@
   Check your answers before sending your application
 {% endblock %}
 
-{% block backLink %}
-  {{ govukBackLink({
-    text: "Back",
-    href: "/extensions/back-link",
-    attributes: {
-      "data-event-id": "back-button"
-    }
-  }) }}
-{% endblock %}
-
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -51,8 +41,8 @@
               {{ reason.affected_person | capitalize }}
             </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-who-was-ill-{{loop.index}}" href="/extensions/illness/who-was-ill?reasonId={{ reason.id }}">
-                Change<span class="govuk-visually-hidden"> who was ill</span>
+              <a id="change-who-was-ill-{{loop.index}}" href="/extensions/illness/who-was-ill?reasonId={{ reason.id }}"
+                 data-event-id="change-who-was-ill-button">Change<span class="govuk-visually-hidden"> who was ill</span>
               </a>
             </dd>
           </div>
@@ -64,8 +54,8 @@
               {{ reason.start_on }}
             </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-ill-start-date-{{loop.index}}" href="/extensions/illness/illness-start-date?reasonId={{ reason.id }}">
-                Change<span class="govuk-visually-hidden"> illness start date</span>
+              <a id="change-ill-start-date-{{loop.index}}" href="/extensions/illness/illness-start-date?reasonId={{ reason.id }}"
+                data-event-id="change-illness-start-date-button">Change<span class="govuk-visually-hidden"> illness start date</span>
               </a>
             </dd>
           </div>
@@ -78,8 +68,8 @@
               {{ reason.continued_illness | capitalize }}
             </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-continued-illness-{{loop.index}}" href="/extensions/illness/continued-illness?reasonId={{ reason.id }}">
-                Change<span class="govuk-visually-hidden"> continued illness</span>
+              <a id="change-continued-illness-{{loop.index}}" href="/extensions/illness/continued-illness?reasonId={{ reason.id }}"
+                data-event-id="change-continued-illness-button">Change<span class="govuk-visually-hidden"> continued illness</span>
               </a>
             </dd>
           </div>
@@ -92,8 +82,8 @@
               {{ reason.end_on }}
              </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-ill-end-date-{{loop.index}}" href="/extensions/illness/illness-end-date?reasonId={{ reason.id }}">
-                Change<span class="govuk-visually-hidden"> illness end date</span>
+              <a id="change-ill-end-date-{{loop.index}}" href="/extensions/illness/illness-end-date?reasonId={{ reason.id }}"
+                data-event-id="change-illness-end-date-button">Change<span class="govuk-visually-hidden"> illness end date</span>
               </a>
             </dd>
           </div>
@@ -107,8 +97,8 @@
               {{ reason.reason_information }}
             </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-illness-info-{{loop.index}}" href="/extensions/illness/illness-information?reasonId={{ reason.id }}">
-                Change<span class="govuk-visually-hidden"> further information</span>
+              <a id="change-illness-info-{{loop.index}}" href="/extensions/illness/illness-information?reasonId={{ reason.id }}"
+                data-event-id="change-illness-information-button">Change<span class="govuk-visually-hidden"> further information</span>
               </a>
             </dd>
           </div>
@@ -127,7 +117,9 @@
               </ul>
             </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-ill-evidence-upload-{{loop.index}}" href="/extensions/evidence-upload?reasonId={{ reason.id }}">Change</a>
+              <a id="change-ill-evidence-upload-{{loop.index}}" href="/extensions/evidence-upload?reasonId={{ reason.id }}"
+                data-event-id="change-illness-documents-button">Change<span class="govuk-visually-hidden"> supporting documents</span>
+              </a>
             </dd>
           </div>
         </dl>
@@ -151,8 +143,8 @@
               {{ reason.start_on }}
             </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-accounting-issue-date-{{loop.index}}" href="/extensions/accounts/accounts-date?reasonId={{ reason.id }}">
-                Change<span class="govuk-visually-hidden"> accounting issue date</span>
+              <a id="change-accounting-issue-date-{{loop.index}}" href="/extensions/accounts/accounts-date?reasonId={{ reason.id }}"
+                data-event-id="change-accounting-issue-date-button">Change<span class="govuk-visually-hidden"> accounting issue date</span>
               </a>
             </dd>
           </div>
@@ -164,8 +156,8 @@
               {{ reason.reason_information }}
             </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-accounting-issue-info-{{loop.index}}" href="/extensions/accounts/accounts-information?reasonId={{ reason.id }}">
-                Change<span class="govuk-visually-hidden"> further information</span>
+              <a id="change-accounting-issue-info-{{loop.index}}" href="/extensions/accounts/accounts-information?reasonId={{ reason.id }}"
+                data-event-id="change-accounting-issue-information-button">Change<span class="govuk-visually-hidden"> further information</span>
               </a>
             </dd>
           </div>
@@ -183,7 +175,9 @@
               </ul>
             </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-accounts-evidence-upload-{{loop.index}}" href="/extensions/evidence-upload?reasonId={{ reason.id }}">Change</a>
+              <a id="change-accounts-evidence-upload-{{loop.index}}" href="/extensions/evidence-upload?reasonId={{ reason.id }}"
+                data-event-id="change-accounting-issue-documents-button">Change<span class="govuk-visually-hidden"> supporting documents</span>
+              </a>
             </dd>
           </div>
         </dl>
@@ -208,8 +202,8 @@
               {{ reason.reason_information }}
             </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-reason-other-{{loop.index}}" href="/extensions/other/reason-other?reasonId={{ reason.id }}">
-                Change<span class="govuk-visually-hidden"> further information</span>
+              <a id="change-reason-other-{{loop.index}}" href="/extensions/other/reason-other?reasonId={{ reason.id }}"
+                data-event-id="change-other-reason-information-button">Change<span class="govuk-visually-hidden"> further information</span>
               </a>
             </dd>
           </div>
@@ -228,18 +222,21 @@
               </ul>
             </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-other-evidence-upload-{{loop.index}}" href="/extensions/evidence-upload?reasonId={{ reason.id }}">Change</a>
+              <a id="change-other-evidence-upload-{{loop.index}}" href="/extensions/evidence-upload?reasonId={{ reason.id }}"
+                data-event-id="change-other-reason-documents-button">Change<span class="govuk-visually-hidden"> supporting documents</span>
+              </a>
             </dd>
           </div>
         </dl>
       {% endif %}
       <p class="govuk-body">
-        <a id="remove-reason-{{loop.index}}" href="/extensions/remove-reason?id={{reason.id}}&reasonNumber={{loop.index}}" class="govuk-link">Remove this reason</a>
+        <a id="remove-reason-{{loop.index}}" href="/extensions/remove-reason?id={{reason.id}}&reasonNumber={{loop.index}}" class="govuk-link"
+          data-event-id="remove-reason-button">Remove this reason</a>
       </p>
     </div>
     {% endfor %}
     <p class="govuk-!-margin-bottom-7 govuk-!-margin-top-7">
-      <a href="/extensions/choose-reason" class="govuk-link">Add another reason</a>
+      <a href="/extensions/choose-reason" class="govuk-link" data-event-id="add-another-reason-button">Add another reason</a>
     </p>
 
     <h2 class="govuk-heading-m">Submit your application for an extension</h2>
