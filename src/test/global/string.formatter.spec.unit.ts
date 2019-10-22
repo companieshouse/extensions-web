@@ -9,6 +9,13 @@ describe("String formatter tests", () => {
     expect(formattedString).toEqual("hello. This string is   dodgy!");
   });
 
+  it("should not remove printable chars", () => {
+    const notDodgyString: string = "hello. This string is not dodgy !@£$%^&*()€#¢§¶ªº";
+    const formattedString: string = removeNonPrintableChars(notDodgyString);
+
+    expect(formattedString).toEqual("hello. This string is not dodgy !@£$%^&*()€#¢§¶ªº");
+  });
+
   it("should return original string if it is empty", () => {
     const emptyString: string = "";
     const formattedString: string = removeNonPrintableChars(emptyString);
