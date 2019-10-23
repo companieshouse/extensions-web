@@ -10,13 +10,13 @@ jest.mock("../../../client/apiclient", () => {
 const mockSession: Session = jest.genMockFromModule("../../../session/session");
 
 // mock the request
-const req: Request = {
+const req = {
   chSession: mockSession,
   params: {
     companyId: "00006400",
     requestId: "HG33KL7"
   }
-} as Request;
+};
 
 // mock the response
 const res: Response = {} as Response;
@@ -81,7 +81,7 @@ describe("Download authorisation tests", () => {
     mockSession.userProfile = jest.fn().mockImplementation(() => userProfileIncorrectPermissions);
     mockSession.accessToken = jest.fn().mockImplementation(() => ACCESS_TOKEN);
 
-    await authenticateForDownload(req, res, mockNextFunc);
+    await authenticateForDownload(req as any, res, mockNextFunc);
 
     expect(mockGetFullRequest).toHaveBeenCalledWith(req.params[REQ_PARAM_COMPANY_ID], ACCESS_TOKEN, req.params[REQ_PARAM_REQUEST_ID]);
     expect(mockRenderFunc).toHaveBeenCalledWith(DOWNLOAD_NOT_AUTHORISED);
@@ -91,7 +91,7 @@ describe("Download authorisation tests", () => {
   it("Should call the next function in the middleware chain if user is in correct role", async () => {
     mockSession.userProfile = jest.fn().mockImplementation(() => userProfileCorrectPermissions);
 
-    await authenticateForDownload(req, res, mockNextFunc);
+    await authenticateForDownload(req as any, res, mockNextFunc);
 
     expect(mockNextFunc).toHaveBeenCalled();
     expect(mockGetFullRequest).not.toHaveBeenCalled();
@@ -103,7 +103,7 @@ describe("Download authorisation tests", () => {
 
     mockSession.accessToken = jest.fn().mockImplementation(() => ACCESS_TOKEN);
 
-    await authenticateForDownload(req, res, mockNextFunc);
+    await authenticateForDownload(req as any, res, mockNextFunc);
 
     expect(mockGetFullRequest).toHaveBeenCalledWith(req.params[REQ_PARAM_COMPANY_ID], ACCESS_TOKEN, req.params[REQ_PARAM_REQUEST_ID]);
     expect(mockNextFunc).toHaveBeenCalled();
