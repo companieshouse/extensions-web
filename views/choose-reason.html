@@ -34,9 +34,9 @@
           text: extensionReasonErr.text
         } %}
         {% if extensionReasonErr.type === "invalid" %}
-          {% set otherReasonError = true %}
+          {% set isOtherReasonChecked = true %}
         {% else %}
-          {% set otherReasonError = false %}
+          {% set isOtherReasonChecked = false %}
         {% endif %}
       {% else %}
         {% set extensionReasonErrorMessage = false %}
@@ -75,6 +75,7 @@
           {
             value: "illness",
             text: "Illness",
+            checked: isIllnessChecked,
             attributes: {
               "data-event-id": "illness-option"
             }
@@ -82,6 +83,7 @@
           {
             value: "accounting issues",
             text: "Accounting issues",
+            checked: isAccountingIssuesChecked,
             attributes: {
                 "data-event-id": "accounting-issues-option"
             }
@@ -89,7 +91,7 @@
           {
             value: "other",
             text: "I'm applying for another reason",
-            checked: otherReasonError,
+            checked: isOtherReasonChecked,
             conditional: {
               html: otherInput
             },

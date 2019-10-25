@@ -121,7 +121,14 @@ const updateHistory = async (pageHistory: PageHistory, chSession: Session, url?:
 };
 
 const updateNavigationBackFlag = async (chSession: Session, hasNavigatedBack: boolean): Promise<void> => {
-  chSession.appendData(keys.NAVGIGATION_BACK_FLAG, hasNavigatedBack);
+  chSession.appendData(keys.NAVIGATION_BACK_FLAG, hasNavigatedBack);
+  await saveSession(chSession);
+};
+
+const updateExtensionSessionValue = async (chSession: Session, key: string, value: any): Promise<void> => {
+  const extensionSession = await chSession.data.extension_session;
+  extensionSession[key] = value;
+  chSession.appendData(keys.EXTENSION_SESSION, extensionSession);
   await saveSession(chSession);
 };
 
@@ -147,6 +154,7 @@ export { hasExtensionRequest,
   createHistoryIfNone,
   updateHistory,
   updateNavigationBackFlag,
+  updateExtensionSessionValue,
   setReasonInContextAsString,
   getCompanyInContext,
   changingDetails,

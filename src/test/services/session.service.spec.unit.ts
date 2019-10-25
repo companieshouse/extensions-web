@@ -1,6 +1,7 @@
 import { IExtensionSession, IExtensionRequest } from "../../session/types";
 import Session from "../../session/session";
 import * as sessionService from "../../services/session.service";
+import {UPLOAD_DOCUMENTS_YES} from "../../session/keys";
 
 jest.mock("../../session/store/redis.store");
 
@@ -11,6 +12,15 @@ describe("cache service tests", () => {
 
     const hasRequest: boolean = await sessionService.hasExtensionRequest(session);
     expect(hasRequest).toBeTruthy();
+  });
+
+  it("should update extensions session value", async () => {
+    let session: Session = Session.newInstance();
+    session.data = {extension_session: dummySession("00006400", "00006400")};
+    await sessionService.updateExtensionSessionValue(session, UPLOAD_DOCUMENTS_YES, true);
+    expect(session.data.extension_session[UPLOAD_DOCUMENTS_YES]).toEqual(true);
+    await sessionService.updateExtensionSessionValue(session, UPLOAD_DOCUMENTS_YES, false);
+    expect(session.data.extension_session[UPLOAD_DOCUMENTS_YES]).toEqual(false);
   });
 
   it("should return false if request does not exist", async () => {

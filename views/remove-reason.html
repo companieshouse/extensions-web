@@ -35,9 +35,9 @@
 
         {% if errorList.length > 0 %}
           {% if Err.type === 'invalid' %}
-            {% set otherReasonError = true %}
+            {% set isOtherReasonChecked = true %}
           {% else %}
-            {% set otherReasonError = false %}
+            {% set isOtherReasonChecked = false %}
           {% endif %}
         {% endif %}
 

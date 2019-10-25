@@ -8,6 +8,7 @@ import { ValidationError } from "../model/validation.error";
 import * as apiClient from "../client/apiclient";
 import { IExtensionRequest } from "session/types";
 import * as reasonService from "../services/reason.service";
+import * as keys from "../session/keys";
 
 let errorType: string = "";
 
@@ -26,6 +27,9 @@ const validators = [
 
 export const render = (req: Request, res: Response, next: NextFunction): void => {
   return res.render(templatePaths.CHOOSE_REASON, {
+    isAccountingIssuesChecked: req.chSession.data[keys.EXTENSION_SESSION][keys.ACCOUNTING_ISSUES_CHOSEN],
+    isIllnessChecked: req.chSession.data[keys.EXTENSION_SESSION][keys.ILLNESS_CHOSEN],
+    isOtherReasonChecked: req.chSession.data[keys.EXTENSION_SESSION][keys.OTHER_CHOSEN],
     templateName: templatePaths.CHOOSE_REASON,
   });
 };
@@ -56,12 +60,21 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   switch (req.body.extensionReason) {
     case "illness":
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.ILLNESS_CHOSEN, true);
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.ACCOUNTING_ISSUES_CHOSEN, false);
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.OTHER_CHOSEN, false);
       return await addReason(req, res, (request) =>
         request.body.extensionReason, templatePaths.REASON_ILLNESS);
     case "accounting issues":
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.ILLNESS_CHOSEN, false);
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.ACCOUNTING_ISSUES_CHOSEN, true);
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.OTHER_CHOSEN, false);
       return await addReason(req, res, (request) =>
         request.body.extensionReason, templatePaths.REASON_ACCOUNTING_ISSUE);
     case "other":
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.ILLNESS_CHOSEN, false);
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.ACCOUNTING_ISSUES_CHOSEN, false);
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.OTHER_CHOSEN, true);
       return await addReason(req, res, (request) =>
         request.body.otherReason, templatePaths.REASON_OTHER);
   }
