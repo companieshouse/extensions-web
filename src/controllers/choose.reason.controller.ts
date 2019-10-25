@@ -9,7 +9,6 @@ import * as apiClient from "../client/apiclient";
 import { IExtensionRequest } from "session/types";
 import * as reasonService from "../services/reason.service";
 import * as keys from "../session/keys";
-import {EXTENSION_SESSION} from "../session/keys";
 
 let errorType: string = "";
 
@@ -30,7 +29,7 @@ export const render = (req: Request, res: Response, next: NextFunction): void =>
   let accountingIssuesChecked: boolean = false;
   let illnessChecked: boolean = false;
   let otherChecked: boolean = false;
-  if (!req.chSession.data[EXTENSION_SESSION] === undefined) {
+  if (!req.chSession.data[keys.EXTENSION_SESSION] === undefined) {
     accountingIssuesChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.ACCOUNTING_ISSUES_CHOSEN];
     illnessChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.ILLNESS_CHOSEN];
     otherChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.OTHER_CHOSEN];

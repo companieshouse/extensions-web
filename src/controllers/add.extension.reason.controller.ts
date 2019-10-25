@@ -8,7 +8,6 @@ import * as pageURLs from "../model/page.urls";
 import * as reasonService from "../services/reason.service";
 import * as keys from "../session/keys";
 import * as sessionService from "../services/session.service";
-import {EXTENSION_SESSION} from "../session/keys";
 
 const validators = [
   check("addExtensionReason").not().isEmpty().withMessage(errorMessages.ADD_EXTENSION_REASON_DECISION_NOT_MADE),
@@ -17,7 +16,7 @@ const validators = [
 export const render = (req: Request, res: Response, next: NextFunction): void => {
   let noChecked: boolean = false;
   let yesChecked: boolean = false;
-  if (!req.chSession.data[EXTENSION_SESSION] === undefined) {
+  if (!req.chSession.data[keys.EXTENSION_SESSION] === undefined) {
     noChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.ADD_ANOTHER_REASON_NO];
     yesChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.ADD_ANOTHER_REASON_YES];
   }
