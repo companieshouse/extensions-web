@@ -7,15 +7,22 @@ import * as templatePaths from "../model/template.paths";
 import {ValidationError} from "../model/validation.error";
 import * as keys from "../session/keys";
 import * as sessionService from "../services/session.service";
+import {EXTENSION_SESSION} from "../session/keys";
 
 const validators = [
   check("supportingEvidence").not().isEmpty().withMessage(errorMessages.UPLOAD_EVIDENCE_DECISION_NOT_MADE),
 ];
 
 export const render = (req: Request, res: Response, next: NextFunction): void => {
+  let noChecked: boolean = false;
+  let yesChecked: boolean = false;
+  if (!req.chSession.data[EXTENSION_SESSION] === undefined) {
+    noChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.UPLOAD_DOCUMENTS_NO];
+    yesChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.UPLOAD_DOCUMENTS_YES];
+  }
   return res.render(templatePaths.EVIDENCE_OPTION, {
-    isNoChecked: req.chSession.data[keys.EXTENSION_SESSION][keys.UPLOAD_DOCUMENTS_NO],
-    isYesChecked: req.chSession.data[keys.EXTENSION_SESSION][keys.UPLOAD_DOCUMENTS_YES],
+    isNoChecked: noChecked,
+    isYesChecked: yesChecked,
     templateName: templatePaths.EVIDENCE_OPTION,
   });
 };
