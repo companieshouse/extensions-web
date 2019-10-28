@@ -28,3 +28,4 @@ export const EXTENSION_SESSION: string = "extension_session";
 export const COMPANY_IN_CONTEXT: string = "company_in_context";
 export const PAGE_HISTORY: string = "page_history";
 export const NAVGIGATION_BACK_FLAG: string = "back_button_pressed";
+export const SUBMITTED: string = "submitted";
