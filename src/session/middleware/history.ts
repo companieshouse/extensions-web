@@ -15,7 +15,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   if (req.method.toString() === "GET" && !containsProhibitedUrls(
     [BACK_LINK, EVIDENCE_UPLOAD_CONTINUE_NO_DOCS],
     req.baseUrl)) {
-    const hasNavigatedBack: boolean = req.chSession.data[keys.NAVGIGATION_BACK_FLAG];
+    const hasNavigatedBack: boolean = req.chSession.data[keys.NAVIGATION_BACK_FLAG];
     const referringPageURL = getReferringPageUrl(req);
     if (!hasNavigatedBack || referringPageURL.endsWith("extensions")) {
       let restart: boolean = false;

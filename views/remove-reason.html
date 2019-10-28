@@ -33,14 +33,6 @@
           {% set Err = false %}
         {% endif %}
 
-        {% if errorList.length > 0 %}
-          {% if Err.type === 'invalid' %}
-            {% set otherReasonError = true %}
-          {% else %}
-            {% set otherReasonError = false %}
-          {% endif %}
-        {% endif %}
-
         {{ govukRadios({
           classes: "govuk-radios--inline",
           idPrefix: "remove-reason",
