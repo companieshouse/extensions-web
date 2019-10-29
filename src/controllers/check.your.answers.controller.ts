@@ -4,7 +4,7 @@ import logger from "../logger";
 import {CompanyProfile, getCompanyProfile, ExtensionFullRequest} from "../client/apiclient";
 import * as templatePaths from "../model/template.paths";
 import * as errorMessages from "../model/error.messages";
-import {EXTENSIONS, EXTENSIONS_CONFIRMATION} from "../model/page.urls";
+import {EXTENSIONS_CONFIRMATION} from "../model/page.urls";
 import * as apiClient from "../client/apiclient";
 import {IExtensionRequest, ISignInInfo, IUserProfile} from "session/types";
 import {ReasonWeb} from "../model/reason/extension.reason.web";
@@ -45,15 +45,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 };
 
 export const submit = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  if (!req.chSession.data[keys.SUBMITTED]) {
-    req.chSession.data[keys.SUBMITTED] = true;
-    saveSession(req.chSession).then(() => {
-      res.redirect(EXTENSIONS_CONFIRMATION);
-    });
-  } else {
-    logger.error("Form already submitted, not submitting again");
-    res.redirect(EXTENSIONS);
-  }
+    res.redirect(EXTENSIONS_CONFIRMATION);
 };
 
 const formatReasonDates = (reasons: ReasonWeb[]): ReasonWeb[] => {

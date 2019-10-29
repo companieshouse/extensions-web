@@ -62,7 +62,11 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
         logger.info(`User ${userProfile.id} has an extension request ` +
           `for companyNumber ${companyNumber}`);
       }
-      req.chSession.appendData(keys.SUBMITTED, false);
+      if (req.chSession.data[keys.SUBMITTED] === undefined) {
+        req.chSession.appendData(keys.SUBMITTED, false);
+      } else {
+        req.chSession.data[keys.SUBMITTED] = false;
+      }
       await saveSession(req.chSession);
       return res.redirect(pageURLs.EXTENSIONS_CHOOSE_REASON);
     } else {
