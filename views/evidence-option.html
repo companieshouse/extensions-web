@@ -52,17 +52,19 @@
           classes: "govuk-fieldset__legend--xl"
                     }
           },
-            hint: {
+          hint: {
             html: hintHTML
           },
-            items: [
+          items: [
             {
               value: "yes",
-              text: "Yes"
+              text: "Yes",
+              checked: isYesChecked
             },
             {
               value: "no",
-              text: "No"
+              text: "No",
+              checked: isNoChecked
             }
           ]
           }) }}
