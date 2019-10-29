@@ -29,22 +29,23 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   const isSubmitted: boolean = req.chSession.data[keys.SUBMITTED];
   if (!isSubmitted) {
     req.chSession.data[keys.SUBMITTED] = true;
-    await saveSession(req.chSession);
-    const token = req.chSession.accessToken();
-    const request = sessionService.getRequest(req.chSession);
-    if (token && request) {
-      try {
-        await apiClient.callProcessorApi(companyNum, token, request.extension_request_id);
-      } catch (e) {
-        logger.error("Error processing application " + JSON.stringify(e));
-        return next(e);
+    await saveSession(req.chSession).then(async () => {
+      const token = req.chSession.accessToken();
+      const request = sessionService.getRequest(req.chSession);
+      if (token && request) {
+        try {
+          await apiClient.callProcessorApi(companyNum, token, request.extension_request_id);
+        } catch (e) {
+          logger.error("Error processing application " + JSON.stringify(e));
+          return next(e);
+        }
+        if (activeFeature(process.env.FEATURE_REQUEST_COUNT)) {
+          RequestCountMonitor.updateTodaysRequestNumber(1);
+        } else {
+          logger.info("Feature flag is toggled off for request number counter update");
+        }
       }
-      if (activeFeature(process.env.FEATURE_REQUEST_COUNT)) {
-        RequestCountMonitor.updateTodaysRequestNumber(1);
-      } else {
-        logger.info("Feature flag is toggled off for request number counter update");
-      }
-    }
+    });
   } else {
     logger.error("Form already submitted, not processing again");
   }
