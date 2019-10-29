@@ -35,5 +35,4 @@ export const ADD_ANOTHER_REASON_NO: string = "add_another_reason_no";
 export const ILLNESS_CHOSEN: string = "illness_chosen";
 export const ACCOUNTING_ISSUES_CHOSEN: string = "accounting_issues_chosen";
 export const OTHER_CHOSEN: string = "other_chosen";
-export const NAVGIGATION_BACK_FLAG: string = "back_button_pressed";
 export const SUBMITTED: string = "submitted";

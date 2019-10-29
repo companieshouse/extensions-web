@@ -10,7 +10,6 @@ import {IExtensionRequest, ISignInInfo, IUserProfile} from "session/types";
 import {ReasonWeb} from "../model/reason/extension.reason.web";
 import {formatDateForDisplay} from "../client/date.formatter";
 import * as keys from "../session/keys";
-import {saveSession} from "../services/redis.service";
 
 const recordLandingOnCheckDetailsPage = async (req: Request): Promise<void> => {
   await sessionService.changingDetails(req.chSession, true);
@@ -45,7 +44,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 };
 
 export const submit = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    res.redirect(EXTENSIONS_CONFIRMATION);
+   res.redirect(EXTENSIONS_CONFIRMATION);
 };
 
 const formatReasonDates = (reasons: ReasonWeb[]): ReasonWeb[] => {
