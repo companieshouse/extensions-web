@@ -7,7 +7,6 @@ import * as apiClient from "../client/apiclient";
 import logger from "../logger";
 import activeFeature from "../feature.flag";
 import RequestCountMonitor from "../global/request.count.monitor";
-import {saveSession} from "../services/redis.service";
 
 const createMissingError = (item: string): Error => {
   const errMsg: string = item + " missing from session";
@@ -28,23 +27,24 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
   const isSubmitted: boolean = req.chSession.data.extension_session[keys.ALREADY_SUBMITTED];
   if (!isSubmitted) {
-    await sessionService.updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, true).then(async () => {
-      const token = req.chSession.accessToken();
-      const request = sessionService.getRequest(req.chSession);
-      if (token && request) {
-        try {
-          await apiClient.callProcessorApi(companyNum, token, request.extension_request_id);
-        } catch (e) {
-          logger.error("Error processing application " + JSON.stringify(e));
-          return next(e);
+    try {
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, true).then(async () => {
+        const token = req.chSession.accessToken();
+        const request = sessionService.getRequest(req.chSession);
+        if (token && request) {
+            await apiClient.callProcessorApi(companyNum, token, request.extension_request_id);
+            if (activeFeature(process.env.FEATURE_REQUEST_COUNT)) {
+              RequestCountMonitor.updateTodaysRequestNumber(1);
+            } else {
+              logger.info("Feature flag is toggled off for request number counter update");
+            }
         }
-        if (activeFeature(process.env.FEATURE_REQUEST_COUNT)) {
-          RequestCountMonitor.updateTodaysRequestNumber(1);
-        } else {
-          logger.info("Feature flag is toggled off for request number counter update");
-        }
-      }
-    });
+      });
+    } catch (e) {
+      logger.error("Error processing application " + JSON.stringify(e));
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, false);
+      return next(e);
+    }
   } else {
     logger.error("Form already submitted, not processing again");
   }
