@@ -10,7 +10,7 @@ import {createHistoryIfNone, getRequest} from "../../services/session.service";
 
 jest.mock("../../services/redis.service");
 jest.mock("../../client/apiclient");
-jest.mock( "../../services/session.service");
+//jest.mock( "../../services/session.service");
 
 
 const EMAIL: string = "demo@ch.gov.uk";
@@ -21,25 +21,24 @@ const ERROR_PAGE: string = "Sorry, there is a problem with the service";
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockCallProcessorApi = (<unknown>callProcessorApi as jest.Mock<typeof callProcessorApi>);
-const mockGetRequest = (<unknown>getRequest as jest.Mock<typeof getRequest>);
+//const mockGetRequest = (<unknown>getRequest as jest.Mock<typeof getRequest>);
 const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
 
   beforeEach(() => {
-  mockCacheService.mockRestore();
-  mockCallProcessorApi.prototype.constructor.mockImplementationOnce(()=> new Error());
-  mockGetRequest.prototype.constructor.mockImplementation(() => {
-      return {
-        [keys.COMPANY_NUMBER]: "00006400",
-        "extension_request_id": "request1",
-        "reason_in_context_string": "1234",
-    }
-  });
-  mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() =>{
-    return {
-      page_history: [],
-    };
-  });
+    mockCacheService.mockRestore();
 
+    // mockGetRequest.prototype.constructor.mockImplementation(() => {
+    //     return {
+    //       [keys.COMPANY_NUMBER]: "00006400",
+    //       "extension_request_id": "request1",
+    //       "reason_in_context_string": "1234",
+    //   }
+    // });
+    // mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() =>{
+    //     //   return {
+    //     //     page_history: [],
+    //     //   };
+    //     // });
   });
 
 describe("confirmation controller", () => {
@@ -108,8 +107,15 @@ describe("confirmation controller", () => {
     mockCacheService.mockClear();
     const session: Session = dummySession(COMPANY_NUMBER, EMAIL);
     mockCacheService.prototype.constructor.mockResolvedValueOnce(session);
+    mockCallProcessorApi.prototype.constructor.mockImplementationOnce(()=> new Error());
 
-    session.data[keys.ACCESS_TOKEN] = "token";
+    session.data[keys.SIGN_IN_INFO] = { accessToken: {token: "token"}};
+    session.data.extension_session.extension_requests[0] =
+        {
+             [keys.COMPANY_NUMBER]: "00006400",
+             "extension_request_id": "request1",
+             "reason_in_context_string": "1234",
+        };
     session.data.extension_session[keys.ALREADY_SUBMITTED] = false;
     const resp = await request(app)
       .get(pageURLs.EXTENSIONS_CONFIRMATION)
