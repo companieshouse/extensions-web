@@ -112,7 +112,6 @@ describe("confirmation controller", () => {
     mockCacheService.mockClear();
     const session: Session = dummySessionWithToken(COMPANY_NUMBER, EMAIL);
     mockCacheService.prototype.constructor.mockResolvedValueOnce(session);
-
     const resp = await request(app)
       .get(pageURLs.EXTENSIONS_CONFIRMATION)
       .set("Referer", "/")
