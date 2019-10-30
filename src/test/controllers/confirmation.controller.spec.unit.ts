@@ -5,19 +5,42 @@ import {COOKIE_NAME} from "../../session/config";
 import * as keys from "../../session/keys";
 import Session from "../../session/session";
 import {loadSession} from "../../services/redis.service";
+import {callProcessorApi} from "../../client/apiclient";
+import {createHistoryIfNone, getRequest} from "../../services/session.service";
 
 jest.mock("../../services/redis.service");
+jest.mock("../../client/apiclient");
+jest.mock( "../../services/session.service");
+
 
 const EMAIL: string = "demo@ch.gov.uk";
 const COMPANY_NUMBER: string = "00006400";
 const PAGE_TITLE: string = "Confirmation page";
 const ERROR_PAGE: string = "Sorry, there is a problem with the service";
 
-const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 
-beforeEach(() => {
+const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
+const mockCallProcessorApi = (<unknown>callProcessorApi as jest.Mock<typeof callProcessorApi>);
+const mockGetRequest = (<unknown>getRequest as jest.Mock<typeof getRequest>);
+const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
+
+  beforeEach(() => {
   mockCacheService.mockRestore();
-});
+  mockCallProcessorApi.prototype.constructor.mockImplementationOnce(()=> new Error());
+  mockGetRequest.prototype.constructor.mockImplementation(() => {
+      return {
+        [keys.COMPANY_NUMBER]: "00006400",
+        "extension_request_id": "request1",
+        "reason_in_context_string": "1234",
+    }
+  });
+  mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() =>{
+    return {
+      page_history: [],
+    };
+  });
+
+  });
 
 describe("confirmation controller", () => {
 
@@ -67,6 +90,36 @@ describe("confirmation controller", () => {
     expect(resp.text).not.toContain(PAGE_TITLE);
     expect(resp.text).toContain(ERROR_PAGE);
   });
+
+  it("should set already submitted to true in routine call", async () => {
+    mockCacheService.mockClear();
+    const session: Session = dummySession(COMPANY_NUMBER, EMAIL);
+    mockCacheService.prototype.constructor.mockResolvedValueOnce(session);
+    session.data[keys.ACCESS_TOKEN] = "token";
+    const resp = await request(app)
+      .get(pageURLs.EXTENSIONS_CONFIRMATION)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(session.data.extension_session[keys.ALREADY_SUBMITTED]).toBeTruthy();
+  });
+
+  it("should set already submitted to false if error", async () => {
+    mockCacheService.mockClear();
+    const session: Session = dummySession(COMPANY_NUMBER, EMAIL);
+    mockCacheService.prototype.constructor.mockResolvedValueOnce(session);
+
+    session.data[keys.ACCESS_TOKEN] = "token";
+    session.data.extension_session[keys.ALREADY_SUBMITTED] = false;
+    const resp = await request(app)
+      .get(pageURLs.EXTENSIONS_CONFIRMATION)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(mockCallProcessorApi).toBeCalled();
+    expect(session.data.extension_session[keys.ALREADY_SUBMITTED]).toBeFalsy();
+  });
+
 });
 
 const dummySession = (companyNumber, email) => {
