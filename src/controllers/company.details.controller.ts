@@ -62,12 +62,7 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
         logger.info(`User ${userProfile.id} has an extension request ` +
           `for companyNumber ${companyNumber}`);
       }
-      if (req.chSession.data[keys.SUBMITTED] === undefined) {
-        req.chSession.appendData(keys.SUBMITTED, false);
-      } else {
-        req.chSession.data[keys.SUBMITTED] = false;
-      }
-      await saveSession(req.chSession);
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, false);
       return res.redirect(pageURLs.EXTENSIONS_CHOOSE_REASON);
     } else {
       return next(new Error("User access token is missing from session"));

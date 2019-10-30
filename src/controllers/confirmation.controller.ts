@@ -26,10 +26,9 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   if (!email) {
     return next(createMissingError("User Email"));
   }
-  const isSubmitted: boolean = req.chSession.data[keys.SUBMITTED];
+  const isSubmitted: boolean = req.chSession.data.extension_session[keys.ALREADY_SUBMITTED];
   if (!isSubmitted) {
-    req.chSession.data[keys.SUBMITTED] = true;
-    await saveSession(req.chSession).then(async () => {
+    await sessionService.updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, true).then(async () => {
       const token = req.chSession.accessToken();
       const request = sessionService.getRequest(req.chSession);
       if (token && request) {
