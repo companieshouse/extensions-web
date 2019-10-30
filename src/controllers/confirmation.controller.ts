@@ -28,20 +28,17 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   const isSubmitted: boolean = req.chSession.data.extension_session[keys.ALREADY_SUBMITTED];
   if (!isSubmitted) {
     try {
-      sessionService
-        .updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, true)
-        .then(async () => {
-          const token = req.chSession.accessToken();
-          const request = sessionService.getRequest(req.chSession);
-          if (token && request) {
-              await apiClient.callProcessorApi(companyNum, token, request.extension_request_id);
-              if (activeFeature(process.env.FEATURE_REQUEST_COUNT)) {
-                RequestCountMonitor.updateTodaysRequestNumber(1);
-              } else {
-                logger.info("Feature flag is toggled off for request number counter update");
-              }
-          }
-        });
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, true);
+      const token = req.chSession.accessToken();
+      const request = sessionService.getRequest(req.chSession);
+      if (token && request) {
+        await apiClient.callProcessorApi(companyNum, token, request.extension_request_id);
+        if (activeFeature(process.env.FEATURE_REQUEST_COUNT)) {
+          RequestCountMonitor.updateTodaysRequestNumber(1);
+        } else {
+          logger.info("Feature flag is toggled off for request number counter update");
+        }
+      }
     } catch (e) {
       logger.error("Error processing application " + JSON.stringify(e));
       await sessionService.updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, false);

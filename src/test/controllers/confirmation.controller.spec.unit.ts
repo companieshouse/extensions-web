@@ -28,7 +28,7 @@ const mockUpdateExtensionSessionValue = (<unknown>updateExtensionSessionValue as
 
   beforeEach(() => {
     mockCacheService.mockRestore();
-    mockCallProcessorApi.prototype.constructor.mockImplementationOnce(()=> new Error());
+    mockUpdateExtensionSessionValue.mockClear();
     mockGetRequest.prototype.constructor.mockImplementation(() => {
         return {
           [keys.COMPANY_NUMBER]: "00006400",
@@ -112,13 +112,16 @@ describe("confirmation controller", () => {
     mockCacheService.mockClear();
     const session: Session = dummySessionWithToken(COMPANY_NUMBER, EMAIL);
     mockCacheService.prototype.constructor.mockResolvedValueOnce(session);
+    mockCallProcessorApi.prototype.constructor.mockImplementationOnce(()=> Promise.reject("error"));
     const resp = await request(app)
       .get(pageURLs.EXTENSIONS_CONFIRMATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(mockCallProcessorApi).toBeCalled();
-    expect(session.data.extension_session[keys.ALREADY_SUBMITTED]).toBeFalsy();
+    expect(mockUpdateExtensionSessionValue).toBeCalledTimes(2);
+    expect(mockUpdateExtensionSessionValue).toBeCalledWith(session, keys.ALREADY_SUBMITTED, true);
+    expect(mockUpdateExtensionSessionValue).toBeCalledWith(session, keys.ALREADY_SUBMITTED, false);
   });
 
 });
