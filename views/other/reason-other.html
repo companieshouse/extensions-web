@@ -40,6 +40,21 @@
         {% endif %}
 
         <h1 class="govuk-heading-xl">Provide more information to support your extension</h1>
+
+        {{ govukInput({
+          id: "other-reason",
+          name: "otherReason",
+          value: title,
+          classes: "",
+          attributes: {
+            "data-event-id": "other-reason-input"
+          },
+            label: {
+            text: "Short title for the reason (optional)"
+          }
+        }) }}
+
+
         {{ govukTextarea({
           name: "otherInformation",
           id: "other-information",
