@@ -39,7 +39,8 @@
           {% set inputErrorMessage = false %}
         {% endif %}
 
-        <h1 class="govuk-heading-xl">Provide more information to support your extension</h1>
+        <h1 class="govuk-heading-xl">Provide more information to support your application</h1>
+        <p class="govuk-body-l">Anything you tell us to support your application will be kept confidential.</p>
 
         {{ govukInput({
           id: "other-reason",
@@ -62,7 +63,7 @@
           errorMessage: inputErrorMessage,
           rows: "8",
           label: {
-            text: "Anything you tell us to support your extension will be kept confidential.",
+            text: "Detailed description of the reason",
             isPageHeading: true,
             classes: "govuk-heading-large"
           }
