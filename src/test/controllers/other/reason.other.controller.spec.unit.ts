@@ -93,7 +93,7 @@ describe("reason other validation tests", () => {
     expect(mockUpdateReasonService).not.toHaveBeenCalled();
   });
 
-  it("should receive no error message requesting more information when text input is supplied", async () => {
+  it("should receive no error message requesting more information when text input is supplied and reason not supplied", async () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(() => session);
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REASON_OTHER)
@@ -106,6 +106,7 @@ describe("reason other validation tests", () => {
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toHaveBeenCalledWith(session, {
+      reason: "Not provided",
       reason_information: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     });
   });
@@ -123,7 +124,66 @@ describe("reason other validation tests", () => {
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toHaveBeenCalledWith(session, {
+      reason: "Not provided",
       reason_information: "Lorem ipsum dolor sit amet,  consectetur adipiscing elit."
     });
   });
+
+  it("should receive no error message when reason is empty", async () => {
+    mockCacheService.prototype.constructor.mockImplementationOnce(() => session);
+    const res = await request(app)
+      .post(pageURLs.EXTENSIONS_REASON_OTHER)
+      .set("Accept", "application/json")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({
+        otherReason: "",
+        otherInformation: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      });
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
+    expect(res.status).toEqual(302);
+    expect(res.text).not.toContain(NO_INFORMATION_INPUT);
+    expect(mockUpdateReasonService).toHaveBeenCalledWith(session, {
+      reason: "Not provided",
+      reason_information: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    });
+  });
+
+  it("should receive no error message when reason is blank", async () => {
+    mockCacheService.prototype.constructor.mockImplementationOnce(() => session);
+    const res = await request(app)
+      .post(pageURLs.EXTENSIONS_REASON_OTHER)
+      .set("Accept", "application/json")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({
+        otherReason: "    ",
+        otherInformation: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      });
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
+    expect(res.status).toEqual(302);
+    expect(res.text).not.toContain(NO_INFORMATION_INPUT);
+    expect(mockUpdateReasonService).toHaveBeenCalledWith(session, {
+      reason: "Not provided",
+      reason_information: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    });
+  });
+
+  it("should receive no error message when both the reason and text input are supplied and see the reason in the updte call", async () => {
+    mockCacheService.prototype.constructor.mockImplementationOnce(() => session);
+    const res = await request(app)
+      .post(pageURLs.EXTENSIONS_REASON_OTHER)
+      .set("Accept", "application/json")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({
+        otherReason: "This is a test",
+        otherInformation: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      });
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
+    expect(res.status).toEqual(302);
+    expect(res.text).not.toContain(NO_INFORMATION_INPUT);
+    expect(mockUpdateReasonService).toHaveBeenCalledWith(session, {
+      reason: "This is a test",
+      reason_information: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    });
+  });
+
 });
