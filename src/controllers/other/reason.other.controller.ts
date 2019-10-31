@@ -62,9 +62,16 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     }
   } else {
     const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
+    let reasonInput = req.body.otherReason;
+    if (!reasonInput || reasonInput.trim().length === 0) {
+      reasonInput = "Not provided";
+    }
+
     await reasonService.updateReason(
       req.chSession,
-      {reason_information: removeNonPrintableChars(req.body.otherInformation)});
+      {
+        reason: reasonInput,
+        reason_information: removeNonPrintableChars(req.body.otherInformation)});
 
     if (changingDetails) {
       return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
