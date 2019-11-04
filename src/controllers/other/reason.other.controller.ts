@@ -28,13 +28,16 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
   }
   const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
   let existingInformation;
+  let existingReason;
   if (reason && reason.reason_information) {
     existingInformation = reason.reason_information;
+    existingReason = reason.reason;
   }
 
   if (existingInformation) {
     return res.render(templatePaths.REASON_OTHER, {
       information: existingInformation,
+      reasonTitle: existingReason,
       templateName: templatePaths.REASON_OTHER,
     });
   } else {
