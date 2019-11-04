@@ -58,31 +58,6 @@ describe("choose reason validation tests", () => {
     expect(mockApiClient).not.toBeCalled();
   });
 
-  it("should receive error message instructing user to tell the reason when other is selected with no description", async () => {
-    const res = await superTest(app)
-      .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
-      .set("Accept", "application/json")
-      .set("Cookie", [`${COOKIE_NAME}=123`])
-      .send({extensionReason: "other"});
-    expect(res.status).toEqual(200);
-    expect(res.text).toContain(EXTENSION_OTHER_TEXT_NOT_PROVIDED);
-    expect(mockApiClient).not.toBeCalled();
-  });
-
-  it("should receive error message instructing user to tell the reason when other is selected with blank description", async () => {
-    const res = await superTest(app)
-      .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
-      .set("Accept", "application/json")
-      .set("Cookie", [`${COOKIE_NAME}=123`])
-      .send({
-        extensionReason: "other",
-        otherReason: " "
-      });
-    expect(res.status).toEqual(200);
-    expect(res.text).toContain(EXTENSION_OTHER_TEXT_NOT_PROVIDED);
-    expect(mockApiClient).not.toBeCalled();
-  });
-
   it("should receive no error message when reason is given", async () => {
     mockCacheService.prototype.constructor.mockImplementation(dummySession);
     mockApiClient.prototype.constructor.mockReturnValueOnce({id: "1234"});
@@ -101,7 +76,7 @@ describe("choose reason validation tests", () => {
     expect(mockGetCurrentReason).toHaveBeenCalled();
   });
 
-  it("should receive no error message when reason is other and description is given", async () => {
+  it("should receive no error message when reason is other", async () => {
     mockCacheService.prototype.constructor.mockImplementation(dummySession);
     mockApiClient.prototype.constructor.mockReturnValueOnce({id: "1234"});
     const res = await superTest(app)
@@ -110,14 +85,13 @@ describe("choose reason validation tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         extensionReason: "other",
-        otherReason: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       });
     expect("/" + res.header.location).toEqual(pageURLs.REASON_OTHER);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(EXTENSION_REASON_NOT_SELECTED);
     expect(res.text).not.toContain(EXTENSION_OTHER_TEXT_NOT_PROVIDED);
     expect(mockApiClient).toBeCalledWith("00006400", "ACCESS_TOKEN", "12345", 
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+      "other");
     expect(mockDeleteReason).not.toHaveBeenCalled();
     expect(mockGetCurrentReason).toHaveBeenCalled();
   });
@@ -155,6 +129,6 @@ const dummySession = () => {
         extension_request_id: "12345",
       }]
     }
-  }
+  };
   return session;
-}
+};

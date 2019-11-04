@@ -10,19 +10,8 @@ import { IExtensionRequest } from "session/types";
 import * as reasonService from "../services/reason.service";
 import * as keys from "../session/keys";
 
-let errorType: string = "";
-
 const validators = [
   check("extensionReason").not().isEmpty().withMessage(errorMessages.EXTENSION_REASON_NOT_SELECTED),
-  check("extensionReason").custom((reason, {req}) => {
-    errorType = "";
-    if (reason === "other" &&
-      (!req.body.otherReason || req.body.otherReason.trim().length === 0)) {
-      errorType = "invalid";
-      throw Error(errorMessages.EXTENSION_OTHER_TEXT_NOT_PROVIDED);
-    }
-    return true;
-  }),
 ];
 
 export const render = (req: Request, res: Response, next: NextFunction): void => {
@@ -49,7 +38,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     const errMsg: string = errors.array().map((err: ValidationError) => err.msg).pop() as string;
     if (errMsg) {
       const extReasonErr: GovUkErrorData = createGovUkErrorData(errMsg,
-        "#choose-reason", true, errorType);
+        "#choose-reason", true, "");
       return res.render(templatePaths.CHOOSE_REASON, {
         errorList: [
           extReasonErr,
@@ -84,7 +73,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       await sessionService.updateExtensionSessionValue(req.chSession, keys.ACCOUNTING_ISSUES_CHOSEN, false);
       await sessionService.updateExtensionSessionValue(req.chSession, keys.OTHER_CHOSEN, true);
       return await addReason(req, res, (request) =>
-        request.body.otherReason, templatePaths.REASON_OTHER);
+        request.body.extensionReason, templatePaths.REASON_OTHER);
   }
 };
 

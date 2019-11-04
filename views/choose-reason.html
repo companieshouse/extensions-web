@@ -42,21 +42,6 @@
         {% set extensionReasonErrorMessage = false %}
       {% endif %}
 
-      {% set otherInput %}
-        {{ govukInput({
-          id: "other-reason",
-          name: "otherReason",
-          classes: "",
-          attributes: {
-            "data-event-id": "other-reason-input"
-          },
-          errorMessage: otherReasonError,
-          label: {
-            text: "Short description of the reason"
-          }
-        }) }}
-      {% endset %}
-
       {{ govukRadios({
         idPrefix: "choose-reason",
         name: "extensionReason",
@@ -85,16 +70,13 @@
             text: "Accounting issues",
             checked: isAccountingIssuesChecked,
             attributes: {
-                "data-event-id": "accounting-issues-option"
+              "data-event-id": "accounting-issues-option"
             }
           },
           {
             value: "other",
             text: "I'm applying for another reason",
             checked: isOtherReasonChecked,
-            conditional: {
-              html: otherInput
-            },
             attributes: {
               "data-event-id": "other-option"
             }
