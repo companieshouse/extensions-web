@@ -63,7 +63,7 @@
         {% endif %}
 
         {% if reason.reason === 'illness' %}
-          <h3 class="govuk-heading-m">{{ reasonDisplayNumber }}: Illness</h3>
+          <h2 class="govuk-heading-m">{{ reasonDisplayNumber }}: Illness</h2>
           <dl class="app-check-your-answers app-check-your-answers--long">
             <div class="app-check-your-answers__contents">
               <dt class="app-check-your-answers__question">
@@ -122,8 +122,8 @@
             {% endif %}
           </dl>
         {% else %}
-          <h3 class="govuk-heading-m">{{ reasonDisplayNumber }}:
-            {{ reason.reason }}</h3>
+          <h2 class="govuk-heading-m">{{ reasonDisplayNumber }}:
+            {{ reason.reason }}</h2>
           <dl class="app-check-your-answers app-check-your-answers--long">
             {% if reason.reason_information != null %}
               <div class="app-check-your-answers__contents">
