@@ -64,4 +64,4 @@ dist: lint test clean build package
 
 .PHONY: update_submodules
 update_submodules:
-	test -f ./api-enumerations/.git || git submodule update --init -- api-enumerations
+	test -f ./api-enumerations/constants.yml || git submodule update --init -- api-enumerations
