@@ -1,7 +1,6 @@
 export const ERROR_SUMMARY_TITLE: string = "There is a problem";
 
 export const EXTENSION_REASON_NOT_SELECTED: string = "You must select a reason";
-export const EXTENSION_OTHER_TEXT_NOT_PROVIDED: string = "You must tell us the reason";
 
 export const NO_COMPANY_NUMBER_IN_SESSION: string = "No company number found in session";
 export const COMPANY_NUMBER_NOT_FOUND: string = "Company number not found";
@@ -13,6 +12,7 @@ export const ERROR_404: string = "Page not found:";
 export const ERROR_500: string = "An internal server error has occurred";
 export const REDIS_PROBLEM: string = "There is a problem with redis: ";
 
+export const NO_REASON_INPUT: string = "You must tell us the reason";
 export const NO_INFORMATION_INPUT: string = "You must give us more information";
 
 export const WHO_WAS_ILL_NOT_SELECTED: string = "You must select a person";

@@ -31,14 +31,6 @@
           }) }}
         {% endif %}
 
-        {% if inputError.flag %}
-          {% set inputErrorMessage = {
-            text: inputError.text
-          } %}
-        {% else %}
-          {% set inputErrorMessage = false %}
-        {% endif %}
-
         <h1 class="govuk-heading-xl">Provide more information to support your application</h1>
         <p class="govuk-body-l">Anything you tell us to support your application will be kept confidential.</p>
 
@@ -46,12 +38,13 @@
           id: "other-reason",
           name: "otherReason",
           value: reasonTitle,
+          errorMessage: otherReasonErr,
           classes: "",
           attributes: {
             "data-event-id": "other-reason-input"
           },
             label: {
-            text: "Short title for the reason (optional)"
+            text: "Short title for the reason"
           }
         }) }}
 
@@ -60,7 +53,7 @@
           name: "otherInformation",
           id: "other-information",
           value: information,
-          errorMessage: inputErrorMessage,
+          errorMessage: otherInformationErr,
           rows: "8",
           label: {
             text: "Detailed description of the reason",
