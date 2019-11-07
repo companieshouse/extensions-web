@@ -11,8 +11,18 @@ import * as sessionService from "../../services/session.service";
 import {removeNonPrintableChars} from "../../global/string.formatter";
 import {ReasonWeb} from "../../model/reason/extension.reason.web";
 
+const OTHER_REASON_FIELD: string = "otherReason";
+const OTHER_INFORMATION_FIELD: string = "otherInformation";
+
 const validators = [
-  check("otherInformation").custom((reason, {req}) => {
+  check(OTHER_REASON_FIELD).custom((reason, {req}) => {
+    if (!req.body.otherReason
+      || req.body.otherReason.trim().length === 0) {
+      throw Error(errorMessages.NO_REASON_INPUT);
+    }
+    return true;
+  }),
+  check(OTHER_INFORMATION_FIELD).custom((reason, {req}) => {
     if (!req.body.otherInformation
       || req.body.otherInformation.trim().length === 0) {
       throw Error(errorMessages.NO_INFORMATION_INPUT);
@@ -27,11 +37,11 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
     await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId);
   }
   const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
-  let existingInformation;
   let existingReason;
-  if (reason && reason.reason_information) {
-    existingInformation = reason.reason_information;
+  let existingInformation;
+  if (reason && (reason.reason_information || reason.reason)) {
     existingReason = reason.reason;
+    existingInformation = reason.reason_information;
   }
 
   if (existingInformation) {
@@ -48,39 +58,50 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
 };
 
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+
   const errors = validationResult(req);
+  const errorListData: GovUkErrorData[] = [];
 
   if (!errors.isEmpty()) {
-    const errMsg: string = errors.array().map((err: ValidationError) => err.msg).pop() as string;
-    if (errMsg) {
-      const inputErr: GovUkErrorData = createGovUkErrorData(errMsg,
-        "#otherInformation", true, "");
-      return res.render(templatePaths.REASON_OTHER, {
-        errorList: [
-          inputErr,
-        ],
-        inputError: inputErr,
-        templateName: templatePaths.REASON_OTHER,
+    let otherReasonErrorData: GovUkErrorData | undefined;
+    let otherInformationErrorData: GovUkErrorData | undefined;
+
+    // Get the first error only for each field
+    errors.array({ onlyFirstError: true })
+      .forEach((valErr: ValidationError) => {
+        const govUkErrorData: GovUkErrorData = createGovUkErrorData(
+          valErr.msg, "#" + valErr.param, true, "");
+        switch ((valErr.param)) {
+          case OTHER_REASON_FIELD:
+            otherReasonErrorData = govUkErrorData;
+            break;
+          case OTHER_INFORMATION_FIELD:
+            otherInformationErrorData = govUkErrorData;
+            break;
+        }
+
+        errorListData.push(govUkErrorData);
       });
-    }
+
+    return res.render(templatePaths.REASON_OTHER, {
+      errorList: errorListData,
+      otherInformationErr: otherInformationErrorData,
+      otherReasonErr: otherReasonErrorData,
+      templateName: templatePaths.REASON_OTHER,
+    });
+  }
+
+  const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
+  const reasonInput = req.body.otherReason;
+  await reasonService.updateReason(
+    req.chSession,
+    {
+      reason: removeNonPrintableChars(reasonInput),
+      reason_information: removeNonPrintableChars(req.body.otherInformation)});
+  if (changingDetails) {
+    return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
   } else {
-    const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
-    let reasonInput = req.body.otherReason;
-    if (!reasonInput || reasonInput.trim().length === 0) {
-      reasonInput = "Not provided";
-    }
-
-    await reasonService.updateReason(
-      req.chSession,
-      {
-        reason: reasonInput,
-        reason_information: removeNonPrintableChars(req.body.otherInformation)});
-
-    if (changingDetails) {
-      return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
-    } else {
-      return res.redirect(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
-    }
+    return res.redirect(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
   }
 };
 

@@ -31,6 +31,14 @@
           }) }}
         {% endif %}
 
+        {% if reasonError.flag %}
+          {% set reasonErrorMessage = {
+            text: reasonError.text
+          } %}
+        {% else %}
+          {% set reasonErrorMessage = false %}
+        {% endif %}
+
         {% if inputError.flag %}
           {% set inputErrorMessage = {
             text: inputError.text
@@ -46,12 +54,13 @@
           id: "other-reason",
           name: "otherReason",
           value: reasonTitle,
+          errorMessage: otherReasonErr,
           classes: "",
           attributes: {
             "data-event-id": "other-reason-input"
           },
             label: {
-            text: "Short title for the reason (optional)"
+            text: "Short title for the reason"
           }
         }) }}
 
@@ -60,7 +69,7 @@
           name: "otherInformation",
           id: "other-information",
           value: information,
-          errorMessage: inputErrorMessage,
+          errorMessage: otherInformationErr,
           rows: "8",
           label: {
             text: "Detailed description of the reason",
