@@ -191,6 +191,9 @@
               {{ reason.reason | capitalize }}
             </dd>
             <dd class="app-check-your-answers__change">
+              <a id="change-other-reason-{{loop.index}}" href="/extensions/other/reason-other?reasonId={{ reason.id }}"
+                 data-event-id="change-other-reason-button">Change<span class="govuk-visually-hidden"> reason information</span>
+              </a>
             </dd>
           </div>
           {% if reason.reason_information != null %}

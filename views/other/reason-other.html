@@ -35,9 +35,9 @@
         <p class="govuk-body-l">Anything you tell us to support your application will be kept confidential.</p>
 
         {{ govukInput({
-          id: "other-reason",
+          id: "otherReason",
           name: "otherReason",
-          value: reasonTitle,
+          value: otherReason,
           errorMessage: otherReasonErr,
           classes: "",
           attributes: {
@@ -50,9 +50,9 @@
 
 
         {{ govukTextarea({
+          id: "otherInformation",
           name: "otherInformation",
-          id: "other-information",
-          value: information,
+          value: otherInformation,
           errorMessage: otherInformationErr,
           rows: "8",
           label: {
