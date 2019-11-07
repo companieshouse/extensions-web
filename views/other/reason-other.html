@@ -31,22 +31,6 @@
           }) }}
         {% endif %}
 
-        {% if reasonError.flag %}
-          {% set reasonErrorMessage = {
-            text: reasonError.text
-          } %}
-        {% else %}
-          {% set reasonErrorMessage = false %}
-        {% endif %}
-
-        {% if inputError.flag %}
-          {% set inputErrorMessage = {
-            text: inputError.text
-          } %}
-        {% else %}
-          {% set inputErrorMessage = false %}
-        {% endif %}
-
         <h1 class="govuk-heading-xl">Provide more information to support your application</h1>
         <p class="govuk-body-l">Anything you tell us to support your application will be kept confidential.</p>
 

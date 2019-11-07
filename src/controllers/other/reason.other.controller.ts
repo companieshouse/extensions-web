@@ -97,7 +97,8 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     req.chSession,
     {
       reason: removeNonPrintableChars(reasonInput),
-      reason_information: removeNonPrintableChars(req.body.otherInformation)});
+      reason_information: removeNonPrintableChars(req.body.otherInformation)
+    });
   if (changingDetails) {
     return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
   } else {
