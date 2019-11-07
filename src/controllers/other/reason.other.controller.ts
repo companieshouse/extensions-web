@@ -46,8 +46,8 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
 
   if (existingInformation) {
     return res.render(templatePaths.REASON_OTHER, {
-      information: existingInformation,
-      reasonTitle: existingReason,
+      otherInformation: existingInformation,
+      otherReason: existingReason,
       templateName: templatePaths.REASON_OTHER,
     });
   } else {
@@ -61,6 +61,9 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   const errors = validationResult(req);
   const errorListData: GovUkErrorData[] = [];
+
+  const otherReasonInput: string = req.body[OTHER_REASON_FIELD];
+  const otherInformationInput: string = req.body[OTHER_INFORMATION_FIELD];
 
   if (!errors.isEmpty()) {
     let otherReasonErrorData: GovUkErrorData | undefined;
@@ -85,7 +88,9 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
     return res.render(templatePaths.REASON_OTHER, {
       errorList: errorListData,
+      otherInformation: otherInformationInput,
       otherInformationErr: otherInformationErrorData,
+      otherReason: otherReasonInput,
       otherReasonErr: otherReasonErrorData,
       templateName: templatePaths.REASON_OTHER,
     });
