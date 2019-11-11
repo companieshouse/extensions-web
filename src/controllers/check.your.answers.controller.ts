@@ -44,7 +44,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 };
 
 export const submit = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  res.redirect(EXTENSIONS_CONFIRMATION);
+   res.redirect(EXTENSIONS_CONFIRMATION);
 };
 
 const formatReasonDates = (reasons: ReasonWeb[]): ReasonWeb[] => {

@@ -14,7 +14,7 @@ const createMissingError = (item: string): Error => {
 };
 
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const companyNum: string = sessionService.getCompanyInContext(req.chSession);
+  const companyNum: string = await sessionService.getCompanyInContext(req.chSession);
   if (!companyNum) {
     return next(createMissingError("Company Number"));
   }
@@ -25,20 +25,27 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   if (!email) {
     return next(createMissingError("User Email"));
   }
-  const token = req.chSession.accessToken();
-  const request = sessionService.getRequest(req.chSession);
-  if (token && request) {
+  const isSubmitted: boolean = req.chSession.data.extension_session[keys.ALREADY_SUBMITTED];
+  if (!isSubmitted) {
     try {
-      await apiClient.callProcessorApi(companyNum, token, request.extension_request_id);
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, true);
+      const token = req.chSession.accessToken();
+      const request = sessionService.getRequest(req.chSession);
+      if (token && request) {
+        await apiClient.callProcessorApi(companyNum, token, request.extension_request_id);
+        if (activeFeature(process.env.FEATURE_REQUEST_COUNT)) {
+          RequestCountMonitor.updateTodaysRequestNumber(1);
+        } else {
+          logger.info("Feature flag is toggled off for request number counter update");
+        }
+      }
     } catch (e) {
       logger.error("Error processing application " + JSON.stringify(e));
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, false);
       return next(e);
     }
-    if (activeFeature(process.env.FEATURE_REQUEST_COUNT)) {
-      RequestCountMonitor.updateTodaysRequestNumber(1);
-    } else {
-      logger.info("Feature flag is toggled off for request number counter update");
-    }
+  } else {
+    logger.error("Form already submitted, not processing again");
   }
   return res.render(templatePaths.CONFIRMATION,
     {

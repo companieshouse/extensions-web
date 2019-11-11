@@ -5,6 +5,8 @@ import * as sessionService from "../services/session.service";
 import * as errorMessages from "../model/error.messages";
 import * as templatePaths from "../model/template.paths";
 import * as pageURLs from "../model/page.urls";
+import * as keys from "../session/keys";
+import {saveSession} from "../services/redis.service";
 
 export const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
@@ -60,6 +62,7 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
         logger.info(`User ${userProfile.id} has an extension request ` +
           `for companyNumber ${companyNumber}`);
       }
+      await sessionService.updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, false);
       return res.redirect(pageURLs.EXTENSIONS_CHOOSE_REASON);
     } else {
       return next(new Error("User access token is missing from session"));

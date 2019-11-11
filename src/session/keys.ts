@@ -35,3 +35,4 @@ export const ADD_ANOTHER_REASON_NO: string = "add_another_reason_no";
 export const ILLNESS_CHOSEN: string = "illness_chosen";
 export const ACCOUNTING_ISSUES_CHOSEN: string = "accounting_issues_chosen";
 export const OTHER_CHOSEN: string = "other_chosen";
+export const ALREADY_SUBMITTED: string = "already_submitted";
