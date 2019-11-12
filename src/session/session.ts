@@ -6,6 +6,18 @@ import {IMap, IUserProfile, IExtensionSession} from "./types";
 
 export default class Session {
 
+  get cookieId(): string {
+    return this._cookieId;
+  }
+
+  set data(data: IMap<any>) {
+    this._data = data;
+  }
+
+  get data(): IMap<any> {
+    return this._data;
+  }
+
   /**
    * Static factory to create a new session instance using the default store
    * (redis).
@@ -27,6 +39,19 @@ export default class Session {
    */
   public static newWithCookieId(cookieId: string): Session {
     return new Session(cookieId);
+  }
+
+  private static generateSignature(sessionKey: string): string {
+    const hash = crypto.createHash("sha1");
+    const data = hash.update(sessionKey + COOKIE_SECRET);
+    const buff = data.digest();
+    const sig = buff.toString("base64");
+    return sig.substr(0, sig.indexOf("="));
+  }
+
+  private static generateSessionKey(): string {
+    const bytes = crypto.randomBytes(21);
+    return bytes.toString("base64");
   }
 
   private _cookieId: string;
@@ -82,36 +107,11 @@ export default class Session {
     this.data[key] = value;
   }
 
-  get cookieId(): string {
-    return this._cookieId;
-  }
-
-  set data(data: IMap<any>) {
-    this._data = data;
-  }
-
-  get data(): IMap<any> {
-    return this._data;
-  }
-
   /**
    * Generates a new cookie id.
    */
   private generateNewCookieId() {
-    const key = this.generateSessionKey();
-    this._cookieId = key + this.generateSignature(key);
-  }
-
-  private generateSignature(sessionKey: string): string {
-    const hash = crypto.createHash("sha1");
-    const data = hash.update(sessionKey + COOKIE_SECRET);
-    const buff = data.digest();
-    const sig = buff.toString("base64");
-    return sig.substr(0, sig.indexOf("="));
-  }
-
-  private generateSessionKey(): string {
-    const bytes = crypto.randomBytes(21);
-    return bytes.toString("base64");
+    const key = Session.generateSessionKey();
+    this._cookieId = key + Session.generateSignature(key);
   }
 }

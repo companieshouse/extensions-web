@@ -32,7 +32,7 @@ const addAttachmentAxiosResponse: AxiosResponse<any> = {
 
 describe("apiclient add attachment unit tests", () => {
   it("should run add extension attachment with correct url values", async () => {
-    var data = fs.readFileSync(path.join(__dirname + "/files/text.txt"));
+    const data = fs.readFileSync(path.join(__dirname + "/files/text.txt"));
     expect(data).not.toBeUndefined();
     
     const result = await addAttachmentToReason("SC100079", "", "abc123", "xyz789", data, "testFile");

@@ -16,7 +16,7 @@ const recordLandingOnCheckDetailsPage = async (req: Request): Promise<void> => {
 };
 
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  recordLandingOnCheckDetailsPage(req);
+  await recordLandingOnCheckDetailsPage(req);
   const companyNumber: string = req.chSession.extensionSession().company_in_context;
   if (companyNumber) {
     try {

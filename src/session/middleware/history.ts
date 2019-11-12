@@ -21,11 +21,11 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       let restart: boolean = false;
       if (referringPageURL.endsWith("extensions")) {
         restart = true;
-        updateNavigationBackFlag(req.chSession, false);
+        await updateNavigationBackFlag(req.chSession, false);
       }
-      updatePageHistory(referringPageURL, req.chSession, req.baseUrl, restart);
+      await updatePageHistory(referringPageURL, req.chSession, req.baseUrl, restart);
     } else {
-      updateNavigationBackFlag(req.chSession, false);
+      await updateNavigationBackFlag(req.chSession, false);
     }
   }
   next();
@@ -59,8 +59,8 @@ const historyAlreadyContainsUrl = (pageHistory: PageHistory, referringPageURL: s
     return false;
 };
 
-const referringPageIsCurrentPage = (referringPageURL: string, currrentUrl: string): boolean => {
-   return referringPageURL === currrentUrl;
+const referringPageIsCurrentPage = (referringPageURL: string, currentUrl: string): boolean => {
+   return referringPageURL === currentUrl;
 };
 
 const containsProhibitedUrls = (prohibited: string[], url: string): boolean => {

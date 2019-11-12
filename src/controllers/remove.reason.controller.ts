@@ -56,7 +56,8 @@ const getPageRender = async (companyNumber: string, req: Request) => {
  * can ensure that the post request will pick up the correct reason for deleting.
  * This until a specific reason has a generated id in the api that can be easily tracked in
  * the web
- * @param req - express Request
+ * @param reasons
+ * @param reasonId
  */
 const filterReasonToRemove = async (reasons: apiClient.ListReasonResponse, reasonId: string) => {
   return reasons.items

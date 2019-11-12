@@ -31,10 +31,10 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
 };
 
-const historyPageIsCurrentPage = (historyStackURL: string, currrentUrl: string): boolean => {
-  currrentUrl = currrentUrl.substring(currrentUrl.indexOf("/extensions"));
-  currrentUrl = currrentUrl.replace(".html", "");
-  return historyStackURL === currrentUrl;
+const historyPageIsCurrentPage = (historyStackURL: string, currentUrl: string): boolean => {
+  currentUrl = currentUrl.substring(currentUrl.indexOf("/extensions"));
+  currentUrl = currentUrl.replace(".html", "");
+  return historyStackURL === currentUrl;
 };
 
 export default [route];

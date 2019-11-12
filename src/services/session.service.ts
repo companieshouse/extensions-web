@@ -28,8 +28,8 @@ const setReasonInContextAsString = async (chSession: Session, reasonInContext: s
 };
 
 /**
- * looks in the cache to see if a request for the company in context is stored.
- * @param companyNumber
+ * looks in the session to see if a request for the company in context is stored.
+ * @param chSession
  */
 const hasExtensionRequest = async (chSession: Session):
     Promise<boolean> => {
@@ -72,6 +72,7 @@ const addRequest = async (chSession: Session, requestId: string):
  * journey adding a request for company number 1, then they start a new journey
  * for a second company. The first journey will have company 1 in context and
  * so on.
+ * @param chSession
  * @param companyNumber
  */
 const changeCompanyInContext = async (chSession: Session, companyNumber: string):

@@ -22,8 +22,8 @@ describe("Session tests", () => {
 
     const session: Session = Session.newInstance();
 
-    var timeLimitStr = process.env.DEFAULT_SESSION_EXPIRATION || "1";
-    var timeLimit = parseInt(timeLimitStr);
+    const timeLimitStr = process.env.DEFAULT_SESSION_EXPIRATION || "1";
+    const timeLimit = parseInt(timeLimitStr);
     expect(session.data["expires"]).toEqual(1e7 + timeLimit);
     expect(session.data["last_access"]).toEqual(1e7);
   });
