@@ -7,7 +7,7 @@ export default class RequestCountMonitor {
     const present = new Date(Date.now());
     if (!RequestCountMonitor.isSameDay(present)) {
       logger.info("Lasted updated:  " + RequestCountMonitor.lastRequestNumberUpdate +
-        " restting number for today");
+        " resetting number for today");
       RequestCountMonitor.resetNumRequestsForToday();
     } else {
       logger.info("Augmenting the number of requests");
