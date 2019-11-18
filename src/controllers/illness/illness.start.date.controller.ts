@@ -36,19 +36,21 @@ const extractFullDate = async (req: Request, res: Response, next: NextFunction):
 };
 
 const validators = [
-  check(ILLNESS_START_DAY_FIELD).escape().not().isEmpty().withMessage(errorMessages.DAY_MISSING),
-  check(ILLNESS_START_MONTH_FIELD).escape().not().isEmpty().withMessage(errorMessages.MONTH_MISSING),
-  check(ILLNESS_START_YEAR_FIELD).escape().not().isEmpty().withMessage(errorMessages.YEAR_MISSING),
+  check(ILLNESS_START_DAY_FIELD).escape().not().isEmpty().withMessage("day"),
+  check(ILLNESS_START_MONTH_FIELD).escape().not().isEmpty().withMessage("month"),
+  check(ILLNESS_START_YEAR_FIELD).escape().not().isEmpty().withMessage("year"),
 
   // Check date is a valid date and not in the future
   check(ILLNESS_START_FULL_DATE_FIELD).escape().custom((fullDate, {req}) => {
     if (allDateFieldsPresent(req)) {
       if (!moment(fullDate, "YYYY-MM-DD", true).isValid()) {
-        throw Error(errorMessages.ILLNESS_START_DATE_INVALID);
+        throw Error(errorMessages.DATE_INVALID);
       }
       if (moment().isBefore(fullDate)) {
         throw Error(errorMessages.ILLNESS_START_DATE_FUTURE);
       }
+    } else if (fullDate === "00-00-00") {
+      throw Error(errorMessages.DATE_MISSING);
     }
     return true;
   }),
@@ -91,30 +93,44 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   const year: string = req.body[ILLNESS_START_YEAR_FIELD];
 
   if (!errors.isEmpty()) {
+    let dateErrorMessage: string = errorMessages.BASE_DATE_ERROR_MESSAGE;
+    let href: string = "";
+    let isFirstError: boolean = true;
+
     // Get the first error only for each field
     errors.array({ onlyFirstError: true })
       .forEach((valErr: ValidationError) => {
-
-        const href: string = (valErr.param === ILLNESS_START_FULL_DATE_FIELD) ? ILLNESS_START_DAY_FIELD : valErr.param;
-        const govUkErrorData: GovUkErrorData = createGovUkErrorData(valErr.msg, "#" + href, true, "");
+        if (!href) {
+          href = valErr.param;
+        }
         switch ((valErr.param)) {
           case ILLNESS_START_DAY_FIELD:
+            dateErrorMessage = updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            isFirstError = false;
             startDateDayErrorFlag = true;
             break;
           case ILLNESS_START_MONTH_FIELD:
+            dateErrorMessage = updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            isFirstError = false;
             startDateMonthErrorFlag = true;
             break;
           case ILLNESS_START_YEAR_FIELD:
+            dateErrorMessage = updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            isFirstError = false;
             startDateYearErrorFlag = true;
             break;
           case ILLNESS_START_FULL_DATE_FIELD:
+            dateErrorMessage = valErr.msg;
             startDateDayErrorFlag = true;
             startDateMonthErrorFlag = true;
             startDateYearErrorFlag = true;
         }
 
-        errorListData.push(govUkErrorData);
       });
+
+    const govUkErrorData: GovUkErrorData = createGovUkErrorData(
+      dateErrorMessage, "#" + href, true, "");
+    errorListData.push(govUkErrorData);
 
     return res.render(templatePaths.ILLNESS_START_DATE, {
       errorList: errorListData,
@@ -137,4 +153,14 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
 };
 
-export default [extractFullDate, ...validators, route];
+const updateDateErrorMessage = (errorMessage: string, dataToAppend: string, isFirstError: boolean): string => {
+  let updatedErrorMessage: string = errorMessage;
+  if (!isFirstError) {
+    updatedErrorMessage += " and a " + dataToAppend;
+  } else {
+    updatedErrorMessage += dataToAppend;
+  }
+  return updatedErrorMessage;
+};
+
+export default  [extractFullDate, ...validators, route];
