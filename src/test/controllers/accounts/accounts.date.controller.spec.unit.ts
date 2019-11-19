@@ -17,9 +17,13 @@ const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>)
 const mockUpdateReason = (<unknown>updateReason as jest.Mock<typeof updateReason>);
 const mockGetCurrentReason = (<unknown>reasonService.getCurrentReason as jest.Mock<typeof reasonService.getCurrentReason>);
 
-const DAY_MISSING: string = "You must enter a day";
-const MONTH_MISSING: string = "You must enter a month";
-const YEAR_MISSING: string = "You must enter a year";
+const FULL_DATE_MISSING: string = "Enter a date";
+const DAY_MISSING: string = "Enter a day";
+const DAY_AND_MONTH_MISSING = "Enter a day and a month";
+const DAY_AND_YEAR_MISSING = "Enter a day and a year";
+const MONTH_MISSING: string = "Enter a month";
+const MONTH_AND_YEAR_MISSING: string = "Enter a month and a year";
+const YEAR_MISSING: string = "Enter a year";
 const DATE_INVALID: string = "Enter a real date";
 const DATE_FUTURE: string = "Date must be today or in the past";
 const DATE_TITLE: string = "When did the accounting issue happen?";
@@ -105,15 +109,17 @@ describe("accounting issue date url tests", () => {
 
 describe("accounts date validation tests", () => {
 
-  it("should show 3 errors if accounting issue date day, month and year are missing", async () => {
+  it("should show 1 error if accounting issue date day, month and year are missing", async () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
-      .set("Cookie", [`${COOKIE_NAME}=123`]);
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({"accounts-date-day": "", "accounts-date-month": "", "accounts-date-year": ""});
     expect(res.status).toEqual(200);
-    expect(res.text).toContain(DAY_MISSING);
-    expect(res.text).toContain(MONTH_MISSING);
-    expect(res.text).toContain(YEAR_MISSING);
+    expect(res.text).toContain(FULL_DATE_MISSING);
+    expect(res.text).not.toContain(DAY_MISSING);
+    expect(res.text).not.toContain(MONTH_MISSING);
+    expect(res.text).not.toContain(YEAR_MISSING);
     expect(mockUpdateReason).not.toHaveBeenCalled();
   });
 
@@ -127,6 +133,33 @@ describe("accounts date validation tests", () => {
     expect(res.text).toContain(DAY_MISSING);
     expect(res.text).not.toContain(MONTH_MISSING);
     expect(res.text).not.toContain(YEAR_MISSING);
+    expect(mockUpdateReason).not.toHaveBeenCalled();
+  });
+
+  it("should show error if accounting issue date day and month is missing", async () => {
+    const res = await request(app)
+      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .set("Accept", "application/json")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({"accounts-date-day": "", "accounts-date-month": "", "accounts-date-year": "2016"});
+    expect(res.status).toEqual(200);
+    expect(res.text).toContain(DAY_AND_MONTH_MISSING);
+    expect(res.text).not.toContain(MONTH_MISSING);
+    expect(res.text).not.toContain(YEAR_MISSING);
+    expect(mockUpdateReason).not.toHaveBeenCalled();
+  });
+
+  it("should show error if accounting issue date day and year is missing", async () => {
+    const res = await request(app)
+      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .set("Accept", "application/json")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({"accounts-date-day": "", "accounts-date-month": "02", "accounts-date-year": ""});
+    expect(res.status).toEqual(200);
+    expect(res.text).toContain(DAY_AND_YEAR_MISSING);
+    expect(res.text).not.toContain(MONTH_MISSING);
+    expect(res.text).not.toContain(YEAR_MISSING);
+    expect(mockUpdateReason).not.toHaveBeenCalled();
   });
 
   it("should show error if accounting issue date month is missing", async () => {
@@ -138,6 +171,19 @@ describe("accounts date validation tests", () => {
     expect(res.status).toEqual(200);
     expect(res.text).not.toContain(DAY_MISSING);
     expect(res.text).toContain(MONTH_MISSING);
+    expect(res.text).not.toContain(YEAR_MISSING);
+    expect(mockUpdateReason).not.toHaveBeenCalled();
+  });
+
+  it("should show error if accounting issue date month and year is missing", async () => {
+    const res = await request(app)
+      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .set("Accept", "application/json")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({"accounts-date-day": "11", "accounts-date-month": "", "accounts-date-year": ""});
+    expect(res.status).toEqual(200);
+    expect(res.text).toContain(MONTH_AND_YEAR_MISSING);
+    expect(res.text).not.toContain(DAY_MISSING);
     expect(res.text).not.toContain(YEAR_MISSING);
     expect(mockUpdateReason).not.toHaveBeenCalled();
   });

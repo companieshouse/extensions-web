@@ -16,10 +16,14 @@ jest.mock("../../../services/reason.service");
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockGetCurrentReason = (<unknown>reasonService.getCurrentReason as jest.Mock<typeof reasonService.getCurrentReason>);
 
-const ILLNESS_END_DAY_MISSING: string = "You must enter a day";
-const ILLNESS_END_MONTH_MISSING: string = "You must enter a month";
-const ILLNESS_END_YEAR_MISSING: string = "You must enter a year";
-const ILLNESS_END_DATE_INVALID: string = "Enter a real end date";
+const FULL_DATE_MISSING: string = "Enter a date";
+const DAY_MISSING: string = "Enter a day";
+const DAY_AND_MONTH_MISSING = "Enter a day and a month";
+const DAY_AND_YEAR_MISSING = "Enter a day and a year";
+const MONTH_MISSING: string = "Enter a month";
+const MONTH_AND_YEAR_MISSING: string = "Enter a month and a year";
+const YEAR_MISSING: string = "Enter a year";
+const DATE_INVALID: string = "Enter a real date";
 const ILLNESS_END_DATE_FUTURE: string = "End date must be today or in the past";
 const ILLNESS_END_BEFORE_START_DATE: string = "End date must not precede start date";
 
@@ -67,16 +71,18 @@ describe("illness end date url tests", () => {
 
 describe("illness end date validation tests", () => {
 
-  it("should show 3 errors if end date day, month and year are missing", async () => {
+  it("should show 1 error if end date day, month and year are missing", async () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
-      .set("Cookie", [`${COOKIE_NAME}=123`]);
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({"illness-end-day": "", "illness-end-month": "", "illness-end-year": ""});
     expect(res.status).toEqual(200);
-    expect(res.text).toContain(ILLNESS_END_DAY_MISSING);
-    expect(res.text).toContain(ILLNESS_END_MONTH_MISSING);
-    expect(res.text).toContain(ILLNESS_END_YEAR_MISSING);
+    expect(res.text).toContain(FULL_DATE_MISSING);
+    expect(res.text).not.toContain(DAY_MISSING);
+    expect(res.text).not.toContain(MONTH_MISSING);
+    expect(res.text).not.toContain(YEAR_MISSING);
   });
 
   it("should show error if end date day is missing", async () => {
@@ -87,9 +93,37 @@ describe("illness end date validation tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "", "illness-end-month": "02", "illness-end-year": "2016"});
     expect(res.status).toEqual(200);
-    expect(res.text).toContain(ILLNESS_END_DAY_MISSING);
-    expect(res.text).not.toContain(ILLNESS_END_MONTH_MISSING);
-    expect(res.text).not.toContain(ILLNESS_END_YEAR_MISSING);
+    expect(res.text).toContain(DAY_MISSING);
+    expect(res.text).not.toContain(MONTH_MISSING);
+    expect(res.text).not.toContain(YEAR_MISSING);
+    expect(mockGetCurrentReason).toBeCalledTimes(1);
+  });
+
+  it("should show error if end date day and month is missing", async () => {
+    mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
+    const res = await request(app)
+      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .set("Accept", "application/json")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({"illness-end-day": "", "illness-end-month": "", "illness-end-year": "2016"});
+    expect(res.status).toEqual(200);
+    expect(res.text).toContain(DAY_AND_MONTH_MISSING);
+    expect(res.text).not.toContain(MONTH_MISSING);
+    expect(res.text).not.toContain(YEAR_MISSING);
+    expect(mockGetCurrentReason).toBeCalledTimes(1);
+  });
+
+  it("should show error if end date day and year is missing", async () => {
+    mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
+    const res = await request(app)
+      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .set("Accept", "application/json")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({"illness-end-day": "", "illness-end-month": "10", "illness-end-year": ""});
+    expect(res.status).toEqual(200);
+    expect(res.text).toContain(DAY_AND_YEAR_MISSING);
+    expect(res.text).not.toContain(MONTH_MISSING);
+    expect(res.text).not.toContain(YEAR_MISSING);
     expect(mockGetCurrentReason).toBeCalledTimes(1);
   });
 
@@ -101,9 +135,23 @@ describe("illness end date validation tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "11", "illness-end-month": "", "illness-end-year": "2016"});
     expect(res.status).toEqual(200);
-    expect(res.text).not.toContain(ILLNESS_END_DAY_MISSING);
-    expect(res.text).toContain(ILLNESS_END_MONTH_MISSING);
-    expect(res.text).not.toContain(ILLNESS_END_YEAR_MISSING);
+    expect(res.text).not.toContain(DAY_MISSING);
+    expect(res.text).toContain(MONTH_MISSING);
+    expect(res.text).not.toContain(YEAR_MISSING);
+    expect(mockGetCurrentReason).toBeCalledTimes(1);
+  });
+
+  it("should show error if end date month and year is missing", async () => {
+    mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
+    const res = await request(app)
+      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .set("Accept", "application/json")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({"illness-end-day": "11", "illness-end-month": "", "illness-end-year": ""});
+    expect(res.status).toEqual(200);
+    expect(res.text).toContain(MONTH_AND_YEAR_MISSING);
+    expect(res.text).not.toContain(DAY_MISSING);
+    expect(res.text).not.toContain(YEAR_MISSING);
     expect(mockGetCurrentReason).toBeCalledTimes(1);
   });
 
@@ -115,9 +163,9 @@ describe("illness end date validation tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "11", "illness-end-month": "11", "illness-end-year": ""});
     expect(res.status).toEqual(200);
-    expect(res.text).not.toContain(ILLNESS_END_DAY_MISSING);
-    expect(res.text).not.toContain(ILLNESS_END_MONTH_MISSING);
-    expect(res.text).toContain(ILLNESS_END_YEAR_MISSING);
+    expect(res.text).not.toContain(DAY_MISSING);
+    expect(res.text).not.toContain(MONTH_MISSING);
+    expect(res.text).toContain(YEAR_MISSING);
     expect(mockGetCurrentReason).toBeCalledTimes(1);
   });
 
@@ -129,7 +177,7 @@ describe("illness end date validation tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "32", "illness-end-month": "11", "illness-end-year": "2018"});
     expect(res.status).toEqual(200);
-    expect(res.text).toContain(ILLNESS_END_DATE_INVALID);
+    expect(res.text).toContain(DATE_INVALID);
     expect(mockGetCurrentReason).toBeCalledTimes(1);
   });
 
@@ -141,7 +189,7 @@ describe("illness end date validation tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "29", "illness-end-month": "02", "illness-end-year": "2015"});
     expect(res.status).toEqual(200);
-    expect(res.text).toContain(ILLNESS_END_DATE_INVALID);
+    expect(res.text).toContain(DATE_INVALID);
     expect(mockGetCurrentReason).toBeCalledTimes(1);
   });
 
@@ -154,7 +202,7 @@ describe("illness end date validation tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "29", "illness-end-month": "02", "illness-end-year": "2016"});
     expect(res.status).toEqual(302);
-    expect(res.text).not.toContain(ILLNESS_END_DATE_INVALID);
+    expect(res.text).not.toContain(DATE_INVALID);
     expect(res.header.location).toEqual(pageUrls.EXTENSIONS_ILLNESS_INFORMATION);
     expect(mockGetCurrentReason).toBeCalledTimes(1);
   });
@@ -167,7 +215,7 @@ describe("illness end date validation tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "aa", "illness-end-month": "bb", "illness-end-year": "cc"});
     expect(res.status).toEqual(200);
-    expect(res.text).toContain(ILLNESS_END_DATE_INVALID);
+    expect(res.text).toContain(DATE_INVALID);
     expect(mockGetCurrentReason).toBeCalledTimes(1);
   });
 

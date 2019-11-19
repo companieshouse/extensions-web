@@ -18,17 +18,14 @@ export const NO_INFORMATION_INPUT: string = "You must give us more information";
 export const WHO_WAS_ILL_NOT_SELECTED: string = "You must select a person";
 export const WHO_WAS_ILL_OTHER_NOT_SELECTED: string = "You must tell us the person";
 
-export const DAY_MISSING: string = "You must enter a day";
-export const MONTH_MISSING: string = "You must enter a month";
-export const YEAR_MISSING: string = "You must enter a year";
+export const BASE_DATE_ERROR_MESSAGE: string = "Enter a";
 
+export const DATE_MISSING: string = "Enter a date";
 export const DATE_INVALID: string = "Enter a real date";
 export const DATE_FUTURE: string = "Date must be today or in the past";
 
-export const ILLNESS_START_DATE_INVALID: string = "Enter a real start date";
 export const ILLNESS_START_DATE_FUTURE: string = "Start date must be today or in the past";
 
-export const ILLNESS_END_DATE_INVALID: string = "Enter a real end date";
 export const ILLNESS_END_DATE_FUTURE: string = "End date must be today or in the past";
 export const ILLNESS_END_BEFORE_START_DATE: string = "End date must not precede start date";
 

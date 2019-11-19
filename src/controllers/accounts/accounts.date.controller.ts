@@ -1,11 +1,11 @@
 import {NextFunction, Request, Response} from "express";
 import {check, validationResult} from "express-validator/check";
 import * as moment from "moment";
-import * as ErrorMessages from "../../model/error.messages";
+import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
-import * as TemplatePaths from "../../model/template.paths";
 import {ValidationError} from "../../model/validation.error";
 import {EXTENSIONS_ACCOUNTS_INFORMATION} from "../../model/page.urls";
+import * as dateValidationUtils from "../../global/date.validation.utils";
 import * as keys from "../../session/keys";
 import * as pageURLs from "../../model/page.urls";
 import * as reasonService from "../../services/reason.service";
@@ -37,19 +37,21 @@ const extractFullDate = async (req: Request, res: Response, next: NextFunction):
 };
 
 const validators = [
-  check(ACCOUNTING_ISSUE_DAY_FIELD).escape().not().isEmpty().withMessage(ErrorMessages.DAY_MISSING),
-  check(ACCOUNTING_ISSUE_MONTH_FIELD).escape().not().isEmpty().withMessage(ErrorMessages.MONTH_MISSING),
-  check(ACCOUNTING_ISSUE_YEAR_FIELD).escape().not().isEmpty().withMessage(ErrorMessages.YEAR_MISSING),
+  check(ACCOUNTING_ISSUE_DAY_FIELD).escape().not().isEmpty().withMessage("day"),
+  check(ACCOUNTING_ISSUE_MONTH_FIELD).escape().not().isEmpty().withMessage("month"),
+  check(ACCOUNTING_ISSUE_YEAR_FIELD).escape().not().isEmpty().withMessage("year"),
 
-  // Check date is a valid date and not in the future
+  // Check date is present, valid and not in the future
   check(ACCOUNTING_ISSUE_FULL_DATE_FIELD).escape().custom((fullDate, {req}) => {
     if (allDateFieldsPresent(req)) {
       if (!moment(fullDate, "YYYY-MM-DD", true).isValid()) {
-        throw Error(ErrorMessages.DATE_INVALID);
+        throw Error(errorMessages.DATE_INVALID);
       }
       if (moment().isBefore(fullDate)) {
-        throw Error(ErrorMessages.DATE_FUTURE);
+        throw Error(errorMessages.DATE_FUTURE);
       }
+    } else if (fullDate === "00-00-00") {
+        throw Error(errorMessages.DATE_MISSING);
     }
     return true;
   }),
@@ -80,7 +82,6 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
 };
 
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-
   const errors = validationResult(req);
 
   const errorListData: GovUkErrorData[] = [];
@@ -93,34 +94,46 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   const year: string = req.body[ACCOUNTING_ISSUE_YEAR_FIELD];
 
   if (!errors.isEmpty()) {
+    let dateErrorMessage: string = errorMessages.BASE_DATE_ERROR_MESSAGE;
+    let href: string = "";
+    let isFirstError: boolean = true;
+
     // Get the first error only for each field
     errors.array({ onlyFirstError: true })
       .forEach((valErr: ValidationError) => {
-
-        const href: string = (
-          valErr.param === ACCOUNTING_ISSUE_FULL_DATE_FIELD) ? ACCOUNTING_ISSUE_DAY_FIELD : valErr.param;
-        const govUkErrorData: GovUkErrorData = createGovUkErrorData(
-          valErr.msg, "#" + href, true, "");
+        if (!href) {
+          href = valErr.param;
+        }
         switch ((valErr.param)) {
           case ACCOUNTING_ISSUE_DAY_FIELD:
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            isFirstError = false;
             dateDayErrorFlag = true;
             break;
           case ACCOUNTING_ISSUE_MONTH_FIELD:
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            isFirstError = false;
             dateMonthErrorFlag = true;
             break;
           case ACCOUNTING_ISSUE_YEAR_FIELD:
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            isFirstError = false;
             dateYearErrorFlag = true;
             break;
           case ACCOUNTING_ISSUE_FULL_DATE_FIELD:
+            dateErrorMessage = valErr.msg;
             dateDayErrorFlag = true;
             dateMonthErrorFlag = true;
             dateYearErrorFlag = true;
         }
 
-        errorListData.push(govUkErrorData);
       });
 
-    return res.render(TemplatePaths.REASON_ACCOUNTING_ISSUE, {
+    const govUkErrorData: GovUkErrorData = createGovUkErrorData(
+      dateErrorMessage, "#" + href, true, "");
+    errorListData.push(govUkErrorData);
+
+    return res.render(templatePaths.REASON_ACCOUNTING_ISSUE, {
       accountsDay: day,
       accountsMonth: month,
       accountsYear: year,

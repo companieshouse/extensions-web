@@ -1,14 +1,15 @@
 import {NextFunction, Request, Response} from "express";
 import {check, validationResult} from "express-validator/check";
 import * as moment from "moment";
-import * as ErrorMessages from "../../model/error.messages";
+import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
 import {ValidationError} from "../../model/validation.error";
-import * as templatePaths from "../../model/template.paths";
-import * as pageURLs from "../../model/page.urls";
+import * as dateValidationUtils from "../../global/date.validation.utils";
 import * as keys from "../../session/keys";
-import * as sessionService from "../../services/session.service";
+import * as pageURLs from "../../model/page.urls";
 import * as reasonService from "../../services/reason.service";
+import * as sessionService from "../../services/session.service";
+import * as templatePaths from "../../model/template.paths";
 import { ReasonWeb } from "model/reason/extension.reason.web";
 import {formatDateForDisplay, formatDateForReason} from "../../client/date.formatter";
 
@@ -35,24 +36,25 @@ const extractFullDate = async (req: Request, res: Response, next: NextFunction):
 };
 
 const validators = [
-  check(ILLNESS_END_DAY_FIELD).escape().not().isEmpty().withMessage(ErrorMessages.DAY_MISSING),
-  check(ILLNESS_END_MONTH_FIELD).escape().not().isEmpty().withMessage(ErrorMessages.MONTH_MISSING),
-  check(ILLNESS_END_YEAR_FIELD).escape().not().isEmpty().withMessage(ErrorMessages.YEAR_MISSING),
+  check(ILLNESS_END_DAY_FIELD).escape().not().isEmpty().withMessage("day"),
+  check(ILLNESS_END_MONTH_FIELD).escape().not().isEmpty().withMessage("month"),
+  check(ILLNESS_END_YEAR_FIELD).escape().not().isEmpty().withMessage("year"),
 
   check(ILLNESS_END_FULL_DATE_FIELD).escape().custom(async (fullDate, {req}) => {
     if (allDateFieldsPresent(req)) {
       if (!moment(fullDate, "YYYY-MM-DD", true).isValid()) {
-        throw Error(ErrorMessages.ILLNESS_END_DATE_INVALID);
+        throw Error(errorMessages.DATE_INVALID);
       }
-
       if (moment().isBefore(fullDate)) {
-        throw Error(ErrorMessages.ILLNESS_END_DATE_FUTURE);
+        throw Error(errorMessages.ILLNESS_END_DATE_FUTURE);
       }
       const reason = await getCurrentExtensionReason(req);
       const illnessStartDate: string = reason.start_on;
       if (moment(illnessStartDate, "YYYY-MM-DD", true).isAfter(fullDate)) {
-        throw Error(ErrorMessages.ILLNESS_END_BEFORE_START_DATE);
+        throw Error(errorMessages.ILLNESS_END_BEFORE_START_DATE);
       }
+    } else if (fullDate === "00-00-00") {
+      throw Error(errorMessages.DATE_MISSING);
     }
     return true;
   }),
@@ -99,31 +101,46 @@ export const processForm = [extractFullDate, ...validators,
   const year: string = req.body[ILLNESS_END_YEAR_FIELD];
 
   if (!errors.isEmpty()) {
+    let dateErrorMessage: string = errorMessages.BASE_DATE_ERROR_MESSAGE;
+    let href: string = "";
+    let isFirstError: boolean = true;
+
     const reasonErr = await getCurrentExtensionReason(req);
     const illnessStartDate: string = reasonErr.start_on;
+
     errors.array({ onlyFirstError: true })
       .forEach((valErr: ValidationError) => {
-
-        const href: string = (valErr.param === ILLNESS_END_FULL_DATE_FIELD) ? ILLNESS_END_DAY_FIELD : valErr.param;
-        const govUkErrorData: GovUkErrorData = createGovUkErrorData(valErr.msg, "#" + href, true, "");
+        if (!href) {
+          href = valErr.param;
+        }
         switch ((valErr.param)) {
           case ILLNESS_END_DAY_FIELD:
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            isFirstError = false;
             endDateDayErrorFlag = true;
             break;
           case ILLNESS_END_MONTH_FIELD:
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            isFirstError = false;
             endDateMonthErrorFlag = true;
             break;
           case ILLNESS_END_YEAR_FIELD:
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            isFirstError = false;
             endDateYearErrorFlag = true;
             break;
           case ILLNESS_END_FULL_DATE_FIELD:
+            dateErrorMessage = valErr.msg;
             endDateDayErrorFlag = true;
             endDateMonthErrorFlag = true;
             endDateYearErrorFlag = true;
         }
 
-        errorListData.push(govUkErrorData);
       });
+
+    const govUkErrorData: GovUkErrorData = createGovUkErrorData(
+      dateErrorMessage, "#" + href, true, "");
+    errorListData.push(govUkErrorData);
 
     return res.render(templatePaths.ILLNESS_END_DATE, {
       errorList: errorListData,
@@ -139,7 +156,6 @@ export const processForm = [extractFullDate, ...validators,
   }
 
   await reasonService.updateReason(req.chSession, {end_on: formatDateForReason(day, month, year)});
-
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
   if (changingDetails) {
     return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);

@@ -48,21 +48,24 @@
           }
         }) }}
 
-
         {{ govukTextarea({
           id: "otherInformation",
           name: "otherInformation",
           value: otherInformation,
           errorMessage: otherInformationErr,
           rows: "8",
+          attributes: {
+          "data-event-id": "other-reason-information-input"
+          },
           label: {
             text: "Detailed description of the reason",
             isPageHeading: true,
             classes: "govuk-heading-large"
           }
         }) }}
+
         {{ govukButton({
-           text: "Continue",
+          text: "Continue",
           attributes: {
             "data-event-id": "continue-button",
             id: "submit"
