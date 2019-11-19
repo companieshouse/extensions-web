@@ -6,6 +6,7 @@ import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data
 import * as templatePaths from "../../model/template.paths";
 import {ValidationError} from "../../model/validation.error";
 import {EXTENSIONS_CONTINUED_ILLNESS} from "../../model/page.urls";
+import * as dateValidationUtils from "../../global/date.validation.utils";
 import * as keys from "../../session/keys";
 import * as pageURLs from "../../model/page.urls";
 import * as reasonService from "../../services/reason.service";
@@ -105,17 +106,17 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
         }
         switch ((valErr.param)) {
           case ILLNESS_START_DAY_FIELD:
-            dateErrorMessage = updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;
             startDateDayErrorFlag = true;
             break;
           case ILLNESS_START_MONTH_FIELD:
-            dateErrorMessage = updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;
             startDateMonthErrorFlag = true;
             break;
           case ILLNESS_START_YEAR_FIELD:
-            dateErrorMessage = updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;
             startDateYearErrorFlag = true;
             break;
@@ -151,16 +152,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   } else {
     return res.redirect(EXTENSIONS_CONTINUED_ILLNESS);
   }
-};
-
-const updateDateErrorMessage = (errorMessage: string, dataToAppend: string, isFirstError: boolean): string => {
-  let updatedErrorMessage: string = errorMessage;
-  if (!isFirstError) {
-    updatedErrorMessage += " and a " + dataToAppend;
-  } else {
-    updatedErrorMessage += dataToAppend;
-  }
-  return updatedErrorMessage;
 };
 
 export default  [extractFullDate, ...validators, route];

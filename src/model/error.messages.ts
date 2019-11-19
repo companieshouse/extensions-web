@@ -18,7 +18,7 @@ export const NO_INFORMATION_INPUT: string = "You must give us more information";
 export const WHO_WAS_ILL_NOT_SELECTED: string = "You must select a person";
 export const WHO_WAS_ILL_OTHER_NOT_SELECTED: string = "You must tell us the person";
 
-export const BASE_DATE_ERROR_MESSAGE: string = "Enter a ";
+export const BASE_DATE_ERROR_MESSAGE: string = "Enter a";
 
 export const DATE_MISSING: string = "Enter a date";
 export const DATE_INVALID: string = "Enter a real date";

@@ -5,6 +5,7 @@ import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
 import {ValidationError} from "../../model/validation.error";
 import {EXTENSIONS_ACCOUNTS_INFORMATION} from "../../model/page.urls";
+import * as dateValidationUtils from "../../global/date.validation.utils";
 import * as keys from "../../session/keys";
 import * as pageURLs from "../../model/page.urls";
 import * as reasonService from "../../services/reason.service";
@@ -105,17 +106,17 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
         }
         switch ((valErr.param)) {
           case ACCOUNTING_ISSUE_DAY_FIELD:
-            dateErrorMessage = updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;
             dateDayErrorFlag = true;
             break;
           case ACCOUNTING_ISSUE_MONTH_FIELD:
-            dateErrorMessage = updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;
             dateMonthErrorFlag = true;
             break;
           case ACCOUNTING_ISSUE_YEAR_FIELD:
-            dateErrorMessage = updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;
             dateYearErrorFlag = true;
             break;
@@ -151,16 +152,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   } else {
     return res.redirect(EXTENSIONS_ACCOUNTS_INFORMATION);
   }
-};
-
-const updateDateErrorMessage = (errorMessage: string, dataToAppend: string, isFirstError: boolean): string => {
-  let updatedErrorMessage: string = errorMessage;
-  if (!isFirstError) {
-    updatedErrorMessage += " and a " + dataToAppend;
-  } else {
-    updatedErrorMessage += dataToAppend;
-  }
-  return updatedErrorMessage;
 };
 
 export default [extractFullDate, ...validators, route];

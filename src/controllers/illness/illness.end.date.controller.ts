@@ -4,11 +4,12 @@ import * as moment from "moment";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
 import {ValidationError} from "../../model/validation.error";
-import * as templatePaths from "../../model/template.paths";
-import * as pageURLs from "../../model/page.urls";
+import * as dateValidationUtils from "../../global/date.validation.utils";
 import * as keys from "../../session/keys";
-import * as sessionService from "../../services/session.service";
+import * as pageURLs from "../../model/page.urls";
 import * as reasonService from "../../services/reason.service";
+import * as sessionService from "../../services/session.service";
+import * as templatePaths from "../../model/template.paths";
 import { ReasonWeb } from "model/reason/extension.reason.web";
 import {formatDateForDisplay, formatDateForReason} from "../../client/date.formatter";
 
@@ -114,17 +115,17 @@ export const processForm = [extractFullDate, ...validators,
         }
         switch ((valErr.param)) {
           case ILLNESS_END_DAY_FIELD:
-            dateErrorMessage = updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;
             endDateDayErrorFlag = true;
             break;
           case ILLNESS_END_MONTH_FIELD:
-            dateErrorMessage = updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;
             endDateMonthErrorFlag = true;
             break;
           case ILLNESS_END_YEAR_FIELD:
-            dateErrorMessage = updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
+            dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;
             endDateYearErrorFlag = true;
             break;
@@ -162,16 +163,6 @@ export const processForm = [extractFullDate, ...validators,
     return res.redirect(pageURLs.EXTENSIONS_ILLNESS_INFORMATION);
   }
 }];
-
-const updateDateErrorMessage = (errorMessage: string, dataToAppend: string, isFirstError: boolean): string => {
-  let updatedErrorMessage: string = errorMessage;
-  if (!isFirstError) {
-    updatedErrorMessage += " and a " + dataToAppend;
-  } else {
-    updatedErrorMessage += dataToAppend;
-  }
-  return updatedErrorMessage;
-};
 
 const getCurrentExtensionReason = async (req: Request): Promise<ReasonWeb> => {
   return await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
