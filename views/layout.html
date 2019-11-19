@@ -7,6 +7,7 @@
 {% from "govuk/components/details/macro.njk"       import govukDetails %}
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/footer/macro.njk"        import govukFooter %}
 {% from "govuk/components/header/macro.njk"        import govukHeader %}
 {% from "govuk/components/input/macro.njk"         import govukInput %}
 {% from "govuk/components/panel/macro.njk"         import govukPanel %}
@@ -62,6 +63,31 @@
   }) }}
   {% block backLink %}
   {% endblock %}
+{% endblock %}
+
+{% block footer %}
+  {{ govukFooter({
+    meta: {
+      items: [
+        {
+          href: "http://resources.companieshouse.gov.uk/legal/termsAndConditions.shtml",
+          text: "Policies"
+        },
+        {
+          href: "/help/cookies",
+          text: "Cookies"
+        },
+        {
+          href: "/help/contact-us",
+          text: "Contact us"
+        },
+        {
+          href: "https://developer.companieshouse.gov.uk/",
+          text: "Developers"
+        }
+      ]
+    }
+  }) }}
 {% endblock %}
 
 {% block bodyEnd %}
