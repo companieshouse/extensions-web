@@ -66,31 +66,31 @@
 {% endblock %}
 
 {% block footer %}
-{{ govukFooter({
-  meta: {
-    items: [
-      {
-        href: "http://resources.companieshouse.gov.uk/legal/termsAndConditions.shtml",
-        text: "Policies"
-      },
-      {
-        href: "/help/cookies",
-        text: "Cookies"
-      },
-      {
-        href: "/help/contact-us",
-        text: "Contact us"
-      },
-      {
-        href: "https://developer.companieshouse.gov.uk/",
-        text: "Developers"
-      }
-    ]
-  }
-}) }}
+  {{ govukFooter({
+    meta: {
+      items: [
+        {
+          href: "http://resources.companieshouse.gov.uk/legal/termsAndConditions.shtml",
+          text: "Policies"
+        },
+        {
+          href: "/help/cookies",
+          text: "Cookies"
+        },
+        {
+          href: "/help/contact-us",
+          text: "Contact us"
+        },
+        {
+          href: "https://developer.companieshouse.gov.uk/",
+          text: "Developers"
+        }
+      ]
+    }
+  }) }}
 {% endblock %}
 
-  {% block bodyEnd %}
+{% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
   <script src="{{CDN_URL}}/javascripts/app/extensions/all.js"></script>
   <script src="{{CDN_URL}}/javascripts/app/extensions/application.js"></script>
