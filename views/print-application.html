@@ -129,8 +129,7 @@ Print a copy of your application
           {% endfor %}
         </dl>
       {% else %}
-        <h3 class="govuk-heading-m">{{ loop.index }}:
-          {{ reason.reason }}</h3>
+        <h3 class="govuk-heading-m">{{ reason.reason }}</h3>
         <dl class="app-check-your-answers app-check-your-answers--long">
           {% if reason.reason_information != null %}
             <div class="app-check-your-answers__contents">

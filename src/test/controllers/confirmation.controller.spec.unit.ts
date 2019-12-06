@@ -106,7 +106,7 @@ describe("confirmation controller", () => {
     expect(resp.text).toContain(AUTH_CODE_JOURNEY_TEXT)
   });
 
-  it("should render the confirmation page with missing auth code text if that is a reason", async () => {
+  it("should render the confirmation page without missing auth code text", async () => {
     mockCacheService.mockClear();
     mockCacheService.prototype.constructor.mockResolvedValueOnce(dummySessionWithToken(COMPANY_NUMBER, EMAIL));
     mockGetReasons.prototype.constructor.mockImplementationOnce(() => {
