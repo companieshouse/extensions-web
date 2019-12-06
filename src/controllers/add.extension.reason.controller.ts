@@ -50,6 +50,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
         await sessionService.updateExtensionSessionValue(req.chSession, keys.ADD_ANOTHER_REASON_YES, true);
         await sessionService.updateExtensionSessionValue(req.chSession, keys.ADD_ANOTHER_REASON_NO, false);
         await sessionService.updateExtensionSessionValue(req.chSession, keys.ILLNESS_CHOSEN, false);
+        await sessionService.updateExtensionSessionValue(req.chSession, keys.MISSING_AUTHENTICATION_CODE_CHOSEN, false);
         await sessionService.updateExtensionSessionValue(req.chSession, keys.ACCOUNTING_ISSUES_CHOSEN, false);
         await sessionService.updateExtensionSessionValue(req.chSession, keys.OTHER_CHOSEN, false);
         await sessionService.updateExtensionSessionValue(req.chSession, keys.UPLOAD_DOCUMENTS_YES, false);

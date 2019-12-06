@@ -10,15 +10,13 @@ import {ValidationError} from "../model/validation.error";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
 import * as templatePaths from "../model/template.paths";
 import * as reasonService from "../services/reason.service";
-import {ReasonWeb} from "../model/reason/extension.reason.web";
-import {ExtensionFullRequest} from "../client/apiclient";
 
 const validators = [
   check("removeDocument").not().isEmpty().withMessage(errorMessages.REMOVE_DOCUMENT_DECISION_NOT_MADE),
 ];
 
 export const render = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const reason = await getReasonFromFullRequest(req);
+  const reason = await reasonService.getReasonFromFullRequest(req);
   if (reason) {
     const attachment = reason.attachments.filter((attachmentItem) => attachmentItem.id === req.query.documentID).pop();
     if (attachment) {
@@ -29,16 +27,6 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
   } else {
     return res.render(templatePaths.REMOVE_DOCUMENT);
   }
-};
-
-const getReasonFromFullRequest = async (req: Request): Promise<ReasonWeb | undefined> => {
-  const reasonInContext: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
-  const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
-  const token: string = req.chSession.accessToken() as string;
-  const request: IExtensionRequest = sessionService.getRequest(req.chSession);
-  const fullRequest: ExtensionFullRequest =
-    await apiClient.getFullRequest(companyNumber, token, request.extension_request_id);
-  return fullRequest.reasons.filter((reasonItem) =>  reasonItem.id === reasonInContext.id).pop();
 };
 
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {

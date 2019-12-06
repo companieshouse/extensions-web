@@ -123,6 +123,17 @@
             </dd>
           </div>
         </dl>
+      {% elif reason.reason === "missing company authentication code" %}
+        <dl class="app-check-your-answers app-check-your-answers--long">
+          <div class="app-check-your-answers__contents">
+            <dt class="app-check-your-answers__question">
+              Reason for extension
+            </dt>
+            <dd class="app-check-your-answers__answer">
+                {{ reason.reason | capitalize }}
+            </dd>
+          </div>
+        </dl>
       {% elif reason.reason === "accounting issues" %}
         <dl class="app-check-your-answers app-check-your-answers--long">
           <div class="app-check-your-answers__contents">

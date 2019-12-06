@@ -58,7 +58,7 @@ describe("choose reason validation tests", () => {
     expect(mockApiClient).not.toBeCalled();
   });
 
-  it("should receive no error message when reason is given", async () => {
+  it("should receive no error message when reason is illness", async () => {
     mockCacheService.prototype.constructor.mockImplementation(dummySession);
     mockApiClient.prototype.constructor.mockReturnValueOnce({id: "1234"});
     mockGetCurrentReason.prototype.constructor.mockReturnValueOnce({reason_status: "COMPLETED"});
@@ -70,8 +70,45 @@ describe("choose reason validation tests", () => {
     expect("/" + res.header.location).toEqual(pageURLs.REASON_ILLNESS);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(EXTENSION_REASON_NOT_SELECTED);
-    expect(res.text).not.toContain(EXTENSION_OTHER_TEXT_NOT_PROVIDED);
     expect(mockApiClient).toBeCalledWith("00006400", "ACCESS_TOKEN", "12345", "illness");
+    expect(mockDeleteReason).not.toHaveBeenCalled();
+    expect(mockGetCurrentReason).toHaveBeenCalled();
+  });
+
+  it("should receive no error message when reason is missing company authentication code", async () => {
+    mockCacheService.prototype.constructor.mockImplementation(dummySession);
+    mockApiClient.prototype.constructor.mockReturnValueOnce({id: "1234"});
+    const res = await superTest(app)
+      .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
+      .set("Accept", "application/json")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({
+        extensionReason: "missing company authentication code",
+      });
+    expect("/" + res.header.location).toEqual(pageURLs.ADD_EXTENSION_REASON);
+    expect(res.status).toEqual(302);
+    expect(res.text).not.toContain(EXTENSION_REASON_NOT_SELECTED);
+    expect(mockApiClient).toBeCalledWith("00006400", "ACCESS_TOKEN", "12345",
+      "missing company authentication code");
+    expect(mockDeleteReason).not.toHaveBeenCalled();
+    expect(mockGetCurrentReason).toHaveBeenCalled();
+  });
+
+  it("should receive no error message when reason is accounting issues", async () => {
+    mockCacheService.prototype.constructor.mockImplementation(dummySession);
+    mockApiClient.prototype.constructor.mockReturnValueOnce({id: "1234"});
+    const res = await superTest(app)
+      .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
+      .set("Accept", "application/json")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({
+        extensionReason: "accounting issues",
+      });
+    expect("/" + res.header.location).toEqual(pageURLs.REASON_ACCOUNTING_ISSUE);
+    expect(res.status).toEqual(302);
+    expect(res.text).not.toContain(EXTENSION_REASON_NOT_SELECTED);
+    expect(mockApiClient).toBeCalledWith("00006400", "ACCESS_TOKEN", "12345",
+      "accounting issues");
     expect(mockDeleteReason).not.toHaveBeenCalled();
     expect(mockGetCurrentReason).toHaveBeenCalled();
   });
@@ -89,8 +126,7 @@ describe("choose reason validation tests", () => {
     expect("/" + res.header.location).toEqual(pageURLs.REASON_OTHER);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(EXTENSION_REASON_NOT_SELECTED);
-    expect(res.text).not.toContain(EXTENSION_OTHER_TEXT_NOT_PROVIDED);
-    expect(mockApiClient).toBeCalledWith("00006400", "ACCESS_TOKEN", "12345", 
+    expect(mockApiClient).toBeCalledWith("00006400", "ACCESS_TOKEN", "12345",
       "other");
     expect(mockDeleteReason).not.toHaveBeenCalled();
     expect(mockGetCurrentReason).toHaveBeenCalled();

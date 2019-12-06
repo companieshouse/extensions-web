@@ -5,7 +5,7 @@ import {COOKIE_NAME} from "../../session/config";
 import * as keys from "../../session/keys";
 import Session from "../../session/session";
 import {loadSession} from "../../services/redis.service";
-import {callProcessorApi} from "../../client/apiclient";
+import {callProcessorApi, getReasons} from "../../client/apiclient";
 import {createHistoryIfNone, getRequest, getCompanyInContext, updateExtensionSessionValue} from "../../services/session.service";
 
 jest.mock("../../services/redis.service");
@@ -16,12 +16,14 @@ jest.mock( "../../services/session.service");
 const EMAIL: string = "demo@ch.gov.uk";
 const COMPANY_NUMBER: string = "00006400";
 const PAGE_TITLE: string = "Confirmation page";
+const AUTH_CODE_JOURNEY_TEXT: string = "You should receive your Authentication Code within 5 working days.";
 const ERROR_PAGE: string = "Sorry, there is a problem with the service";
 
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockCallProcessorApi = (<unknown>callProcessorApi as jest.Mock<typeof callProcessorApi>);
 const mockGetRequest = (<unknown>getRequest as jest.Mock<typeof getRequest>);
+const mockGetReasons = (<unknown>getReasons as jest.Mock<typeof getReasons>);
 const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
 const mockGetCompanyInContext = (<unknown>getCompanyInContext as jest.Mock<typeof getCompanyInContext>);
 const mockUpdateExtensionSessionValue = (<unknown>updateExtensionSessionValue as jest.Mock<typeof updateExtensionSessionValue>);
@@ -41,7 +43,7 @@ const mockUpdateExtensionSessionValue = (<unknown>updateExtensionSessionValue as
         page_history: [],
       };
     });
-    mockGetCompanyInContext.prototype.constructor.mockImplementation(() => "00006400")
+    mockGetCompanyInContext.prototype.constructor.mockImplementation(() => "00006400");
     mockUpdateExtensionSessionValue.prototype.constructor.mockImplementationOnce(() => Promise.resolve());
 
   });
@@ -61,6 +63,83 @@ describe("confirmation controller", () => {
     expect(resp.text).toContain(EMAIL);
     expect(resp.text).toContain(COMPANY_NUMBER);
     expect(resp.text).toContain(PAGE_TITLE);
+    expect(resp.text).not.toContain(AUTH_CODE_JOURNEY_TEXT)
+  });
+
+  it("should render the confirmation page with missing auth code text if that is a reason", async () => {
+    mockCacheService.mockClear();
+    mockCacheService.prototype.constructor.mockResolvedValueOnce(dummySessionWithToken(COMPANY_NUMBER, EMAIL));
+    mockGetReasons.prototype.constructor.mockImplementationOnce(() => {
+      return {
+        items: [{
+          "id":"1234",
+          "reason":"illness",
+          "attachments":null,
+          "start_on":"1999-05-06",
+          "end_on":"1999-07-08",
+          "affected_person":"bob",
+          "reason_information":"stuff",
+          "continued_illness":"maybe"
+        },
+          {
+            "id":"1234",
+            "reason":"missing company authentication code",
+            "attachments":null,
+            "start_on":"1999-05-06",
+            "end_on":"1999-07-08",
+            "affected_person":"bob",
+            "reason_information":"stuff",
+            "continued_illness":"maybe"
+          }]
+      }
+    });
+
+    const resp = await request(app)
+      .get(pageURLs.EXTENSIONS_CONFIRMATION)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toContain(EMAIL);
+    expect(resp.text).toContain(COMPANY_NUMBER);
+    expect(resp.text).toContain(PAGE_TITLE);
+    expect(resp.text).toContain(AUTH_CODE_JOURNEY_TEXT)
+  });
+
+  it("should render the confirmation page without missing auth code text", async () => {
+    mockCacheService.mockClear();
+    mockCacheService.prototype.constructor.mockResolvedValueOnce(dummySessionWithToken(COMPANY_NUMBER, EMAIL));
+    mockGetReasons.prototype.constructor.mockImplementationOnce(() => {
+      return {
+        items: [{
+          "id":"1234",
+          "reason":"illness",
+          "attachments":null,
+          "start_on":"1999-05-06",
+          "end_on":"1999-07-08",
+          "affected_person":"bob",
+          "reason_information":"stuff",
+          "continued_illness":"maybe"
+        },
+        {
+          "id":"1234",
+          "reason":"other",
+          "attachments":null,
+          "reason_information":"stuff"
+        }]
+      }
+    });
+
+    const resp = await request(app)
+      .get(pageURLs.EXTENSIONS_CONFIRMATION)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toContain(EMAIL);
+    expect(resp.text).toContain(COMPANY_NUMBER);
+    expect(resp.text).toContain(PAGE_TITLE);
+    expect(resp.text).not.toContain(AUTH_CODE_JOURNEY_TEXT)
   });
 
   it("should return the error page if email is missing from session", async () => {
