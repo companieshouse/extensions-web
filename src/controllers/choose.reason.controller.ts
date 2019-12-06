@@ -9,6 +9,8 @@ import * as apiClient from "../client/apiclient";
 import { IExtensionRequest } from "session/types";
 import * as reasonService from "../services/reason.service";
 import * as keys from "../session/keys";
+import activeFeature from "../feature.flag";
+import {FEATURE_MISSING_AUTHENTICATION_CODE} from "../session/config";
 
 const validators = [
   check("extensionReason").not().isEmpty().withMessage(errorMessages.EXTENSION_REASON_NOT_SELECTED),
@@ -17,15 +19,23 @@ const validators = [
 export const render = (req: Request, res: Response, next: NextFunction): void => {
   let accountingIssuesChecked: boolean = false;
   let illnessChecked: boolean = false;
+  let missingAuthenticationCodeChecked: boolean = false;
   let otherChecked: boolean = false;
   if (!(req.chSession.data[keys.EXTENSION_SESSION] === undefined)) {
     accountingIssuesChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.ACCOUNTING_ISSUES_CHOSEN];
+    if (activeFeature(FEATURE_MISSING_AUTHENTICATION_CODE)) {
+      missingAuthenticationCodeChecked = req.chSession.data
+        [keys.EXTENSION_SESSION]
+        [keys.MISSING_AUTHENTICATION_CODE_CHOSEN];
+    }
     illnessChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.ILLNESS_CHOSEN];
     otherChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.OTHER_CHOSEN];
   }
   return res.render(templatePaths.CHOOSE_REASON, {
     isAccountingIssuesChecked: accountingIssuesChecked,
+    isFeatureFlagAuthCodeEnabled: activeFeature(FEATURE_MISSING_AUTHENTICATION_CODE),
     isIllnessChecked: illnessChecked,
+    isMissingAuthCodeChecked: missingAuthenticationCodeChecked,
     isOtherReasonChecked: otherChecked,
     templateName: templatePaths.CHOOSE_REASON,
   });
@@ -57,24 +67,38 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   switch (req.body.extensionReason) {
     case "illness":
-      await sessionService.updateExtensionSessionValue(req.chSession, keys.ILLNESS_CHOSEN, true);
-      await sessionService.updateExtensionSessionValue(req.chSession, keys.ACCOUNTING_ISSUES_CHOSEN, false);
-      await sessionService.updateExtensionSessionValue(req.chSession, keys.OTHER_CHOSEN, false);
+      await updateChosenReasonKeys(req, true, false, false, false);
       return await addReason(req, res, (request) =>
         request.body.extensionReason, templatePaths.REASON_ILLNESS);
+    case "missing company authentication code":
+      await updateChosenReasonKeys(req, false, false, true, false);
+      return await addReason(req, res, (request) =>
+        request.body.extensionReason, templatePaths.ADD_EXTENSION_REASON);
     case "accounting issues":
-      await sessionService.updateExtensionSessionValue(req.chSession, keys.ILLNESS_CHOSEN, false);
-      await sessionService.updateExtensionSessionValue(req.chSession, keys.ACCOUNTING_ISSUES_CHOSEN, true);
-      await sessionService.updateExtensionSessionValue(req.chSession, keys.OTHER_CHOSEN, false);
+      await updateChosenReasonKeys(req, false, true, false, false);
       return await addReason(req, res, (request) =>
         request.body.extensionReason, templatePaths.REASON_ACCOUNTING_ISSUE);
     case "other":
-      await sessionService.updateExtensionSessionValue(req.chSession, keys.ILLNESS_CHOSEN, false);
-      await sessionService.updateExtensionSessionValue(req.chSession, keys.ACCOUNTING_ISSUES_CHOSEN, false);
-      await sessionService.updateExtensionSessionValue(req.chSession, keys.OTHER_CHOSEN, true);
+      await updateChosenReasonKeys(req, false, false, false, true);
       return await addReason(req, res, (request) =>
         request.body.extensionReason, templatePaths.REASON_OTHER);
   }
+};
+
+const updateChosenReasonKeys = async (
+  req: Request,
+  illnessChosen: boolean,
+  accountingIssuesChosen: boolean,
+  missingAuthCodeChosen: boolean,
+  otherChosen: boolean): Promise<void> => {
+  await sessionService.updateExtensionSessionValue(
+    req.chSession, keys.ILLNESS_CHOSEN, illnessChosen);
+  await sessionService.updateExtensionSessionValue(
+    req.chSession, keys.ACCOUNTING_ISSUES_CHOSEN, accountingIssuesChosen);
+  await sessionService.updateExtensionSessionValue(
+    req.chSession, keys.MISSING_AUTHENTICATION_CODE_CHOSEN, missingAuthCodeChosen);
+  await sessionService.updateExtensionSessionValue(
+    req.chSession, keys.OTHER_CHOSEN, otherChosen);
 };
 
 const addReason = async (req: Request, res: Response, reasonBody, redirectPath: string): Promise<void> => {

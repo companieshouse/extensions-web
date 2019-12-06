@@ -31,100 +31,131 @@ Print a copy of your application
     <h2 class="govuk-heading-l">Extension reason</h2>
     {% endif %}
     {% for reason in extensionReasons %}
-    {% if extensionReasons.length > 1 %}
-    {% set extensionListIndex %}
-    {{loop.index}}:
-    {% endset %}
-    {% else %}
-    {% set extensionListIndex = '' %}
-    {% endif %}
     <div class="reason-container">
+      {% if extensionReasons.length > 1 %}
+        <h3 class="govuk-heading-m">Reason {{ loop.index }}</h3>
+      {% endif %}
       {% if reason.reason === 'illness' %}
-      <h3 class="govuk-heading-m">{{extensionListIndex}}Illness</h3>
+        <h3 class="govuk-heading-m">{{extensionListIndex}}Illness</h3>
+          <dl class="app-check-your-answers app-check-your-answers--long">
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Who was ill?
+              </dt>
+              <dd class="app-check-your-answers__answer">
+                {{ reason.affected_person | capitalize }}
+              </dd>
+            </div>
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Illness start date
+              </dt>
+              <dd class="app-check-your-answers__answer">
+                {{ reason.start_on }}
+              </dd>
+            </div>
+            {% if reason.continued_illness === 'yes' %}
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Continuing illness?
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.continued_illness | capitalize }}
+                </dd>
+              </div>
+            {% else %}
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                 Illness end date
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.end_on }}
+                </dd>
+              </div>
+            {% endif %}
+            {% if reason.reason_information != null %}
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Further information
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  {{ reason.reason_information }}
+                </dd>
+              </div>
+            {% endif %}
+            {% for attachment in reason.attachments %}
+              <div class="app-check-your-answers__contents">
+                <dt class="app-check-your-answers__question">
+                  Supporting documents
+                </dt>
+                <dd class="app-check-your-answers__answer">
+                  <a href='' class='govuk-link'>{{attachment.name}}</a>
+                </dd>
+              </div>
+            {% endfor %}
+          </dl>
+      {% elif reason.reason === "missing company authentication code" %}
+      <h3 class="govuk-heading-m">{{extensionListIndex}}Missing Authentication Code</h3>
+      {% elif reason.reason === 'accounting issues' %}
+      <h3 class="govuk-heading-m">{{extensionListIndex}}Accounting Issues</h3>
       <dl class="app-check-your-answers app-check-your-answers--long">
-        <div class="app-check-your-answers__contents">
-          <dt class="app-check-your-answers__question">
-            Who was ill?
-          </dt>
-          <dd class="app-check-your-answers__answer">
-            {{ reason.affected_person | capitalize }}
-          </dd>
-        </div>
-        <div class="app-check-your-answers__contents">
-          <dt class="app-check-your-answers__question">
-            Illness start date
-          </dt>
-          <dd class="app-check-your-answers__answer">
-            {{ reason.start_on }}
-          </dd>
-        </div>
-        {% if reason.continued_illness === 'yes' %}
-        <div class="app-check-your-answers__contents">
-          <dt class="app-check-your-answers__question">
-            Continuing illness?
-          </dt>
-          <dd class="app-check-your-answers__answer">
-            {{ reason.continued_illness | capitalize }}
-          </dd>
-        </div>
-        {% else %}
-        <div class="app-check-your-answers__contents">
-          <dt class="app-check-your-answers__question">
-            Illness end date
-          </dt>
-          <dd class="app-check-your-answers__answer">
-            {{ reason.end_on }}
-          </dd>
-        </div>
-        {% endif %}
-        {% if reason.reason_information != null %}
-        <div class="app-check-your-answers__contents">
-          <dt class="app-check-your-answers__question">
-            Further information
-          </dt>
-          <dd class="app-check-your-answers__answer">
-            {{ reason.reason_information }}
-          </dd>
-        </div>
-        {% endif %}
-        {% for attachment in reason.attachments %}
-        <div class="app-check-your-answers__contents">
-          <dt class="app-check-your-answers__question">
-            Supporting documents
-          </dt>
-          <dd class="app-check-your-answers__answer">
-            <a href='' class='govuk-link'>{{attachment.name}}</a>
-          </dd>
-        </div>
-        {% endfor %}
-      </dl>
+          <div class="app-check-your-answers__contents">
+            <dt class="app-check-your-answers__question">
+              Date issue happened
+            </dt>
+            <dd class="app-check-your-answers__answer">
+              {{ reason.start_on }}
+            </dd>
+          </div>
+          {% if reason.reason_information != null %}
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Further information
+              </dt>
+              <dd class="app-check-your-answers__answer">
+                {{ reason.reason_information }}
+              </dd>
+            </div>
+          {% endif %}
+          {% for attachment in reason.attachments %}
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Supporting documents
+              </dt>
+              <dd class="app-check-your-answers__answer">
+                <a href='' class='govuk-link'>{{ attachment.name }}</a>
+              </dd>
+            </div>
+          {% endfor %}
+        </dl>
       {% else %}
-      <h3 class="govuk-heading-m">{{ loop.index }}:
-        {{ reason.reason }}</h3>
-      <dl class="app-check-your-answers app-check-your-answers--long">
-        {% if reason.reason_information != null %}
-        <div class="app-check-your-answers__contents">
-          <dt class="app-check-your-answers__question">
-            Further information
-          </dt>
-          <dd class="app-check-your-answers__answer">
-            {{ reason.reason_information }}
-          </dd>
-        </div>
-        {% endif %}
-        {% for attachment in reason.attachments %}
-        <div class="app-check-your-answers__contents">
-          <dt class="app-check-your-answers__question">
-            Supporting documents
-          </dt>
-          <dd class="app-check-your-answers__answer">
-            <a href='' class='govuk-link'>{{ attachment.name }}</a>
-          </dd>
-        </div>
-        {% endfor %}
-      </dl>
+        <h3 class="govuk-heading-m">{{ loop.index }}:
+          {{ reason.reason }}</h3>
+        <dl class="app-check-your-answers app-check-your-answers--long">
+          {% if reason.reason_information != null %}
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Further information
+              </dt>
+              <dd class="app-check-your-answers__answer">
+                {{ reason.reason_information }}
+              </dd>
+            </div>
+          {% endif %}
+          {% for attachment in reason.attachments %}
+            <div class="app-check-your-answers__contents">
+              <dt class="app-check-your-answers__question">
+                Supporting documents
+              </dt>
+              <dd class="app-check-your-answers__answer">
+                <a href='' class='govuk-link'>{{ attachment.name }}</a>
+              </dd>
+            </div>
+          {% endfor %}
+        </dl>
       {% endif %}
       {% endfor %}
     </div>
   </div>
-  {% endblock %}
+</div>
+{% endblock %}
