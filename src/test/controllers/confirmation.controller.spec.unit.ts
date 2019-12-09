@@ -16,7 +16,7 @@ jest.mock( "../../services/session.service");
 const EMAIL: string = "demo@ch.gov.uk";
 const COMPANY_NUMBER: string = "00006400";
 const PAGE_TITLE: string = "Confirmation page";
-const AUTH_CODE_JOURNEY_TEXT: string = "You should receive your Authentication Code within 5 working days.";
+const AUTH_CODE_JOURNEY_TEXT: string = "You should receive the authentication code at the registered office within 5 working days.";
 const ERROR_PAGE: string = "Sorry, there is a problem with the service";
 
 
