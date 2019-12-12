@@ -54,6 +54,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
           extReasonErr,
         ],
         extensionReasonErr: extReasonErr,
+        isFeatureFlagAuthCodeEnabled: activeFeature(FEATURE_MISSING_AUTHENTICATION_CODE),
         templateName: templatePaths.CHOOSE_REASON,
       });
     }
