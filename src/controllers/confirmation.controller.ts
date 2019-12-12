@@ -25,6 +25,9 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   const signInInfo: ISignInInfo = req.chSession.data[keys.SIGN_IN_INFO] as ISignInInfo;
   const userProfile: IUserProfile = signInInfo[keys.USER_PROFILE] as IUserProfile;
   const email = userProfile.email;
+  const token: string = req.chSession.accessToken() as string;
+  const request = sessionService.getRequest(req.chSession);
+
   if (!email) {
     return next(createMissingError("User Email"));
   }
@@ -32,23 +35,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   if (!isSubmitted) {
     try {
       await sessionService.updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, true);
-      const token: string = req.chSession.accessToken() as string;
-      const request = sessionService.getRequest(req.chSession);
-
       if (token && request) {
-        if (activeFeature(FEATURE_MISSING_AUTHENTICATION_CODE)) {
-          const requestReasons: ListReasonResponse =
-            await getReasons(request, token);
-          if (requestReasons) {
-            requestReasons.items.forEach(
-              (reason) => {
-                if (reason.reason === "missing company authentication code") {
-                  isMissingAuthenticationCodeJourney = true;
-                }
-              },
-            );
-          }
-        }
         await apiClient.callProcessorApi(companyNum, token, request.extension_request_id);
         if (activeFeature(process.env.FEATURE_REQUEST_COUNT)) {
           RequestCountMonitor.updateTodaysRequestNumber(1);
@@ -63,6 +50,20 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     }
   } else {
     logger.error("Form already submitted, not processing again");
+  }
+
+  if (token && request && activeFeature(FEATURE_MISSING_AUTHENTICATION_CODE)) {
+    const requestReasons: ListReasonResponse =
+      await getReasons(request, token);
+    if (requestReasons) {
+      requestReasons.items.forEach(
+        (reason) => {
+          if (reason.reason === "missing company authentication code") {
+            isMissingAuthenticationCodeJourney = true;
+          }
+        },
+      );
+    }
   }
 
   return res.render(templatePaths.CONFIRMATION,
