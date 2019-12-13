@@ -21,7 +21,7 @@ const mockGetCurrentReason = (<unknown>reasonService.getCurrentReason as jest.Mo
 const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone  as jest.Mock<typeof createHistoryIfNone>);
 const session = fullDummySession();
 
-const NO_INFORMATION_INPUT: string = "You must give us more information";
+const NO_INFORMATION_INPUT: string = "You must tell us how this affected your ability to file on time";
 const REASON_ID: string = "abc-123";
 
 beforeEach(() => {
