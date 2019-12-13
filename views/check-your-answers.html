@@ -30,8 +30,6 @@
             <dd class="app-check-your-answers__answer">
               {{ reason.reason | capitalize }}
             </dd>
-            <dd class="app-check-your-answers__change">
-            </dd>
           </div>
           <div class="app-check-your-answers__contents">
             <dt class="app-check-your-answers__question">
@@ -143,8 +141,6 @@
             <dd class="app-check-your-answers__answer">
               {{ reason.reason | capitalize }}
             </dd>
-            <dd class="app-check-your-answers__change">
-            </dd>
           </div>
           <div class="app-check-your-answers__contents">
             <dt class="app-check-your-answers__question">
@@ -245,12 +241,14 @@
       {% endif %}
       <p class="govuk-body">
         <a id="remove-reason-{{loop.index}}" href="/extensions/remove-reason?id={{reason.id}}&reasonNumber={{loop.index}}" class="govuk-link"
-          data-event-id="remove-reason-button">Remove this reason</a>
+          data-event-id="remove-reason-button">Remove this reason<span class="govuk-visually-hidden"> remove reason {{ loop.index }} {{ reason.reason }}</span>
+        </a>
       </p>
     </div>
     {% endfor %}
     <p class="govuk-!-margin-bottom-7 govuk-!-margin-top-7">
-      <a href="/extensions/choose-reason" class="govuk-link" data-event-id="add-another-reason-button">Add another reason</a>
+      <a href="/extensions/choose-reason" class="govuk-link" data-event-id="add-another-reason-button">Add another reason<span class="govuk-visually-hidden"> add another reason</span>
+      </a>
     </p>
 
     <h2 class="govuk-heading-m">Submit your application for an extension</h2>
