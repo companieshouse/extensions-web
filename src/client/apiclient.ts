@@ -8,6 +8,8 @@ import {formatDateForDisplay} from "./date.formatter";
 import {Response} from "express";
 import { IExtensionRequest } from "session/types";
 
+import {createApiClient} from "ch-sdk-node";
+
 export interface CompanyProfile {
   hasBeenLiquidated: boolean;
   hasCharges: boolean;
@@ -124,6 +126,23 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
   const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
   config.method = HTTP_GET;
   config.url = COMPANY_PROFILE_PATH;
+
+
+
+  logger.info(`Calling Node CH SDK... token = ${token}`);
+
+
+    const api = createApiClient(undefined, token, `${API_URL}`);
+      //"your-api-key");
+    const profile = await api.companyProfile.getCompanyProfile("00006400");
+
+    logger.info(profile);
+
+
+  logger.info(`LOOKING FOR COMPANY WITH COMPANY NUMBER ${companyNumber}`);
+
+
+
 
   const data = await getApiData(config) as CompanyProfileResource;
 
