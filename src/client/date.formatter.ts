@@ -1,7 +1,7 @@
 import moment = require("moment");
 
 const DISPLAY_DATE_FORMAT: string = "D MMMM YYYY";
-const REASON_DATE_FORMAT: string = "YYYY-MM-DD";
+const REASON_DATE_FORMAT: string = "YYYY-MM-DDTHH:mm:ss";
 
 export const formatDateForDisplay = (inputDate: string): string => {
   return moment(inputDate).format(DISPLAY_DATE_FORMAT);
