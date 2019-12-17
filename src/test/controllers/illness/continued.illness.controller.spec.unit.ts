@@ -29,7 +29,7 @@ beforeEach(() => {
     return {
       items: [{
         id: "reason1",
-        start_on: "2018-12-12"
+        start_on: "2018-12-12T00:00:00"
       }],
     }
   });

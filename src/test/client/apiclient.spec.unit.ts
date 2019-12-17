@@ -22,8 +22,8 @@ const dummyAxiosResponse: AxiosResponse<CompanyProfileResource> =  {
       next_due: "2020-05-31",
       overdue: false,
       next_accounts: {
-        period_end_on: "2019-10-10",
-        period_start_on: "2019-01-01",
+        period_end_on: "2019-10-10T00:00:00",
+        period_start_on: "2019-01-01T00:00:00",
       },
     },
     company_number: "00006400",
@@ -65,8 +65,8 @@ describe("apiclient unit tests", () => {
 });
 
 const expectedProfile: CompanyProfile = {
-  accountingPeriodEndOn: "2019-10-10",
-  accountingPeriodStartOn: "2019-01-01",
+  accountingPeriodEndOn: "2019-10-10T00:00:00",
+  accountingPeriodStartOn: "2019-01-01T00:00:00",
   hasBeenLiquidated: false,
   hasCharges: false,
   hasInsolvencyHistory: false,

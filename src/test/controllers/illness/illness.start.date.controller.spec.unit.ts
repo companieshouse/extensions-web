@@ -232,7 +232,7 @@ describe("illness start date validation tests", () => {
     expect(res.text).not.toContain(DATE_INVALID);
     const dummySession = fullDummySession();
     expect(mockUpdateReason).toHaveBeenCalledWith(dummySession, {
-      start_on: "2016-02-29",
+      start_on: "2016-02-29T00:00:00",
     });
   });
 
@@ -286,7 +286,7 @@ describe("illness start date validation tests", () => {
     expect(res.text).not.toContain(ILLNESS_START_DATE_FUTURE);
     const dummySession = fullDummySession();
     expect(mockUpdateReason).toHaveBeenCalledWith(dummySession, {
-      start_on: "1999-05-11",
+      start_on: "1999-05-11T00:00:00",
     });
   });
 
@@ -301,7 +301,7 @@ describe("illness start date validation tests", () => {
 
     const dummySession = fullDummySession();
     expect(mockUpdateReason).toHaveBeenCalledWith(dummySession, {
-      start_on: "1999-05-03",
+      start_on: "1999-05-03T00:00:00",
     });
   });
 });

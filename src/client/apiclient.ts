@@ -4,7 +4,7 @@ import logger from "../logger";
 import { API_URL, EXTENSIONS_API_URL, EXTENSIONS_PROCESSOR_API_URL } from "../session/config";
 import * as FormData from "form-data";
 import { ReasonWeb } from "model/reason/extension.reason.web";
-import {formatDateForDisplay} from "./date.formatter";
+import {formatDateForDisplay, formatDateForRequest} from "./date.formatter";
 import {Response} from "express";
 import { IExtensionRequest } from "session/types";
 
@@ -128,8 +128,8 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
   const data = await getApiData(config) as CompanyProfileResource;
 
   return {
-    accountingPeriodEndOn: data.accounts.next_accounts.period_end_on,
-    accountingPeriodStartOn: data.accounts.next_accounts.period_start_on,
+    accountingPeriodEndOn: formatDateForRequest(data.accounts.next_accounts.period_end_on),
+    accountingPeriodStartOn: formatDateForRequest(data.accounts.next_accounts.period_start_on),
     accountsDue: formatDateForDisplay(data.accounts.next_due),
     address: {
       line_1: data.registered_office_address.address_line_1,

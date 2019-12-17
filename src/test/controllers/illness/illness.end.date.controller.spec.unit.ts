@@ -35,8 +35,8 @@ beforeEach( () => {
   mockGetCurrentReason.prototype.constructor.mockImplementation((): ReasonWeb => {
     return {
       id: "reason1",
-      start_on: "2018-12-12",
-      end_on: "2018-12-22"
+      start_on: "2018-12-12T00:00:00",
+      end_on: "2018-12-22T00:00:00"
     } as ReasonWeb;
   });
 });
