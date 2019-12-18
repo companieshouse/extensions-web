@@ -125,7 +125,7 @@ describe('Pact', () => {
             accountingPeriodEndOn: "2019-01-01",
             accountingPeriodStartOn: "2018-01-01",
             companyNumber: GIRLS_SCHOOL
-          } as apiClient.CompanyProfile, TOKEN);
+          } as apiClient.ExtensionsCompanyProfile, TOKEN);
 
           expect(response.id).toEqual("an id");
         } finally {

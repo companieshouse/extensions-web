@@ -9,8 +9,10 @@ import {Response} from "express";
 import { IExtensionRequest } from "session/types";
 
 import {createApiClient} from "ch-sdk-node";
+import Resource from "ch-sdk-node/dist/services/resource";
+import {CompanyProfile} from "ch-sdk-node/dist/services/company-profile";
 
-export interface CompanyProfile {
+export interface ExtensionsCompanyProfile {
   hasBeenLiquidated: boolean;
   hasCharges: boolean;
   hasInsolvencyHistory: boolean;
@@ -28,32 +30,6 @@ export interface CompanyProfile {
   accountingPeriodEndOn: string;
   isAccountsOverdue: boolean;
   incorporationDate: string;
-}
-
-// the interface expected back from the api
-export interface CompanyProfileResource {
-  accounts: {
-    next_due: string;
-    overdue: boolean;
-    next_accounts: {
-      period_end_on: string;
-      period_start_on: string;
-    };
-  };
-  company_number: string;
-  company_name: string;
-  company_status: string;
-  date_of_creation: string;
-  has_been_liquidated: boolean;
-  has_charges: boolean;
-  has_insolvency_history: boolean;
-  jurisdiction: string;
-  type: string;
-  registered_office_address: {
-    address_line_1: string;
-    address_line_2: string;
-    postal_code: string;
-  };
 }
 
 /**
@@ -120,54 +96,46 @@ const getApiData = async (config: AxiosRequestConfig): Promise<any> => {
  * @param companyNumber the company number.
  * @param token the bearer security token to use to call the api
  */
-export const getCompanyProfile = async (companyNumber: string, token: string): Promise<CompanyProfile> => {
-  const COMPANY_PROFILE_PATH = `${API_URL}/company/${companyNumber.toUpperCase()}/`;
+export const getCompanyProfile = async (companyNumber: string, token: string): Promise<ExtensionsCompanyProfile> => {
+  logger.debug("Creating CH SDK ApiClient");
+  const api = createApiClient(undefined, token, `${API_URL}`);
 
-  const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
-  config.method = HTTP_GET;
-  config.url = COMPANY_PROFILE_PATH;
+  logger.info(`Looking for company profile with company number ${companyNumber}`);
+  const sdkResponse: Resource<CompanyProfile> =
+    await api.companyProfile.getCompanyProfile(companyNumber.toUpperCase()) as Resource<CompanyProfile>;
 
+  if (sdkResponse.httpStatusCode >= 400) {
+    throw {
+      status: sdkResponse.httpStatusCode,
+    };
+  }
 
+  logger.debug("Data from company profile SDK call " + JSON.stringify(sdkResponse, null, 2));
 
-  logger.info(`Calling Node CH SDK... token = ${token}`);
-
-
-    const api = createApiClient(undefined, token, `${API_URL}`);
-      //"your-api-key");
-    const profile = await api.companyProfile.getCompanyProfile("00006400");
-
-    logger.info(profile);
-
-
-  logger.info(`LOOKING FOR COMPANY WITH COMPANY NUMBER ${companyNumber}`);
-
-
-
-
-  const data = await getApiData(config) as CompanyProfileResource;
+  const companyProfile: CompanyProfile = sdkResponse.resource as CompanyProfile;
 
   return {
-    accountingPeriodEndOn: data.accounts.next_accounts.period_end_on,
-    accountingPeriodStartOn: data.accounts.next_accounts.period_start_on,
-    accountsDue: formatDateForDisplay(data.accounts.next_due),
+    accountingPeriodEndOn: companyProfile.accounts.nextAccounts.periodEndOn,
+    accountingPeriodStartOn: companyProfile.accounts.nextAccounts.periodStartOn,
+    accountsDue: formatDateForDisplay(companyProfile.accounts.nextDue),
     address: {
-      line_1: data.registered_office_address.address_line_1,
-      line_2: data.registered_office_address.address_line_2,
-      postCode: data.registered_office_address.postal_code,
+      line_1: companyProfile.registeredOfficeAddress.addressLineOne,
+      line_2: companyProfile.registeredOfficeAddress.addressLineTwo,
+      postCode: companyProfile.registeredOfficeAddress.postalCode,
     },
-    companyName: data.company_name,
-    companyNumber: data.company_number,
-    companyStatus: lookupCompanyStatus(data.company_status),
-    companyType: lookupCompanyType(data.type),
-    hasBeenLiquidated: data.has_been_liquidated,
-    hasCharges: data.has_charges,
-    hasInsolvencyHistory: data.has_insolvency_history,
-    incorporationDate: formatDateForDisplay(data.date_of_creation),
-    isAccountsOverdue: data.accounts.overdue,
+    companyName: companyProfile.companyName,
+    companyNumber: companyProfile.companyNumber,
+    companyStatus: lookupCompanyStatus(companyProfile.companyStatus),
+    companyType: lookupCompanyType(companyProfile.type),
+    hasBeenLiquidated: companyProfile.hasBeenLiquidated,
+    hasCharges: companyProfile.hasCharges,
+    hasInsolvencyHistory: companyProfile.hasInsolvencyHistory,
+    incorporationDate: formatDateForDisplay(companyProfile.dateOfCreation),
+    isAccountsOverdue: companyProfile.accounts.overdue,
   };
 };
 
-export const createExtensionRequest = async (company: CompanyProfile, token: string): Promise<any> => {
+export const createExtensionRequest = async (company: ExtensionsCompanyProfile, token: string): Promise<any> => {
   const CREATE_REQUEST_PATH =  `${EXTENSIONS_API_URL}/company/${company.companyNumber}/extensions/requests/`;
   logger.debug("createExtensionRequest api url = " + CREATE_REQUEST_PATH);
 

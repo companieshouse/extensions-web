@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import {check, validationResult} from "express-validator/check";
-import {CompanyProfile, getCompanyProfile} from "../client/apiclient";
+import {ExtensionsCompanyProfile, getCompanyProfile} from "../client/apiclient";
 import logger from "../logger";
 import * as errorMessages from "../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
@@ -63,7 +63,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   try {
     logger.info(`Retrieving company profile for company number ${companyNumber}`);
     const token: string = req.chSession.accessToken() as string;
-    const company: CompanyProfile = await getCompanyProfile(companyNumber, token);
+    const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
     await sessionService.createExtensionSession(req.chSession, company.companyNumber);
 
     return res.redirect(pageURLs.EXTENSIONS_CONFIRM_COMPANY);
