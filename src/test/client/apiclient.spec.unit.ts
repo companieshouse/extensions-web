@@ -12,6 +12,7 @@ jest.mock("ch-sdk-node");
 
 const api: ApiClient = jest.genMockFromModule("ch-sdk-node");
 
+// ApiClient has a readonly "companyProfile" so this is a workaround to set companyProfile to be a Mock
 const mockCompanyProfileService = (<unknown>CompanyProfileService as jest.Mock<typeof CompanyProfileService>);
 Object.defineProperty(api, "companyProfile", {value: mockCompanyProfileService});
 
@@ -65,7 +66,6 @@ const dummySDKResponse: Resource<CompanyProfile> = {
     type: "limited",
     hasCharges: false,
     hasInsolvencyHistory: false,
-//    jurisdiction: "england",
     registeredOfficeAddress: {
       addressLineOne: "line1",
       addressLineTwo: "line2",
