@@ -4,7 +4,7 @@
   {% if errorList.length > 0 %}
   Error:
   {% endif %}
-    Add evidence to support your application
+    Add documents to support your application
 {% endblock %}
 
 {% block backLink %}
@@ -29,11 +29,11 @@
 
       <form method="post">
         {% if errorList.length > 0 %}
-          {% set supportingEvidenceError = {
-            text: supportingEvidenceErr.text
+          {% set supportingDocumentsError = {
+            text: supportingDocumentsErr.text
            } %}
         {% else %}
-          {% set supportingEvidenceError = false %}
+          {% set supportingDocumentsError = false %}
         {% endif %}
 
         {% set hintHTML %}
@@ -42,9 +42,9 @@
 
         {{ govukRadios({
           classes: "govuk-radios--inline",
-          idPrefix: "supporting-evidence",
-          name: "supportingEvidence",
-          errorMessage: supportingEvidenceError,
+          idPrefix: "supporting-document",
+          name: "supportingDocuments",
+          errorMessage: supportingDocumentsError,
           fieldset: {
           legend: {
           text: "Do you want to upload any documents to support your application?",

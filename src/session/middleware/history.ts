@@ -4,7 +4,7 @@ import * as sessionService from "../../services/session.service";
 import {updateNavigationBackFlag} from "../../services/session.service";
 import {EXTENSIONS,
   REMOVE_DOCUMENT,
-  EVIDENCE_UPLOAD_CONTINUE_NO_DOCS,
+  DOCUMENT_UPLOAD_CONTINUE_NO_DOCS,
   BACK_LINK,
   REASON_ID,
   OAUTH_LOGIN_URL} from "../../model/page.urls";
@@ -13,7 +13,7 @@ import Session from "../session";
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   if (req.method.toString() === "GET" && !containsProhibitedUrls(
-    [BACK_LINK, EVIDENCE_UPLOAD_CONTINUE_NO_DOCS],
+    [BACK_LINK, DOCUMENT_UPLOAD_CONTINUE_NO_DOCS],
     req.baseUrl)) {
     const hasNavigatedBack: boolean = req.chSession.data[keys.NAVIGATION_BACK_FLAG];
     const referringPageURL = getReferringPageUrl(req);

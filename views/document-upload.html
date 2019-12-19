@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-Add evidence to support your application
+Add documents to support your application
 {% endblock %}
 
 {% block backLink %}
@@ -20,7 +20,7 @@ Add evidence to support your application
       <form method="post" enctype="multipart/form-data" id="file-upload-form">
 
         <div id="errorSummaryDiv">
-          {% include "includes/evidence-upload-error-summary.html" %}
+          {% include "includes/document-upload-error-summary.html" %}
         </div>
 
 
@@ -31,7 +31,7 @@ Add evidence to support your application
 
 
         <div id="fileUploadDiv">
-          {% include "includes/evidence-upload-file-picker.html" %}
+          {% include "includes/document-upload-file-picker.html" %}
         </div>
 
 
@@ -50,7 +50,7 @@ Add evidence to support your application
         </div>
 
         <div id="fileListDiv">
-          {% include "includes/evidence-upload-file-list.html" %}
+          {% include "includes/document-upload-file-list.html" %}
         </div>
 
       </form>
@@ -71,7 +71,7 @@ Add evidence to support your application
         }) }}
       </form>
       <p>
-        <a href="/extensions/evidence-upload-continue-no-docs" id="continue-no-docs" class="govuk-link"
+        <a href="/extensions/document-upload-continue-no-docs" id="continue-no-docs" class="govuk-link"
           data-event-id="continue-without-documents-button">Continue without adding documents
         </a>
       </p>

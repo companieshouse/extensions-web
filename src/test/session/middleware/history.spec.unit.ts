@@ -95,7 +95,7 @@ describe("back navigation tests", () => {
   it ("should contain the correct back button url - add reason", async () => {
     const res = await request(app)
       .get(pageURLs.EXTENSIONS_ADD_EXTENSION_REASON)
-      .set("Referer", pageURLs.EXTENSIONS_EVIDENCE_OPTION)
+      .set("Referer", pageURLs.EXTENSIONS_DOCUMENT_OPTION)
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
     expect(mockUpdateHistory).toBeCalledWith({page_history:[]},
@@ -104,6 +104,6 @@ describe("back navigation tests", () => {
             {page_history: []},
           signin_info: {signed_in: 1}
         }
-      }, pageURLs.EXTENSIONS_EVIDENCE_OPTION);
+      }, pageURLs.EXTENSIONS_DOCUMENT_OPTION);
   });
 });

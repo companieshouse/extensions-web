@@ -9,12 +9,12 @@
   {% endif %}
 {% endset %}
 
-{% if evidenceUploadErr.flag %}
-  {% set evidenceUploadErrorMessage = {
-    text: evidenceUploadErr.text
+{% if documentUploadErr.flag %}
+  {% set documentUploadErrorMessage = {
+    text: documentUploadErr.text
   } %}
   {% else %}
-    {% set evidenceUploadErrorMessage = false %}
+    {% set documentUploadErrorMessage = false %}
 {% endif %}
 
 <div class='file-upload'>
@@ -24,7 +24,7 @@
     label: {
       text: uploadText
     },
-    errorMessage: evidenceUploadErrorMessage
+    errorMessage: documentUploadErrorMessage
   }) }}
   <noscript>
     {{ govukButton({

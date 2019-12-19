@@ -23,7 +23,7 @@ $(document).ready(function () {
     var file = document.getElementById('file-upload').files[0];
     formData.append('file-upload', file);
     xhr = new XMLHttpRequest();
-    xhr.open('post', '/extensions/evidence-upload', true);
+    xhr.open('post', '/extensions/document-upload', true);
     xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
 
     xhr.upload.onprogress = function(e) {

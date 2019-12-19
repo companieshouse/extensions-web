@@ -98,7 +98,7 @@ describe("illness information validation tests", () => {
       .send({
         illnessInformation: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toBeCalledWith(session, {
@@ -115,7 +115,7 @@ describe("illness information validation tests", () => {
       .send({
         illnessInformation: "Lorem ipsum dolor sit amet, \r\nconsectetur adipiscing elit."
       });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toBeCalledWith(session, {

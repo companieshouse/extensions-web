@@ -1,6 +1,6 @@
 import {HtmlUploadResponder} from "../../../controllers/upload/html.upload.responder";
 import {Request, Response} from "express";
-import {EXTENSIONS_EVIDENCE_UPLOAD} from "../../../model/page.urls";
+import {EXTENSIONS_DOCUMENT_UPLOAD} from "../../../model/page.urls";
 import {createGovUkErrorData, GovUkErrorData} from "../../../model/govuk.error.data";
 import {ReasonWeb} from "../../../model/reason/extension.reason.web";
 import * as templatePaths from "../../../model/template.paths";
@@ -31,7 +31,7 @@ describe("html upload responder tests", () => {
 
     htmlResponder.handleSuccess(req, res);
 
-    expect(mockRedirectFunc).toBeCalledWith(EXTENSIONS_EVIDENCE_UPLOAD);
+    expect(mockRedirectFunc).toBeCalledWith(EXTENSIONS_DOCUMENT_UPLOAD);
   });
 
   it("should forward to next() on generic error", () => {
@@ -51,11 +51,11 @@ describe("html upload responder tests", () => {
 
     htmlResponder.handleGovUKError(res, errorData, reason);
 
-    expect(mockRenderFunc).toBeCalledWith(templatePaths.EVIDENCE_UPLOAD, {
+    expect(mockRenderFunc).toBeCalledWith(templatePaths.DOCUMENT_UPLOAD, {
       errorList: [errorData],
-      evidenceUploadErr: errorData,
+      documentsUploadErr: errorData,
       reason: reason,
-      templateName: templatePaths.EVIDENCE_UPLOAD,
+      templateName: templatePaths.DOCUMENT_UPLOAD,
     });
   });
 });
