@@ -115,7 +115,7 @@ describe("ajax upload responder tests", () => {
     expect(mockRenderFunc.mock.calls[0][0]).toContain(UPLOAD_ERROR_SUMMARY);
     expect(mockRenderFunc.mock.calls[0][1].errorList).toEqual([errorData]);
     expect(mockRenderFunc.mock.calls[1][0]).toContain(UPLOAD_FILE_PICKER);
-    expect(mockRenderFunc.mock.calls[1][1].evidenceUploadErr).toEqual(errorData);
+    expect(mockRenderFunc.mock.calls[1][1].documentUploadErr).toEqual(errorData);
     expect(mockSendFunc).toBeCalledWith({
       divs : [
         { divHtml: 'DUMMY HTML', divId: 'errorSummaryDiv' },

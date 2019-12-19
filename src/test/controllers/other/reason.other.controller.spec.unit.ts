@@ -137,7 +137,7 @@ describe("reason other validation tests", () => {
         otherReason: "This is a \r\ntest",
         otherInformation: "Lorem ipsum dolor sit amet, \r\nconsectetur adipiscing elit."
       });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toHaveBeenCalledWith(session, {
@@ -156,7 +156,7 @@ describe("reason other validation tests", () => {
         otherReason: "This is a test",
         otherInformation: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toHaveBeenCalledWith(session, {

@@ -9,7 +9,7 @@ import * as keys from "../session/keys";
 import * as sessionService from "../services/session.service";
 
 const validators = [
-  check("supportingEvidence").not().isEmpty().withMessage(errorMessages.UPLOAD_EVIDENCE_DECISION_NOT_MADE),
+  check("supportingDocuments").not().isEmpty().withMessage(errorMessages.UPLOAD_DOCUMENTS_DECISION_NOT_MADE),
 ];
 
 export const render = (req: Request, res: Response, next: NextFunction): void => {
@@ -19,10 +19,10 @@ export const render = (req: Request, res: Response, next: NextFunction): void =>
     noChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.UPLOAD_DOCUMENTS_NO];
     yesChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.UPLOAD_DOCUMENTS_YES];
   }
-  return res.render(templatePaths.EVIDENCE_OPTION, {
+  return res.render(templatePaths.DOCUMENT_OPTION, {
     isNoChecked: noChecked,
     isYesChecked: yesChecked,
-    templateName: templatePaths.EVIDENCE_OPTION,
+    templateName: templatePaths.DOCUMENT_OPTION,
   });
 };
 
@@ -33,21 +33,21 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     const errMsg: string = errors.array().map((err: ValidationError) => err.msg).pop() as string;
     if (errMsg) {
       const decisionNotMadeErr: GovUkErrorData = createGovUkErrorData(errMsg,
-        "#supporting-evidence", true, "");
-      return res.render(templatePaths.EVIDENCE_OPTION, {
+        "#supporting-documents", true, "");
+      return res.render(templatePaths.DOCUMENT_OPTION, {
         errorList: [
           decisionNotMadeErr,
         ],
-        supportingEvidenceErr: decisionNotMadeErr,
-        templateName: templatePaths.EVIDENCE_OPTION,
+        supportingDocumentsErr: decisionNotMadeErr,
+        templateName: templatePaths.DOCUMENT_OPTION,
       });
     }
   } else {
-    const decision: string = req.body.supportingEvidence;
+    const decision: string = req.body.supportingDocuments;
     if (decision === "yes") {
       await sessionService.updateExtensionSessionValue(req.chSession, keys.UPLOAD_DOCUMENTS_YES, true);
       await sessionService.updateExtensionSessionValue(req.chSession, keys.UPLOAD_DOCUMENTS_NO, false);
-      return res.redirect(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD);
+      return res.redirect(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD);
     } else {
       await sessionService.updateExtensionSessionValue(req.chSession, keys.UPLOAD_DOCUMENTS_NO, true);
       await sessionService.updateExtensionSessionValue(req.chSession, keys.UPLOAD_DOCUMENTS_YES, false);

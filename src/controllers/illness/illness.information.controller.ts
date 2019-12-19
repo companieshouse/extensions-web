@@ -66,7 +66,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   if (changingDetails) {
     return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
   } else {
-    return res.redirect(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
+    return res.redirect(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
   }
 };
 

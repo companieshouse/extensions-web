@@ -21,20 +21,20 @@ import {getCurrentReasonFull} from "../services/reason.service";
 
 const maxSizeBytes: number = parseInt(MAX_FILE_SIZE_BYTES, 10);
 
-// GET /extensions/evidence-upload
+// GET /extensions/document-upload
 export const render = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   if (req.query.reasonId) {
     await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId);
   }
   const thisReason: ReasonWeb = await getCurrentReasonFull(req.chSession);
-  return res.render(templatePaths.EVIDENCE_UPLOAD,
+  return res.render(templatePaths.DOCUMENT_UPLOAD,
     {
       reason: thisReason,
-      templateName: templatePaths.EVIDENCE_UPLOAD,
+      templateName: templatePaths.DOCUMENT_UPLOAD,
     });
 };
 
-// POST /extensions/evidence-upload
+// POST /extensions/document-upload
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const uploadResponder: UploadResponder = createUploadResponder(req.xhr);
   const currentReason: ReasonWeb = await getCurrentReasonFull(req.chSession);
@@ -58,7 +58,7 @@ const continueWithValidation = async (req: Request,
   return continueWithNoValidation(req, res, next);
 };
 
-// GET /extensions/evidence-upload-continue-no-docs
+// GET /extensions/document-upload-continue-no-docs
 export const continueWithNoValidation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
   if (changingDetails) {
@@ -149,9 +149,9 @@ const buildError = async (req: Request,
                           errorMessage: string,
                           uploadResponder: UploadResponder,
                           currentReason: ReasonWeb): Promise<void> => {
-  const evidenceUploadErrorData: GovUkErrorData =
+  const documentUploadErrorData: GovUkErrorData =
     createGovUkErrorData(errorMessage, "#file-upload", true, "");
-  return uploadResponder.handleGovUKError(res, evidenceUploadErrorData, currentReason);
+  return uploadResponder.handleGovUKError(res, documentUploadErrorData, currentReason);
 };
 
 const prepareAndSendAttachment = async (req: Request, fileData: Buffer, filename: string) => {

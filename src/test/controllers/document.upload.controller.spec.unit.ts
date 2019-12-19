@@ -70,10 +70,10 @@ beforeEach( () => {
   });
 });
 
-describe ("evidence upload url tests", () => {
-  it ("should find evidence upload page with get", async () => {
+describe ("document upload url tests", () => {
+  it ("should find document upload page with get", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD)
+      .get(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -81,7 +81,7 @@ describe ("evidence upload url tests", () => {
 
   it ("should redirect to add extension reason page when continue with no docs is clicked ", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD_CONTINUE_NO_DOCS)
+      .get(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD_CONTINUE_NO_DOCS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(302);
@@ -91,24 +91,24 @@ describe ("evidence upload url tests", () => {
   it ("should redirect to check your answers page when continue with no docs is clicked ", async () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(sessionWithChangingDetails);
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD_CONTINUE_NO_DOCS)
+      .get(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD_CONTINUE_NO_DOCS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(302);
     expect(res.header.location).toEqual(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
   });
 
-  it ("should find evidence upload page with get when query is present", async () => {
+  it ("should find document upload page with get when query is present", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD + QUERY_ID)
+      .get(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD + QUERY_ID)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
   });
 
-  it ("should return 404 if evidence upload page with put", async () => {
+  it ("should return 404 if document upload page with put", async () => {
     const res = await request(app)
-      .put(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD)
+      .put(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -116,7 +116,7 @@ describe ("evidence upload url tests", () => {
   it ("should render error message when file is too big", async (done) => {
     // See global.setup.ts for unit test file size limit
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD)
+      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .attach('file-upload', path.join(__dirname + "/../client/files/text_large.txt"));
     expect(response.text).toContain(EXPECTED_MAX_FILE_SIZE_MESSAGE);
@@ -133,7 +133,7 @@ describe ("evidence upload url tests", () => {
     });
 
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD)
+      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
       expect(response.status).toEqual(200);
@@ -149,7 +149,7 @@ describe ("evidence upload url tests", () => {
   it ("should error screen if apiclient throws error", async (done) => {
     mockAddAttachment.prototype.constructor.mockImplementationOnce(() => {throw new Error()});
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD)
+      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
     expect(res.status).toEqual(500);
@@ -165,11 +165,11 @@ describe ("evidence upload url tests", () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
     const expectedBuffer = fs.readFileSync(path.join(__dirname + "/../client/files/text.txt"));
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD)
+      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
     expect(res.status).toEqual(302);
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD);
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD);
     expect(mockAddAttachment).toBeCalledWith("00006400",
       "KGGGUYUYJHHVK1234",
       "request1",
@@ -198,7 +198,7 @@ describe ("evidence upload url tests", () => {
     });
 
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD)
+      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"continueCheck": "continueCheck"});
     expect(res.status).toEqual(200);
@@ -211,7 +211,7 @@ describe ("evidence upload url tests", () => {
   it ("AJAX - should render error message when file is too big", async (done) => {
     // See global.setup.ts for unit test file size limit
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD)
+      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set('X-Requested-With','XMLHttpRequest')
       .attach('file-upload', path.join(__dirname + "/../client/files/text_large.txt"));
@@ -242,7 +242,7 @@ describe ("evidence upload url tests", () => {
     const errorMessage: string = "The selected file must be a JPG, JPEG, ZIP, GIF, PNG, PDF, DOCX or XLSX";
 
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD)
+      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set('X-Requested-With','XMLHttpRequest')
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
@@ -271,7 +271,7 @@ describe ("evidence upload url tests", () => {
   it ("AJAX - should redirect to error screen if apiclient throws error", async (done) => {
     mockAddAttachment.prototype.constructor.mockImplementationOnce(() => {throw new Error()});
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD)
+      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set('X-Requested-With','XMLHttpRequest')
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
@@ -287,7 +287,7 @@ describe ("evidence upload url tests", () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
     const expectedBuffer = fs.readFileSync(path.join(__dirname + "/../client/files/text.txt"));
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD)
+      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set('X-Requested-With','XMLHttpRequest')
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
@@ -335,7 +335,7 @@ describe ("evidence upload url tests", () => {
       "adding documents&quot;";
 
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_EVIDENCE_UPLOAD)
+      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set('X-Requested-With', 'XMLHttpRequest')
       .send({"continueCheck": "continueCheck"});

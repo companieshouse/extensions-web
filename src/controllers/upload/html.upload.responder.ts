@@ -1,6 +1,6 @@
 import {UploadResponder} from "./upload.responder.factory";
 import {NextFunction, Request, Response} from "express";
-import {EXTENSIONS_EVIDENCE_UPLOAD} from "../../model/page.urls";
+import {EXTENSIONS_DOCUMENT_UPLOAD} from "../../model/page.urls";
 import {GovUkErrorData} from "../../model/govuk.error.data";
 import {ReasonWeb} from "../../model/reason/extension.reason.web";
 import * as templatePaths from "../../model/template.paths";
@@ -8,7 +8,7 @@ import * as templatePaths from "../../model/template.paths";
 export class HtmlUploadResponder implements UploadResponder {
 
   public handleSuccess = async (req: Request, res: Response): Promise<void> => {
-    return res.redirect(EXTENSIONS_EVIDENCE_UPLOAD);
+    return res.redirect(EXTENSIONS_DOCUMENT_UPLOAD);
   }
 
   public handleGenericError = (res: Response, e: Error, next?: NextFunction): void => {
@@ -18,11 +18,11 @@ export class HtmlUploadResponder implements UploadResponder {
   }
 
   public handleGovUKError = (res: Response, errorData: GovUkErrorData, currentReason: ReasonWeb): void => {
-    return res.render(templatePaths.EVIDENCE_UPLOAD, {
+    return res.render(templatePaths.DOCUMENT_UPLOAD, {
+      documentsUploadErr: errorData,
       errorList: [errorData],
-      evidenceUploadErr: errorData,
       reason: currentReason,
-      templateName: templatePaths.EVIDENCE_UPLOAD,
+      templateName: templatePaths.DOCUMENT_UPLOAD,
     });
   }
 }
