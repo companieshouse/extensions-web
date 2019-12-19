@@ -1,4 +1,4 @@
-import {getCompanyProfile, ExtensionsCompanyProfile, callProcessorApi} from "../../client/apiclient";
+import {getCompanyProfile, ExtensionsCompanyProfile} from "../../client/apiclient";
 import * as mockUtils from "../mock.utils";
 import {createApiClient} from "ch-sdk-node";
 import Resource from "ch-sdk-node/dist/services/resource";
