@@ -42,7 +42,58 @@
         {% set extensionReasonErrorMessage = false %}
       {% endif %}
 
-      {{ govukRadios({
+      {% if isFeatureFlagAuthCodeEnabled === true %}
+        {{ govukRadios({
+          idPrefix: "choose-reason",
+          name: "extensionReason",
+          errorMessage: extensionReasonErrorMessage,
+          fieldset: {
+            legend: {
+              text: "Why are you applying for an extension?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: "You can add more reasons later"
+          },
+          items: [
+            {
+              value: "illness",
+              text: "Illness",
+              checked: isIllnessChecked,
+              attributes: {
+                "data-event-id": "illness-option"
+              }
+            },
+            {
+              value: "missing company authentication code",
+              text: "Missing company authentication code",
+              checked: isMissingAuthCodeChecked,
+              attributes: {
+                "data-event-id": "missing-authentication-code-option"
+              }
+            },
+            {
+              value: "accounting issues",
+              text: "Accounting issues",
+              checked: isAccountingIssuesChecked,
+              attributes: {
+                "data-event-id": "accounting-issues-option"
+              }
+            },
+            {
+              value: "other",
+              text: "I'm applying for another reason",
+              checked: isOtherReasonChecked,
+              attributes: {
+                "data-event-id": "other-option"
+              }
+            }
+          ]
+        }) }}
+      {% else %}
+        {{ govukRadios({
         idPrefix: "choose-reason",
         name: "extensionReason",
         errorMessage: extensionReasonErrorMessage,
@@ -83,8 +134,9 @@
           }
         ]
       }) }}
+    {% endif %}
 
-      {{ govukButton({
+        {{ govukButton({
         text: "Continue",
         attributes: {
           "data-event-id": "continue-button",

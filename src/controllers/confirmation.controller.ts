@@ -7,6 +7,8 @@ import * as apiClient from "../client/apiclient";
 import logger from "../logger";
 import activeFeature from "../feature.flag";
 import RequestCountMonitor from "../global/request.count.monitor";
+import {getReasons, ListReasonResponse} from "../client/apiclient";
+import {FEATURE_MISSING_AUTHENTICATION_CODE} from "../session/config";
 
 const createMissingError = (item: string): Error => {
   const errMsg: string = item + " missing from session";
@@ -15,6 +17,7 @@ const createMissingError = (item: string): Error => {
 
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const companyNum: string = await sessionService.getCompanyInContext(req.chSession);
+  let isMissingAuthenticationCodeJourney: boolean = false;
   if (!companyNum) {
     return next(createMissingError("Company Number"));
   }
@@ -22,6 +25,9 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   const signInInfo: ISignInInfo = req.chSession.data[keys.SIGN_IN_INFO] as ISignInInfo;
   const userProfile: IUserProfile = signInInfo[keys.USER_PROFILE] as IUserProfile;
   const email = userProfile.email;
+  const token: string = req.chSession.accessToken() as string;
+  const request = sessionService.getRequest(req.chSession);
+
   if (!email) {
     return next(createMissingError("User Email"));
   }
@@ -29,8 +35,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   if (!isSubmitted) {
     try {
       await sessionService.updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, true);
-      const token = req.chSession.accessToken();
-      const request = sessionService.getRequest(req.chSession);
       if (token && request) {
         await apiClient.callProcessorApi(companyNum, token, request.extension_request_id);
         if (activeFeature(process.env.FEATURE_REQUEST_COUNT)) {
@@ -47,8 +51,24 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   } else {
     logger.error("Form already submitted, not processing again");
   }
+
+  if (token && request && activeFeature(FEATURE_MISSING_AUTHENTICATION_CODE)) {
+    const requestReasons: ListReasonResponse =
+      await getReasons(request, token);
+    if (requestReasons) {
+      requestReasons.items.forEach(
+        (reason) => {
+          if (reason.reason === "missing company authentication code") {
+            isMissingAuthenticationCodeJourney = true;
+          }
+        },
+      );
+    }
+  }
+
   return res.render(templatePaths.CONFIRMATION,
     {
+      authCodeFlag: isMissingAuthenticationCodeJourney,
       companyNumber: companyNum,
       templateName: templatePaths.CONFIRMATION,
       userEmail: email,

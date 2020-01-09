@@ -23,7 +23,7 @@ const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone  as jest.Mock<type
 const session = fullDummySession();
 
 const NO_REASON_INPUT: string = "You must tell us the reason";
-const NO_INFORMATION_INPUT = "You must give us more information";
+const NO_INFORMATION_INPUT = "You must tell us how this affected your ability to file on time";
 const REASON_ID: string = "abc-123";
 
 beforeEach(() => {
@@ -137,7 +137,7 @@ describe("reason other validation tests", () => {
         otherReason: "This is a \r\ntest",
         otherInformation: "Lorem ipsum dolor sit amet, \r\nconsectetur adipiscing elit."
       });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toHaveBeenCalledWith(session, {
@@ -156,7 +156,7 @@ describe("reason other validation tests", () => {
         otherReason: "This is a test",
         otherInformation: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toHaveBeenCalledWith(session, {

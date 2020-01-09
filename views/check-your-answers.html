@@ -30,8 +30,6 @@
             <dd class="app-check-your-answers__answer">
               {{ reason.reason | capitalize }}
             </dd>
-            <dd class="app-check-your-answers__change">
-            </dd>
           </div>
           <div class="app-check-your-answers__contents">
             <dt class="app-check-your-answers__question">
@@ -117,9 +115,20 @@
               </ul>
             </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-ill-evidence-upload-{{loop.index}}" href="/extensions/evidence-upload?reasonId={{ reason.id }}"
+              <a id="change-ill-document-upload-{{loop.index}}" href="/extensions/document-upload?reasonId={{ reason.id }}"
                 data-event-id="change-illness-documents-button">Change<span class="govuk-visually-hidden"> supporting documents</span>
               </a>
+            </dd>
+          </div>
+        </dl>
+      {% elif reason.reason === "missing company authentication code" %}
+        <dl class="app-check-your-answers app-check-your-answers--long">
+          <div class="app-check-your-answers__contents">
+            <dt class="app-check-your-answers__question">
+              Reason for extension
+            </dt>
+            <dd class="app-check-your-answers__answer">
+                {{ reason.reason | capitalize }}
             </dd>
           </div>
         </dl>
@@ -131,8 +140,6 @@
             </dt>
             <dd class="app-check-your-answers__answer">
               {{ reason.reason | capitalize }}
-            </dd>
-            <dd class="app-check-your-answers__change">
             </dd>
           </div>
           <div class="app-check-your-answers__contents">
@@ -175,7 +182,7 @@
               </ul>
             </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-accounts-evidence-upload-{{loop.index}}" href="/extensions/evidence-upload?reasonId={{ reason.id }}"
+              <a id="change-accounts-document-upload-{{loop.index}}" href="/extensions/document-upload?reasonId={{ reason.id }}"
                 data-event-id="change-accounting-issue-documents-button">Change<span class="govuk-visually-hidden"> supporting documents</span>
               </a>
             </dd>
@@ -225,7 +232,7 @@
               </ul>
             </dd>
             <dd class="app-check-your-answers__change">
-              <a id="change-other-evidence-upload-{{loop.index}}" href="/extensions/evidence-upload?reasonId={{ reason.id }}"
+              <a id="change-other-document-upload-{{loop.index}}" href="/extensions/document-upload?reasonId={{ reason.id }}"
                 data-event-id="change-other-reason-documents-button">Change<span class="govuk-visually-hidden"> supporting documents</span>
               </a>
             </dd>
@@ -234,12 +241,14 @@
       {% endif %}
       <p class="govuk-body">
         <a id="remove-reason-{{loop.index}}" href="/extensions/remove-reason?id={{reason.id}}&reasonNumber={{loop.index}}" class="govuk-link"
-          data-event-id="remove-reason-button">Remove this reason</a>
+          data-event-id="remove-reason-button">Remove this reason<span class="govuk-visually-hidden"> remove reason {{ loop.index }} {{ reason.reason }}</span>
+        </a>
       </p>
     </div>
     {% endfor %}
     <p class="govuk-!-margin-bottom-7 govuk-!-margin-top-7">
-      <a href="/extensions/choose-reason" class="govuk-link" data-event-id="add-another-reason-button">Add another reason</a>
+      <a href="/extensions/choose-reason" class="govuk-link" data-event-id="add-another-reason-button">Add another reason<span class="govuk-visually-hidden"> add another reason</span>
+      </a>
     </p>
 
     <h2 class="govuk-heading-m">Submit your application for an extension</h2>

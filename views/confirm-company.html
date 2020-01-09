@@ -36,60 +36,58 @@
         {{company.address.postCode}}
       {% endset %}
 
-      {{ govukTable({
-        firstCellIsHeader: true,
-        classes: "align-top",
+      {{ govukSummaryList({
         rows: [
-          [
-            {
+          {
+            key: {
               text: "Company number"
             },
-            {
-              text: company.companyNumber
+            value: {
+            text: company.companyNumber
             }
-          ],
-          [
-            {
+          },
+          {
+            key: {
               text: "Status"
             },
-            {
+            value: {
               text: company.companyStatus
             }
-          ],
-          [
-            {
+          },
+          {
+            key: {
               text: "Incorporation date"
             },
-            {
+            value: {
               text: company.incorporationDate
             }
-          ],
-          [
-            {
+          },
+          {
+            key: {
               text: "Company type"
             },
-            {
+            value: {
               text: company.companyType
             }
-          ],
-          [
-            {
+          },
+          {
+            key: {
               text: "Registered office address"
             },
-            {
+            value: {
               html: address
             }
-          ],
-          [
-            {
+          },
+          {
+            key: {
               text: "Accounts due by"
             },
-            {
+            value: {
               html: accountsDueHTML
             }
-          ]
+          }
         ]
-      }) }}
+      })  }}
 
       <form method="post">
         {{ govukButton({

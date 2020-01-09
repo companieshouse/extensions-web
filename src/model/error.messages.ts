@@ -13,7 +13,7 @@ export const ERROR_500: string = "An internal server error has occurred";
 export const REDIS_PROBLEM: string = "There is a problem with redis: ";
 
 export const NO_REASON_INPUT: string = "You must tell us the reason";
-export const NO_INFORMATION_INPUT: string = "You must give us more information";
+export const NO_INFORMATION_INPUT: string = "You must tell us how this affected your ability to file on time";
 
 export const WHO_WAS_ILL_NOT_SELECTED: string = "You must select a person";
 export const WHO_WAS_ILL_OTHER_NOT_SELECTED: string = "You must tell us the person";
@@ -29,7 +29,7 @@ export const ILLNESS_START_DATE_FUTURE: string = "Start date must be today or in
 export const ILLNESS_END_DATE_FUTURE: string = "End date must be today or in the past";
 export const ILLNESS_END_BEFORE_START_DATE: string = "End date must not precede start date";
 
-export const UPLOAD_EVIDENCE_DECISION_NOT_MADE: string = "You must tell us if you want to upload evidence";
+export const UPLOAD_DOCUMENTS_DECISION_NOT_MADE: string = "You must tell us if you want to upload documents";
 export const REMOVE_DOCUMENT_DECISION_NOT_MADE: string = "You must tell us if you want to remove the document";
 export const ADD_EXTENSION_REASON_DECISION_NOT_MADE: string =
   "You must tell us if there is another reason for your extension";

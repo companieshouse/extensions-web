@@ -17,6 +17,7 @@ export default async () => {
   process.env.PERMISSION_NAME_VIEW = "dummy_view_permission";
   process.env.MAXIMUM_EXTENSION_REQUESTS_PER_DAY = "50";
   process.env.FEATURE_REQUEST_COUNT="off";
+  process.env.FEATURE_MISSING_AUTHENTICATION_CODE="on";
   process.env.MAX_FILE_SIZE_BYTES = "10";
   process.env.PIWIK_URL = "test";
   process.env.PIWIK_SITE_ID = "test";

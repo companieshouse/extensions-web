@@ -13,12 +13,12 @@ import * as continuedIllnessRoute from "../controllers/illness/continued.illness
 import accountsDateRoute, {render as renderAccountsDate} from "../controllers/accounts/accounts.date.controller";
 import accountsInformationRoute, {
   render as renderAccountsInformation} from "../controllers/accounts/accounts.information.controller";
-import evidenceOptionRoute, {render as renderEvidenceOption} from "../controllers/evidence.option.controller";
+import documentsOptionRoute, {render as renderDocumentsOption} from "../controllers/document.option.controller";
 import removeDocumentRoute, {render as renderRemoveDocument} from "../controllers/remove.document.controller";
-import evidenceUploadRoute, {
+import documentsUploadRoute, {
   continueWithNoValidation as uploadContinueNoDocs,
-  render as renderEvidenceUpload,
-} from "../controllers/evidence.upload.controller";
+  render as renderDocumentsUpload,
+} from "../controllers/document.upload.controller";
 import reasonOtherRoute, {render as renderReasonOther} from "../controllers/other/reason.other.controller";
 import whoWasIllRoute, {render as renderWhoWasIll} from "../controllers/illness/who.was.ill.controller";
 import {submit as submitCheckAnswers} from "../controllers/check.your.answers.controller";
@@ -82,12 +82,12 @@ router.post(pageURLs.ACCOUNTS_INFORMATION, ...accountsInformationRoute);
 router.get(pageURLs.REASON_OTHER, sessionQuery, renderReasonOther);
 router.post(pageURLs.REASON_OTHER, ...reasonOtherRoute);
 
-router.get(pageURLs.EVIDENCE_OPTION, renderEvidenceOption);
-router.post(pageURLs.EVIDENCE_OPTION, ...evidenceOptionRoute);
+router.get(pageURLs.DOCUMENT_OPTION, renderDocumentsOption);
+router.post(pageURLs.DOCUMENT_OPTION, ...documentsOptionRoute);
 
-router.get(pageURLs.EVIDENCE_UPLOAD, renderEvidenceUpload);
-router.get(pageURLs.EVIDENCE_UPLOAD_CONTINUE_NO_DOCS, uploadContinueNoDocs);
-router.post(pageURLs.EVIDENCE_UPLOAD, ...evidenceUploadRoute);
+router.get(pageURLs.DOCUMENT_UPLOAD, renderDocumentsUpload);
+router.get(pageURLs.DOCUMENT_UPLOAD_CONTINUE_NO_DOCS, uploadContinueNoDocs);
+router.post(pageURLs.DOCUMENT_UPLOAD, ...documentsUploadRoute);
 
 router.get(pageURLs.ADD_EXTENSION_REASON, renderAddExtensionReason);
 router.post(pageURLs.ADD_EXTENSION_REASON, ...addExtensionReasonRoute);

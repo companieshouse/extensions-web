@@ -44,7 +44,7 @@ export class AjaxUploadResponder implements UploadResponder {
       }).then((html: string) =>  this.processObjectOption(divsArray, html, "errorSummaryDiv"));
       logger.trace("Rendered fragment " + UPLOAD_ERROR_SUMMARY);
       await this.renderFragment(res, UPLOAD_FILE_PICKER, {
-        evidenceUploadErr: errorData,
+        documentUploadErr: errorData,
         reason: currentReason,
       }).then((html: string) => this.processObjectOption(divsArray, html, "fileUploadDiv"));
       logger.trace("Rendered fragment " + UPLOAD_FILE_PICKER);

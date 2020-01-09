@@ -21,7 +21,7 @@ const mockGetCurrentReason = (<unknown>reasonService.getCurrentReason as jest.Mo
 const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone  as jest.Mock<typeof createHistoryIfNone>);
 const session = fullDummySession();
 
-const NO_INFORMATION_INPUT: string = "You must give us more information";
+const NO_INFORMATION_INPUT: string = "You must tell us how this affected your ability to file on time";
 const REASON_ID: string = "abc-123";
 
 beforeEach(() => {
@@ -98,7 +98,7 @@ describe("illness information validation tests", () => {
       .send({
         illnessInformation: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toBeCalledWith(session, {
@@ -115,7 +115,7 @@ describe("illness information validation tests", () => {
       .send({
         illnessInformation: "Lorem ipsum dolor sit amet, \r\nconsectetur adipiscing elit."
       });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EVIDENCE_OPTION);
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toBeCalledWith(session, {
