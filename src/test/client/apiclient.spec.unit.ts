@@ -22,8 +22,7 @@ describe("apiclient company profile unit tests", () => {
     mockGetCompanyProfile.mockResolvedValueOnce(dummySDKResponse);
     const company = await getCompanyProfile("sc100079", mockUtils.ACCESS_TOKEN);
     expect(company.incorporationDate).toEqual("26 June 1872");
-    const args = mockGetCompanyProfile.mock.calls[0][0];
-    expect(args).toContain("SC100079");
+    expect(mockGetCompanyProfile).toBeCalledWith("SC100079");
   });
 
   it("returns an ExtensionsCompanyProfile object", async () => {
