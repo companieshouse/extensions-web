@@ -112,7 +112,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
 
   logger.debug("Data from company profile SDK call " + JSON.stringify(sdkResponse, null, 2));
 
-  const companyProfile: CompanyProfile = sdkResponse.resource as CompanyProfile;
+  const companyProfile = sdkResponse.resource as CompanyProfile;
 
   return {
     accountingPeriodEndOn: companyProfile.accounts.nextAccounts.periodEndOn,
