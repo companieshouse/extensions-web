@@ -1,5 +1,5 @@
 import * as keys from "../session/keys";
-import {CompanyProfile, ExtensionFullRequest} from "../client/apiclient";
+import {ExtensionsCompanyProfile, ExtensionFullRequest} from "../client/apiclient";
 import {loadSession} from "../services/redis.service";
 import Session from "../session/session";
 
@@ -98,7 +98,7 @@ export const sessionWithChangingDetails = () => {
   return session;
 };
 
-export const getDummyCompanyProfile = (isOverdue: boolean, isActive): CompanyProfile => {
+export const getDummyCompanyProfile = (isOverdue: boolean, isActive): ExtensionsCompanyProfile => {
   return {
     accountingPeriodEndOn: ACCOUNTS_NEXT_DUE_DATE,
     accountingPeriodStartOn: ACCOUNTS_NEXT_DUE_DATE,

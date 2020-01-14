@@ -7,7 +7,7 @@ import {
   removeAttachment,
   removeExtensionReasonFromRequest,
   getCompanyProfile,
-  CompanyProfile,
+  ExtensionsCompanyProfile,
   ExtensionFullRequest,
   getFullRequest, callProcessorApi
 } from "../../client/apiclient";
@@ -123,7 +123,7 @@ describe("apiclient integration tests", () => {
 
     expect.assertions(1);
     try {
-      await createExtensionRequest({} as CompanyProfile, companyNumber);
+      await createExtensionRequest({} as ExtensionsCompanyProfile, companyNumber);
     } catch(e) {
       expect(e.status).toEqual(-1);
     }

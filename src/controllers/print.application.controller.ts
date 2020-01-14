@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import * as sessionService from "../services/session.service";
 import logger from "../logger";
-import {CompanyProfile, getCompanyProfile, ExtensionFullRequest} from "../client/apiclient";
+import {ExtensionsCompanyProfile, getCompanyProfile, ExtensionFullRequest} from "../client/apiclient";
 import * as templatePaths from "../model/template.paths";
 import * as errorMessages from "../model/error.messages";
 import * as apiClient from "../client/apiclient";
@@ -28,7 +28,7 @@ const printApplicationRoute = async (req: Request, res: Response, next: NextFunc
     try {
       logger.info(`Company number ${companyNumber} found in session, retrieving company profile`);
       const token: string = req.chSession.accessToken() as string;
-      const companyInSession: CompanyProfile = await getCompanyProfile(companyNumber, token);
+      const companyInSession: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
       const request: IExtensionRequest = sessionService.getRequest(req.chSession);
       const fullRequest: ExtensionFullRequest =
         await apiClient.getFullRequest(companyNumber, token, request.extension_request_id);

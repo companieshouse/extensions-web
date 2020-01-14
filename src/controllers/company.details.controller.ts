@@ -1,12 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { CompanyProfile, getCompanyProfile, createExtensionRequest } from "../client/apiclient";
+import { ExtensionsCompanyProfile, getCompanyProfile, createExtensionRequest } from "../client/apiclient";
 import logger from "../logger";
 import * as sessionService from "../services/session.service";
 import * as errorMessages from "../model/error.messages";
 import * as templatePaths from "../model/template.paths";
 import * as pageURLs from "../model/page.urls";
 import * as keys from "../session/keys";
-import {saveSession} from "../services/redis.service";
 
 export const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
@@ -14,7 +13,7 @@ export const route = async (req: Request, res: Response, next: NextFunction): Pr
     try {
       logger.info(`Company number ${companyNumber} found in session, retrieving company profile`);
       const token: string = req.chSession.accessToken() as string;
-      const company: CompanyProfile = await getCompanyProfile(companyNumber, token);
+      const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
       const isDueDatePassed: boolean = checkDueDate(company);
       return res.render(templatePaths.CONFIRM_COMPANY, {
         company,
@@ -45,7 +44,7 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
   try {
     const token: string = req.chSession.accessToken() as string;
     if (token) {
-      const company: CompanyProfile = await getCompanyProfile(companyNumber, token);
+      const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
       const isDueDatePassed = checkDueDate(company);
       if (company.isAccountsOverdue || isDueDatePassed) {
         return res.render(templatePaths.ACCOUNTS_OVERDUE, {
@@ -72,7 +71,7 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
   }
 };
 
-const checkDueDate = (company: CompanyProfile): boolean => {
+const checkDueDate = (company: ExtensionsCompanyProfile): boolean => {
   const currentDate: Date = new Date(Date.now());
   currentDate.setHours(0, 0, 0);
   const dueDate: Date = new Date(company.accountsDue);

@@ -6,7 +6,7 @@ import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
 import * as templatePaths from "../model/template.paths";
 import { ValidationError } from "../model/validation.error";
 import * as pageUrls from "../model/page.urls";
-import { CompanyProfile, getCompanyProfile, removeExtensionReasonFromRequest } from "../client/apiclient";
+import { ExtensionsCompanyProfile, getCompanyProfile, removeExtensionReasonFromRequest } from "../client/apiclient";
 import * as sessionService from "../services/session.service";
 import * as apiClient from "../client/apiclient";
 import { IExtensionRequest } from "session/types";
@@ -37,7 +37,7 @@ const removeReasonGetRoute = async (req: Request, res: Response, next: NextFunct
 
 const getPageRender = async (companyNumber: string, req: Request) => {
   const token: string = req.chSession.accessToken() as string;
-  const companyInSession: CompanyProfile = await getCompanyProfile(companyNumber, token);
+  const companyInSession: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
   const request: IExtensionRequest = sessionService.getRequest(req.chSession);
   const reasons = await apiClient.getReasons(request, token);
   const filteredReason = await filterReasonToRemove(reasons, req.query.id);
