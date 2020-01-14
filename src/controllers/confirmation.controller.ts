@@ -18,6 +18,7 @@ const createMissingError = (item: string): Error => {
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const companyNum: string = await sessionService.getCompanyInContext(req.chSession);
   let isMissingAuthenticationCodeJourney: boolean = false;
+  let numOfReasons: number = 0;
   if (!companyNum) {
     return next(createMissingError("Company Number"));
   }
@@ -55,6 +56,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   if (token && request && activeFeature(FEATURE_MISSING_AUTHENTICATION_CODE)) {
     const requestReasons: ListReasonResponse =
       await getReasons(request, token);
+    numOfReasons = requestReasons.items.length;
     if (requestReasons) {
       requestReasons.items.forEach(
         (reason) => {
@@ -70,6 +72,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     {
       authCodeFlag: isMissingAuthenticationCodeJourney,
       companyNumber: companyNum,
+      numberOfReasons: numOfReasons,
       templateName: templatePaths.CONFIRMATION,
       userEmail: email,
     });

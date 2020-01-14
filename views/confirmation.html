@@ -33,7 +33,12 @@
 
     <h2 class="govuk-heading-m">What happens next</h2>
     <p>It will take up to 5 working days to review your application. We’ll contact you by email with our decision.
-      Accepted applications normally receive an extension of 30 days.
+      Accepted applications normally receive an extension of
+      {% if numberOfReasons === 1 and authCodeFlag === true %}
+        up to 2 weeks.
+      {% else %}
+        30 days.
+      {% endif %}
       We may also contact you if we need more information.</p>
     <p>
       <a href="https://www.research.net/r/extensions-confirmation">What did you think of this service?</a>
