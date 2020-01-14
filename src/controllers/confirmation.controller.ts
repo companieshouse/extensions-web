@@ -56,8 +56,8 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   if (token && request && activeFeature(FEATURE_MISSING_AUTHENTICATION_CODE)) {
     const requestReasons: ListReasonResponse =
       await getReasons(request, token);
-    numOfReasons = requestReasons.items.length;
     if (requestReasons) {
+      numOfReasons = requestReasons.items.length;
       requestReasons.items.forEach(
         (reason) => {
           if (reason.reason === "missing company authentication code") {
