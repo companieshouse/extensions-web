@@ -15,7 +15,7 @@ clean:
 	rm -f ./build.log
 
 .PHONY: build
-build:	update_submodules
+build:	update_submodules lint
 	npm i
 	npm run build
 
