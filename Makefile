@@ -14,9 +14,11 @@ clean:
 	rm -rf ./dist
 	rm -f ./build.log
 
-.PHONY: build
-build:	update_submodules lint
+package-install:
 	npm i
+
+.PHONY: build
+build:	package-install lint update_submodules
 	npm run build
 
 .PHONY: lint
