@@ -25,6 +25,10 @@ build:	package-install lint update_submodules
 lint:
 	npm run lint
 
+.PHONY: sonar-publish
+sonar-publish:
+	npm run sonarqube
+
 .PHONY: test
 test: test-unit test-integration
 	npm run test
