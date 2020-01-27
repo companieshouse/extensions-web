@@ -15,5 +15,5 @@ module.exports = {
       diagnostics: false,
     }
   },
-  globalSetup: "./src/test/global.setup.ts",
+  globalSetup: "./global.setup.ts",
 };

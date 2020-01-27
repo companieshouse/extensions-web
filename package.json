@@ -12,8 +12,8 @@
     "contract-consumer": "jest -c src/test/jest.config.contract.js --detectOpenHandles",
     "sass": "node-sass src/public/stylesheets/scss -o src/public/stylesheets/css -i false",
     "lint": "tslint -p .",
-    "sonarqube": "npm run coverage-jest && sonar-scanner",
-    "coverage-jest": "jest -c jest.config.coverage.js --forceExit --coverage"
+    "sonarqube": "sonar-scanner",
+    "sonar-test": "jest -c src/test/jest.config.sonar.js --forceExit --coverage"
   },
   "dependencies": {
     "axios": "^0.19.0",
