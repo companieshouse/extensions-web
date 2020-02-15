@@ -9,8 +9,6 @@ import * as apiClient from "../client/apiclient";
 import { IExtensionRequest } from "session/types";
 import * as reasonService from "../services/reason.service";
 import * as keys from "../session/keys";
-import activeFeature from "../feature.flag";
-import {FEATURE_MISSING_AUTHENTICATION_CODE} from "../session/config";
 
 const validators = [
   check("extensionReason").not().isEmpty().withMessage(errorMessages.EXTENSION_REASON_NOT_SELECTED),
@@ -23,17 +21,13 @@ export const render = (req: Request, res: Response, next: NextFunction): void =>
   let otherChecked: boolean = false;
   if (!(req.chSession.data[keys.EXTENSION_SESSION] === undefined)) {
     accountingIssuesChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.ACCOUNTING_ISSUES_CHOSEN];
-    if (activeFeature(FEATURE_MISSING_AUTHENTICATION_CODE)) {
-      missingAuthenticationCodeChecked = req.chSession.data
-        [keys.EXTENSION_SESSION]
-        [keys.MISSING_AUTHENTICATION_CODE_CHOSEN];
-    }
+    missingAuthenticationCodeChecked = req.chSession.data
+      [keys.EXTENSION_SESSION][keys.MISSING_AUTHENTICATION_CODE_CHOSEN];
     illnessChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.ILLNESS_CHOSEN];
     otherChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.OTHER_CHOSEN];
   }
   return res.render(templatePaths.CHOOSE_REASON, {
     isAccountingIssuesChecked: accountingIssuesChecked,
-    isFeatureFlagAuthCodeEnabled: activeFeature(FEATURE_MISSING_AUTHENTICATION_CODE),
     isIllnessChecked: illnessChecked,
     isMissingAuthCodeChecked: missingAuthenticationCodeChecked,
     isOtherReasonChecked: otherChecked,
@@ -54,7 +48,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
           extReasonErr,
         ],
         extensionReasonErr: extReasonErr,
-        isFeatureFlagAuthCodeEnabled: activeFeature(FEATURE_MISSING_AUTHENTICATION_CODE),
         templateName: templatePaths.CHOOSE_REASON,
       });
     }

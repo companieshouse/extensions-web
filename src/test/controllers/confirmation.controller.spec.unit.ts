@@ -230,9 +230,9 @@ const dummySession = (companyNumber, email) => {
         ]
       }],
     }
-  }
+  };
   return session;
-}
+};
 
 const dummySessionWithToken = (companyNumber, email) => {
   let session: Session = Session.newInstance();
@@ -262,6 +262,6 @@ const dummySessionWithToken = (companyNumber, email) => {
         ]
       }],
     }
-  }
+  };
   return session;
-}
+};
