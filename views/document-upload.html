@@ -5,13 +5,7 @@ Add documents to support your application
 {% endblock %}
 
 {% block backLink %}
-  {{ govukBackLink({
-    text: "Back",
-    href: "/extensions/back-link",
-    attributes: {
-      "data-event-id": "back-button"
-    }
-   }) }}
+  {% include "includes/back-link.html" %}
 {% endblock %}
 
 {% block content %}
