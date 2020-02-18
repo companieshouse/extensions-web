@@ -42,6 +42,4 @@ export const MAXIMUM_EXTENSION_REQUESTS_PER_DAY = getEnvironmentValue("MAXIMUM_E
 
 export const FEATURE_REQUEST_COUNT = getEnvironmentValue("FEATURE_REQUEST_COUNT");
 
-export const FEATURE_MISSING_AUTHENTICATION_CODE = getEnvironmentValue("FEATURE_MISSING_AUTHENTICATION_CODE");
-
 export const MAX_FILE_SIZE_BYTES = getEnvironmentValue("MAX_FILE_SIZE_BYTES");

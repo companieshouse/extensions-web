@@ -8,7 +8,6 @@ import logger from "../logger";
 import activeFeature from "../feature.flag";
 import RequestCountMonitor from "../global/request.count.monitor";
 import {getReasons, ListReasonResponse} from "../client/apiclient";
-import {FEATURE_MISSING_AUTHENTICATION_CODE} from "../session/config";
 
 const createMissingError = (item: string): Error => {
   const errMsg: string = item + " missing from session";
@@ -53,9 +52,8 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     logger.error("Form already submitted, not processing again");
   }
 
-  if (token && request && activeFeature(FEATURE_MISSING_AUTHENTICATION_CODE)) {
-    const requestReasons: ListReasonResponse =
-      await getReasons(request, token);
+  if (token && request) {
+    const requestReasons: ListReasonResponse = await getReasons(request, token);
     if (requestReasons) {
       numOfReasons = requestReasons.items.length;
       requestReasons.items.forEach(
