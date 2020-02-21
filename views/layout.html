@@ -40,8 +40,6 @@
           crossorigin="anonymous">
   </script>
 
-  <div id="templateName" data-id='{{templateName}}' hidden></div>
-
   {% block download %}
   {% endblock %}
 {% endblock %}
@@ -62,6 +60,7 @@
     },
     html: 'This is a new service - Help us improve it by providing <a class="govuk-link" href="https://www.research.net/r/extensions-feedback" target="_blank">feedback <span class="govuk-visually-hidden">(This link opens in a new window)</span></a>'
   }) }}
+  <div id="templateName" data-id='{{templateName}}' hidden></div>
   {% block backLink %}
   {% endblock %}
 {% endblock %}
