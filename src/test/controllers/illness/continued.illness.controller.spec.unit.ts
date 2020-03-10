@@ -65,6 +65,7 @@ describe("continued illness url tests", () => {
   it ("should return 404 if continued illness page with put", async () => {
     const res = await request(app)
       .put(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -77,6 +78,7 @@ describe("continued illness validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
     expect(res.text).toContain(STILL_ILL_ANSWER_NOT_PROVIDED);
@@ -88,6 +90,7 @@ describe("continued illness validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({continuedIllness: "yes"});
     expect(res.header.location).toEqual(pageURLs.EXTENSIONS_ILLNESS_INFORMATION);
@@ -101,6 +104,7 @@ describe("continued illness validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({continuedIllness: "no"});
     expect(res.header.location).toEqual(pageURLs.EXTENSIONS_ILLNESS_END_DATE);
@@ -114,6 +118,7 @@ describe("continued illness validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({continuedIllness: "yes"});
     expect(res.header.location).toEqual(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);

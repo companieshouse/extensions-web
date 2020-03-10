@@ -101,6 +101,7 @@ describe("illness start date url tests", () => {
   it("should return 404 for start date page with put", async () => {
     const res = await request(app)
       .put(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -112,6 +113,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "", "illness-start-month": "", "illness-start-year": ""});
     expect(res.status).toEqual(200);
@@ -126,6 +128,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "", "illness-start-month": "02", "illness-start-year": "2016"});
     expect(res.status).toEqual(200);
@@ -139,6 +142,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "", "illness-start-month": "", "illness-start-year": "2016"});
     expect(res.status).toEqual(200);
@@ -152,6 +156,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "", "illness-start-month": "10", "illness-start-year": ""});
     expect(res.status).toEqual(200);
@@ -165,6 +170,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "11", "illness-start-month": "", "illness-start-year": "2016"});
     expect(res.status).toEqual(200);
@@ -178,6 +184,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "10", "illness-start-month": "", "illness-start-year": ""});
     expect(res.status).toEqual(200);
@@ -191,6 +198,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "11", "illness-start-month": "11", "illness-start-year": ""});
     expect(res.status).toEqual(200);
@@ -204,6 +212,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "31", "illness-start-month": "06", "illness-start-year": "2018"});
     expect(res.status).toEqual(200);
@@ -215,6 +224,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "29", "illness-start-month": "2", "illness-start-year": "2015"});
     expect(res.status).toEqual(200);
@@ -226,6 +236,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "29", "illness-start-month": "2", "illness-start-year": "2016"});
     expect(res.status).toEqual(302);
@@ -240,6 +251,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "aa", "illness-start-month": "bb", "illness-start-year": "cc"});
     expect(res.status).toEqual(200);
@@ -251,6 +263,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "11", "illness-start-month": "05", "illness-start-year": "9999"});
     expect(res.status).toEqual(200);
@@ -264,6 +277,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         "illness-start-day": now.format("DD"),
@@ -280,6 +294,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "11", "illness-start-month": "05", "illness-start-year": "1999"});
     expect(res.status).toEqual(302);
@@ -294,6 +309,7 @@ describe("illness start date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-start-day": "3", "illness-start-month": "5", "illness-start-year": "1999"});
     expect(res.status).toEqual(302);

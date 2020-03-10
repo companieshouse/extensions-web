@@ -70,22 +70,4 @@ describe("click back link tests", () => {
         }
       });
   });
-
-  it("should remove last page when referer is undefined",async ()=> {
-    const res = await request(app)
-      .get(pageURLs.EXTENSIONS_BACK_LINK)
-      .set("Cookie", [`${COOKIE_NAME}=123`]);
-    expect(res.status).toEqual(302);
-    expect(mockUpdateHistory).toBeCalledWith(
-      {page_history:["/extensions/first-page", "/extensions/page-before-that"]},
-      {
-        _cookieId: "123",
-        _data: {
-          page_history:
-            {page_history: ["/extensions/first-page", "/extensions/page-before-that"]},
-          signin_info: {signed_in: 1}
-        }
-      });
-
-  });
 });

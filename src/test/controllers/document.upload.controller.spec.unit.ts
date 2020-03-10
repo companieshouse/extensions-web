@@ -109,6 +109,7 @@ describe ("document upload url tests", () => {
   it ("should return 404 if document upload page with put", async () => {
     const res = await request(app)
       .put(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -117,6 +118,7 @@ describe ("document upload url tests", () => {
     // See global.setup.ts for unit test file size limit
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .attach('file-upload', path.join(__dirname + "/../client/files/text_large.txt"));
     expect(response.text).toContain(EXPECTED_MAX_FILE_SIZE_MESSAGE);
@@ -134,6 +136,7 @@ describe ("document upload url tests", () => {
 
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
       expect(response.status).toEqual(200);
@@ -150,6 +153,7 @@ describe ("document upload url tests", () => {
     mockAddAttachment.prototype.constructor.mockImplementationOnce(() => {throw new Error()});
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
     expect(res.status).toEqual(500);
@@ -166,6 +170,7 @@ describe ("document upload url tests", () => {
     const expectedBuffer = fs.readFileSync(path.join(__dirname + "/../client/files/text.txt"));
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
     expect(res.status).toEqual(302);
@@ -199,6 +204,7 @@ describe ("document upload url tests", () => {
 
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"continueCheck": "continueCheck"});
     expect(res.status).toEqual(200);
@@ -212,6 +218,7 @@ describe ("document upload url tests", () => {
     // See global.setup.ts for unit test file size limit
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set('X-Requested-With','XMLHttpRequest')
       .attach('file-upload', path.join(__dirname + "/../client/files/text_large.txt"));
@@ -243,6 +250,7 @@ describe ("document upload url tests", () => {
 
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set('X-Requested-With','XMLHttpRequest')
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
@@ -272,6 +280,7 @@ describe ("document upload url tests", () => {
     mockAddAttachment.prototype.constructor.mockImplementationOnce(() => {throw new Error()});
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set('X-Requested-With','XMLHttpRequest')
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
@@ -288,6 +297,7 @@ describe ("document upload url tests", () => {
     const expectedBuffer = fs.readFileSync(path.join(__dirname + "/../client/files/text.txt"));
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set('X-Requested-With','XMLHttpRequest')
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
@@ -336,6 +346,7 @@ describe ("document upload url tests", () => {
 
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set('X-Requested-With', 'XMLHttpRequest')
       .send({"continueCheck": "continueCheck"});

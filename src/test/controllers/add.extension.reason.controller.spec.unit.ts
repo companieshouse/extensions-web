@@ -41,6 +41,7 @@ describe("add extension reason url tests", () => {
   it ("should return 404 if add extension reason page with put", async () => {
     const res = await request(app)
       .put(pageURLs.EXTENSIONS_ADD_EXTENSION_REASON)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -51,6 +52,7 @@ describe("add extension reason validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ADD_EXTENSION_REASON)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
     expect(res.text).toContain(ADD_EXTENSION_REASON_DECISION_NOT_MADE);
@@ -63,6 +65,7 @@ describe("add extension reason validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ADD_EXTENSION_REASON)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({addExtensionReason: "yes"});
     expect(res.header.location).toEqual(pageURLs.EXTENSIONS_CHOOSE_REASON);
@@ -75,6 +78,7 @@ describe("add extension reason validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ADD_EXTENSION_REASON)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({addExtensionReason: "no"});
     expect(res.header.location).toEqual(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);

@@ -64,6 +64,7 @@ describe("reason other url tests", () => {
   it("should return 404 if reason other page with put", async () => {
     const res = await request(app)
       .put(pageURLs.EXTENSIONS_REASON_OTHER)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -75,6 +76,7 @@ describe("reason other validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REASON_OTHER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
     expect(res.text).toContain(NO_REASON_INPUT);
@@ -86,6 +88,7 @@ describe("reason other validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REASON_OTHER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         otherReason: " ",
@@ -102,6 +105,7 @@ describe("reason other validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REASON_OTHER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         otherReason: "This is a test"
@@ -117,6 +121,7 @@ describe("reason other validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REASON_OTHER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
          otherInformation: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -132,6 +137,7 @@ describe("reason other validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REASON_OTHER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         otherReason: "This is a \r\ntest",
@@ -151,6 +157,7 @@ describe("reason other validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REASON_OTHER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         otherReason: "This is a test",
@@ -164,5 +171,4 @@ describe("reason other validation tests", () => {
       reason_information: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     });
   });
-
 });

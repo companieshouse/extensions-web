@@ -64,6 +64,7 @@ describe("print application controller", () => {
   it ("should return 404 if print application page with put", async () => {
     const res = await request(app)
       .put(pageURLs.EXTENSIONS_PRINT_APPLICATION)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
