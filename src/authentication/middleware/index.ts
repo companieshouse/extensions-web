@@ -21,7 +21,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
     if (!activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
       // if user is coming from start page or download page
       if (req.originalUrl.endsWith("/download")
-        || referringPageURL.endsWith(pageURLs.EXTENSIONS)) {
+          || referringPageURL.endsWith(pageURLs.EXTENSIONS)) {
         returnToUrl = req.originalUrl;
       }
     }
