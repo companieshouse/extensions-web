@@ -61,6 +61,7 @@ describe("illness information url tests", () => {
   it ("should return 404 if illness information page with put", async () => {
     const res = await request(app)
       .put(pageURLs.EXTENSIONS_ILLNESS_INFORMATION)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -71,6 +72,7 @@ describe("illness information validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_INFORMATION)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
     expect(res.text).toContain(NO_INFORMATION_INPUT);
@@ -80,6 +82,7 @@ describe("illness information validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_INFORMATION)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         illnessInformation: " "
@@ -94,6 +97,7 @@ describe("illness information validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_INFORMATION)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         illnessInformation: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -111,6 +115,7 @@ describe("illness information validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_INFORMATION)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         illnessInformation: "Lorem ipsum dolor sit amet, \r\nconsectetur adipiscing elit."

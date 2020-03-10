@@ -35,6 +35,7 @@ describe("document option url tests", () => {
   it("should return 404 if document option page with put", async () => {
     const res = await request(app)
       .put(pageURLs.EXTENSIONS_DOCUMENT_OPTION)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -45,6 +46,7 @@ describe("document option validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_OPTION)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
     expect(res.text).toContain(UPLOAD_DOCUMENTS_DECISION_NOT_MADE);
@@ -54,6 +56,7 @@ describe("document option validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_OPTION)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({supportingDocuments: "yes"});
     expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD);
@@ -65,6 +68,7 @@ describe("document option validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_OPTION)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({supportingDocuments: "no"});
     expect(res.header.location).toEqual(pageURLs.EXTENSIONS_ADD_EXTENSION_REASON);

@@ -25,6 +25,22 @@ describe("Authentication middleware", () => {
     expect(response.status).toEqual(200);
   });
 
+  it("should load start page if loading start page with trailing slash", async () => {
+    const response = await request(app)
+      .get("/extensions/")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(response.status).toEqual(200);
+  });
+
+  it("should redirect to start page if loading start page with trailing slash and no referer", async () => {
+    const response = await request(app)
+      .get("/extensions/")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .expect("Location", "/extensions");
+    expect(response.status).toEqual(302);
+  });
+
   it("should redirect to signin if /extensions/* called and not signed in", async () => {
     setNotSignedIn();
     const response = await request(app)
@@ -57,6 +73,7 @@ describe("Authentication middleware", () => {
     const url: string = "/extensions/download/company/1234/extensions/requests/5678/reasons/623826183/attachments/a7c4f600/download";
     const response = await request(app)
       .get(url)
+      .set("Referer", "/")
       .expect("Location", "/signin?return_to=" + url);
     expect(response.status).toEqual(302);
   });

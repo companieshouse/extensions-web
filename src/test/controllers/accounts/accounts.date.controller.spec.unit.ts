@@ -102,6 +102,7 @@ describe("accounting issue date url tests", () => {
   it("should return 404 for accounts date page with put", async () => {
     const res = await request(app)
       .put(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -113,6 +114,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "", "accounts-date-month": "", "accounts-date-year": ""});
     expect(res.status).toEqual(200);
@@ -127,6 +129,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "", "accounts-date-month": "02", "accounts-date-year": "2016"});
     expect(res.status).toEqual(200);
@@ -140,6 +143,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "", "accounts-date-month": "", "accounts-date-year": "2016"});
     expect(res.status).toEqual(200);
@@ -153,6 +157,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "", "accounts-date-month": "02", "accounts-date-year": ""});
     expect(res.status).toEqual(200);
@@ -166,6 +171,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "11", "accounts-date-month": "", "accounts-date-year": "2016"});
     expect(res.status).toEqual(200);
@@ -179,6 +185,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "11", "accounts-date-month": "", "accounts-date-year": ""});
     expect(res.status).toEqual(200);
@@ -192,6 +199,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "11", "accounts-date-month": "11", "accounts-date-year": ""});
     expect(res.status).toEqual(200);
@@ -205,6 +213,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "31", "accounts-date-month": "06", "accounts-date-year": "2018"});
     expect(res.status).toEqual(200);
@@ -216,6 +225,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "29", "accounts-date-month": "2", "accounts-date-year": "2015"});
     expect(res.status).toEqual(200);
@@ -227,6 +237,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "29", "accounts-date-month": "2", "accounts-date-year": "2016"});
     expect(res.status).toEqual(302);
@@ -241,6 +252,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "aa", "accounts-date-month": "bb", "accounts-date-year": "cc"});
     expect(res.status).toEqual(200);
@@ -252,6 +264,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "11", "accounts-date-month": "05", "accounts-date-year": "9999"});
     expect(res.status).toEqual(200);
@@ -265,6 +278,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         "accounts-date-day": now.format("DD"),
@@ -281,6 +295,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "11", "accounts-date-month": "05", "accounts-date-year": "1999"});
     expect(res.status).toEqual(302);
@@ -295,6 +310,7 @@ describe("accounts date validation tests", () => {
     const res = await request(app)
       .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"accounts-date-day": "3", "accounts-date-month": "5", "accounts-date-year": "1999"});
     expect(res.status).toEqual(302);

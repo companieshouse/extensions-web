@@ -50,6 +50,7 @@ describe("remove reason url tests", () => {
   it("should return 404 if remove reason page with put", async () => {
     const res = await request(app)
       .put(pageURLs.EXTENSIONS_REMOVE_REASON + QUERY_ID)
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -60,6 +61,7 @@ describe("Extension reason tests", () => {
   it("should remove a reason if yes is clicked", async () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REMOVE_REASON)
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({removeReason: "yes"});
     expect(res.status).toEqual(302);
@@ -72,6 +74,7 @@ describe("Extension reason tests", () => {
   it("should not remove any extension reason if no clicked", async () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REMOVE_REASON)
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({removeReason: "no"});
     expect(res.status).toEqual(302);
@@ -89,6 +92,7 @@ describe("Extension reason tests", () => {
     });
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REMOVE_REASON)
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({removeReason: "yes"});
     expect(res.status).toEqual(302);
@@ -101,6 +105,7 @@ describe("Extension reason tests", () => {
   it("should render remove-reason page with an error message if yes/no confirmation not selected", async () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REMOVE_REASON)
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
     expect(res.text).toContain(REMOVE_REASON_CONFIRMATION_NOT_SELECTED);

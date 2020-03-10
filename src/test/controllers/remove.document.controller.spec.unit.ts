@@ -70,6 +70,7 @@ describe("remove document url tests", () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
     const res = await request(app)
       .put(pageURLs.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -82,6 +83,7 @@ describe("remove document controller tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({removeDocument: "yes"});
     expect(res.status).toEqual(302);
@@ -94,6 +96,7 @@ describe("remove document controller tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({removeDocument: "no"});
     expect(res.status).toEqual(302);
@@ -106,6 +109,7 @@ describe("remove document controller tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
     expect(res.text).toContain(REMOVE_DOCUMENT_DECISION_NOT_MADE);

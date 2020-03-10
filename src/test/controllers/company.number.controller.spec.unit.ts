@@ -34,6 +34,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: COMPANY_NUMBER});
 
@@ -48,6 +49,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "6400"});
     
@@ -62,6 +64,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: " 00 00 6400  "});
 
@@ -76,6 +79,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "SC100079"});
 
@@ -90,6 +94,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "SC79"});
 
@@ -102,6 +107,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: ""});
 
@@ -117,6 +123,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "    "});
 
@@ -131,6 +138,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "asdfg!!@"});
 
@@ -151,6 +159,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "00012345"});
 
@@ -166,6 +175,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "000064000"});
 

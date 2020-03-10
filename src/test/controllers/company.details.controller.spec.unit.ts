@@ -150,6 +150,7 @@ describe("company.details.controller tests", () => {
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
     const res = await request(app).post("/extensions/confirm-company")
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(res.status).toEqual(200);
@@ -164,6 +165,7 @@ describe("company.details.controller tests", () => {
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
     const res = await request(app).post("/extensions/confirm-company")
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(res.status).toEqual(302);
@@ -177,6 +179,7 @@ describe("company.details.controller tests", () => {
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
     const res = await request(app).post("/extensions/confirm-company")
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(res.status).toEqual(200);
@@ -190,6 +193,7 @@ describe("company.details.controller tests", () => {
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
     const res = await request(app).post("/extensions/confirm-company")
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(res.status).toEqual(200);
@@ -203,6 +207,7 @@ describe("company.details.controller tests", () => {
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
     const res = await request(app).post("/extensions/confirm-company")
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(res.status).toEqual(302);
@@ -229,6 +234,7 @@ describe("company.details.controller tests", () => {
 
     const res = await request(app)
       .get(pageURLs.EXTENSIONS_CONFIRM_COMPANY)
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(res.status).toEqual(500);

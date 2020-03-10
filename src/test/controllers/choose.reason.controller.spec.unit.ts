@@ -19,7 +19,6 @@ const mockGetCurrentReason = (<unknown>reasonService.getCurrentReason as jest.Mo
 const mockDeleteReason = (<unknown>reasonService.deleteCurrentReason as jest.Mock<typeof reasonService.deleteCurrentReason>);
 
 const EXTENSION_REASON_NOT_SELECTED = "You must select a reason";
-const EXTENSION_OTHER_TEXT_NOT_PROVIDED = "You must tell us the reason";
 
 beforeEach(() => {
   loadMockSession(mockCacheService);
@@ -41,6 +40,7 @@ describe("choose reason url tests", () => {
   it("should return 404 if choose reason page with put", async () => {
     const res = await superTest(app)
       .put(pageURLs.EXTENSIONS_CHOOSE_REASON)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -52,6 +52,7 @@ describe("choose reason validation tests", () => {
     const res = await superTest(app)
       .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
     expect(res.text).toContain(EXTENSION_REASON_NOT_SELECTED);
@@ -65,6 +66,7 @@ describe("choose reason validation tests", () => {
     const res = await superTest(app)
       .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({extensionReason: "illness"});
     expect("/" + res.header.location).toEqual(pageURLs.REASON_ILLNESS);
@@ -81,6 +83,7 @@ describe("choose reason validation tests", () => {
     const res = await superTest(app)
       .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         extensionReason: "missing company authentication code",
@@ -100,6 +103,7 @@ describe("choose reason validation tests", () => {
     const res = await superTest(app)
       .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         extensionReason: "accounting issues",
@@ -119,6 +123,7 @@ describe("choose reason validation tests", () => {
     const res = await superTest(app)
       .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         extensionReason: "other",
@@ -139,6 +144,7 @@ describe("choose reason validation tests", () => {
     const res = await superTest(app)
       .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         extensionReason: "other",

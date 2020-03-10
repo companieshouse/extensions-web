@@ -64,6 +64,7 @@ describe("illness end date url tests", () => {
   it("should return 404 for end date page with put", async () => {
     const res = await request(app)
       .put(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -76,6 +77,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "", "illness-end-month": "", "illness-end-year": ""});
     expect(res.status).toEqual(200);
@@ -90,6 +92,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "", "illness-end-month": "02", "illness-end-year": "2016"});
     expect(res.status).toEqual(200);
@@ -104,6 +107,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "", "illness-end-month": "", "illness-end-year": "2016"});
     expect(res.status).toEqual(200);
@@ -118,6 +122,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "", "illness-end-month": "10", "illness-end-year": ""});
     expect(res.status).toEqual(200);
@@ -132,6 +137,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "11", "illness-end-month": "", "illness-end-year": "2016"});
     expect(res.status).toEqual(200);
@@ -146,6 +152,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "11", "illness-end-month": "", "illness-end-year": ""});
     expect(res.status).toEqual(200);
@@ -160,6 +167,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "11", "illness-end-month": "11", "illness-end-year": ""});
     expect(res.status).toEqual(200);
@@ -174,6 +182,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "32", "illness-end-month": "11", "illness-end-year": "2018"});
     expect(res.status).toEqual(200);
@@ -186,6 +195,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "29", "illness-end-month": "02", "illness-end-year": "2015"});
     expect(res.status).toEqual(200);
@@ -199,6 +209,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "29", "illness-end-month": "02", "illness-end-year": "2016"});
     expect(res.status).toEqual(302);
@@ -212,6 +223,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "aa", "illness-end-month": "bb", "illness-end-year": "cc"});
     expect(res.status).toEqual(200);
@@ -224,6 +236,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "11", "illness-end-month": "05", "illness-end-year": "9999"});
     expect(res.status).toEqual(200);
@@ -237,6 +250,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         "illness-end-day": now.format("DD"),
@@ -255,6 +269,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "11", "illness-end-month": "05", "illness-end-year": "1999"});
       expect(res.status).toEqual(302);
@@ -268,6 +283,7 @@ describe("illness end date validation tests", () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({"illness-end-day": "27", "illness-end-month": "02", "illness-end-year": "2018"});
 

@@ -29,6 +29,7 @@ describe("error controller", () => {
   it("should render the 404 template if a page is not found", async () => {
     const resp = await request(app)
       .get(pageURLs.NO_FOUND)
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(resp.status).toEqual(404);

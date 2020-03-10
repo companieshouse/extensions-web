@@ -89,6 +89,7 @@ describe("check your answers url tests", () => {
   it ("should return 404 if check your answers page with put", async () => {
     const res = await request(app)
       .put(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS)
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
@@ -124,6 +125,7 @@ describe("check your answers url tests", () => {
   it ("should forward to confirmation page on post", async () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS)
+      .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(302);
     expect(res.text).toContain(pageURLs.EXTENSIONS_CONFIRMATION);
