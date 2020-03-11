@@ -32,7 +32,8 @@ export const DOWNLOAD_ATTACHMENT: string =
 export const BACK_LINK: string =  "/back-link";
 export const REASON_ID: string = "reasonId=";
 export const OAUTH_LOGIN_URL: string = "/oauth2/user/signin?";
-export const DOWNLOAD_ATTACHMENT_LANDING: string = "/download" + DOWNLOAD_ATTACHMENT;
+export const DOWNLOAD_PREFIX: string = "/download";
+export const DOWNLOAD_ATTACHMENT_LANDING: string = DOWNLOAD_PREFIX + DOWNLOAD_ATTACHMENT;
 export const EXTENSIONS_COMPANY_NUMBER: string = EXTENSIONS + COMPANY_NUMBER;
 export const EXTENSIONS_CHOOSE_REASON: string = EXTENSIONS + CHOOSE_REASON;
 export const EXTENSIONS_CONFIRM_COMPANY: string = EXTENSIONS + CONFIRM_COMPANY;

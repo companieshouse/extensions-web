@@ -30,7 +30,6 @@ describe("Download attachment landing page tests", () => {
     const response: request.Response = await request(app)
       .get(DOWNLOAD_LANDING_PAGE_URL)
       .set("Accept", "application/json")
-      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(response.status).toBe(200);
@@ -42,7 +41,6 @@ describe("Download attachment landing page tests", () => {
     const response: request.Response = await request(app)
       .get(DOWNLOAD_LANDING_PAGE_URL)
       .set("Accept", "application/json")
-      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(response.text).toContain("<meta http-equiv=\"refresh\" content=\"5;URL='" + DOWNLOAD_FILE_URL + "'\"/>");
@@ -53,7 +51,6 @@ describe("Download attachment landing page tests", () => {
     const response: request.Response = await request(app)
       .get(DOWNLOAD_LANDING_PAGE_URL)
       .set("Accept", "application/json")
-      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(response.text).toContain("<a href=\"" + DOWNLOAD_FILE_URL + "\"");
