@@ -7,7 +7,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
   const referringPageURL = req.header("Referer") as string;
 
   logger.debug("Check if user has referer");
-  if (referringPageURL === undefined) {
+  if (referringPageURL === undefined && !req.originalUrl.endsWith("/download")) {
     logger.debug("User has no referer - redirecting to index");
     return res.redirect(pageURLs.EXTENSIONS);
   }

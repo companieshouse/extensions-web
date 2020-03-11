@@ -2,18 +2,20 @@ import {NextFunction, Request, Response} from "express";
 import * as keys from "../keys";
 import * as sessionService from "../../services/session.service";
 import {updateNavigationBackFlag} from "../../services/session.service";
-import {EXTENSIONS,
-  REMOVE_DOCUMENT,
-  DOCUMENT_UPLOAD_CONTINUE_NO_DOCS,
+import {
   BACK_LINK,
+  DOCUMENT_UPLOAD_CONTINUE_NO_DOCS, DOWNLOAD_PREFIX,
+  EXTENSIONS,
+  OAUTH_LOGIN_URL,
   REASON_ID,
-  OAUTH_LOGIN_URL} from "../../model/page.urls";
+  REMOVE_DOCUMENT,
+} from "../../model/page.urls";
 import {PageHistory} from "../types";
 import Session from "../session";
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   if (req.method.toString() === "GET" && !containsProhibitedUrls(
-    [BACK_LINK, DOCUMENT_UPLOAD_CONTINUE_NO_DOCS],
+    [BACK_LINK, DOCUMENT_UPLOAD_CONTINUE_NO_DOCS, DOWNLOAD_PREFIX],
     req.baseUrl)) {
     const hasNavigatedBack: boolean = req.chSession.data[keys.NAVIGATION_BACK_FLAG];
     const referringPageURL = getReferringPageUrl(req);
