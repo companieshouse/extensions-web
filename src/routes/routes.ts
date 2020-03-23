@@ -32,6 +32,7 @@ import * as pageURLs from "../model/page.urls";
 import * as templatePaths from "../model/template.paths";
 import sessionQuery from "../session/middleware/session.query";
 import backLinkRoute from "../controllers/back.link.controller";
+import {render as showTooSoonPage} from "../controllers/too.soon.controller";
 
 const router: Router = Router();
 
@@ -111,6 +112,8 @@ router.post(pageURLs.REMOVE_DOCUMENT, removeDocumentRoute);
 router.get(pageURLs.ERROR, (res: Response) => {
   res.status(500).render(templatePaths.ERROR, {templateName: templatePaths.ERROR});
 });
+
+router.get(pageURLs.TOO_SOON, showTooSoonPage);
 
 router.get(pageURLs.BACK_LINK, backLinkRoute);
 

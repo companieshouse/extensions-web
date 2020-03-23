@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block pageTitle %}
+Accounts not due
+{% endblock %}
+{% block backLink %}
+
+{% include "includes/back-link.html" %}
+{% endblock %}
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-xl">It's too soon to apply for an extension</h1>
+    <p class="govuk-body">
+      Your accounts aren't due until
+      <b>{{accountsDue}}</b>.
+    </p>
+    <p class="govuk-body">
+      You can file your accounts from
+      <b>{{fileFromDate}}</b>. You can find more information about how and when to file your accounts in
+      <a href="https://www.gov.uk/government/publications/life-of-a-company-annual-requirements/life-of-a-company-part-1-accounts">
+        our guidance</a>.
+    </p>
+  </div>
+</div>
+{% endblock %}

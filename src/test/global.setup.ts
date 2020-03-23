@@ -21,4 +21,5 @@ export default async () => {
   process.env.MAX_FILE_SIZE_BYTES = "10";
   process.env.PIWIK_URL = "test";
   process.env.PIWIK_SITE_ID = "test";
+  process.env.TOO_EARLY_DAYS_BEFORE_DUE_DATE="120";
 };

@@ -1,6 +1,6 @@
 import app from "../../app";
 import * as request from "supertest";
-import {getCompanyProfile} from "../../client/apiclient";
+import {ExtensionsCompanyProfile, getCompanyProfile} from "../../client/apiclient";
 import {COOKIE_NAME} from "../../session/config";
 import * as pageURLs from "../../model/page.urls";
 import * as mockUtils from "../mock.utils";
@@ -184,5 +184,70 @@ describe("company number validation tests", () => {
     expect(response.text).not.toContain(NO_COMPANY_NUMBER_SUPPLIED);
     expect(response.text).not.toContain(INVALID_COMPANY_NUMBER);
     expect(response.text).toContain(COMPANY_NUMBER_TOO_LONG);
+  });
+
+  it("should redirect to the too soon screen if due date too far in future", async() => {
+    const companyProfileTooEarly: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
+    const tooEarlyAccountsDueDate: Date = new Date(Date.now());
+    tooEarlyAccountsDueDate.setDate(
+      tooEarlyAccountsDueDate.getDate() + Number(process.env.TOO_EARLY_DAYS_BEFORE_DUE_DATE) + 1);
+
+    companyProfileTooEarly.accountsDue = tooEarlyAccountsDueDate.toDateString();
+    mockCompanyProfile.mockResolvedValue(companyProfileTooEarly);
+
+    const response = await request(app)
+      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .set("Accept", "application/json")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({companyNumber: "6400"});
+
+    expect(response.header.location).toEqual(pageURLs.EXTENSIONS_TOO_SOON);
+    expect(response.status).toEqual(302);
+    expect(mockCompanyProfile).toHaveBeenCalledWith(COMPANY_NUMBER, mockUtils.ACCESS_TOKEN);
+  });
+
+  it("should redirect to the confirm company screen if due date is exactly the number " +
+    "of days away specified in config", async() => {
+    const companyProfileTooEarly: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
+    const exactlyOnLimitAccountsDueDate: Date = new Date(Date.now());
+    exactlyOnLimitAccountsDueDate.setDate(
+      exactlyOnLimitAccountsDueDate.getDate() + Number(process.env.TOO_EARLY_DAYS_BEFORE_DUE_DATE));
+
+    companyProfileTooEarly.accountsDue = exactlyOnLimitAccountsDueDate.toDateString();
+    mockCompanyProfile.mockResolvedValue(companyProfileTooEarly);
+
+    const response = await request(app)
+      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .set("Accept", "application/json")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({companyNumber: "6400"});
+
+    expect(response.header.location).toEqual(pageURLs.EXTENSIONS_CONFIRM_COMPANY);
+    expect(response.status).toEqual(302);
+    expect(mockCompanyProfile).toHaveBeenCalledWith(COMPANY_NUMBER, mockUtils.ACCESS_TOKEN);
+  });
+
+  it("should redirect to the confirm company screen if due date is within the number " +
+    "of days away specified in config", async() => {
+    const companyProfileTooEarly: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
+    const withinLimitAccountsDueDate: Date = new Date(Date.now());
+    withinLimitAccountsDueDate.setDate(
+      withinLimitAccountsDueDate.getDate() + Number(process.env.TOO_EARLY_DAYS_BEFORE_DUE_DATE) - 1);
+
+    companyProfileTooEarly.accountsDue = withinLimitAccountsDueDate.toDateString();
+    mockCompanyProfile.mockResolvedValue(companyProfileTooEarly);
+
+    const response = await request(app)
+      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .set("Accept", "application/json")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({companyNumber: "6400"});
+
+    expect(response.header.location).toEqual(pageURLs.EXTENSIONS_CONFIRM_COMPANY);
+    expect(response.status).toEqual(302);
+    expect(mockCompanyProfile).toHaveBeenCalledWith(COMPANY_NUMBER, mockUtils.ACCESS_TOKEN);
   });
 });
