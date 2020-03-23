@@ -70,7 +70,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
     if (isDateMoreThanXDaysFromToday(
       company.accountsDue,
-      Number(process.env.TOO_EARLY_DAYS_BEFORE_DUE_DATE),
+      Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE),
       companyNumber)) {
       // show too soon screen
       logger.info(`${companyNumber} Too soon to apply`);

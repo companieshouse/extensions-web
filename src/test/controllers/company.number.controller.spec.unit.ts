@@ -190,7 +190,7 @@ describe("company number validation tests", () => {
     const companyProfileTooEarly: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
     const tooEarlyAccountsDueDate: Date = new Date(Date.now());
     tooEarlyAccountsDueDate.setDate(
-      tooEarlyAccountsDueDate.getDate() + Number(process.env.TOO_EARLY_DAYS_BEFORE_DUE_DATE) + 1);
+      tooEarlyAccountsDueDate.getDate() + Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE) + 1);
 
     companyProfileTooEarly.accountsDue = tooEarlyAccountsDueDate.toDateString();
     mockCompanyProfile.mockResolvedValue(companyProfileTooEarly);
@@ -212,7 +212,7 @@ describe("company number validation tests", () => {
     const companyProfileTooEarly: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
     const exactlyOnLimitAccountsDueDate: Date = new Date(Date.now());
     exactlyOnLimitAccountsDueDate.setDate(
-      exactlyOnLimitAccountsDueDate.getDate() + Number(process.env.TOO_EARLY_DAYS_BEFORE_DUE_DATE));
+      exactlyOnLimitAccountsDueDate.getDate() + Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE));
 
     companyProfileTooEarly.accountsDue = exactlyOnLimitAccountsDueDate.toDateString();
     mockCompanyProfile.mockResolvedValue(companyProfileTooEarly);
@@ -234,7 +234,7 @@ describe("company number validation tests", () => {
     const companyProfileTooEarly: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
     const withinLimitAccountsDueDate: Date = new Date(Date.now());
     withinLimitAccountsDueDate.setDate(
-      withinLimitAccountsDueDate.getDate() + Number(process.env.TOO_EARLY_DAYS_BEFORE_DUE_DATE) - 1);
+      withinLimitAccountsDueDate.getDate() + Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE) - 1);
 
     companyProfileTooEarly.accountsDue = withinLimitAccountsDueDate.toDateString();
     mockCompanyProfile.mockResolvedValue(companyProfileTooEarly);

@@ -16,7 +16,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
 
       const canFileFromDate: Date = new Date(company.accountsDue);
       canFileFromDate.setHours(0, 0, 0, 0);
-      canFileFromDate.setDate(canFileFromDate.getDate() - Number(process.env.TOO_EARLY_DAYS_BEFORE_DUE_DATE));
+      canFileFromDate.setDate(canFileFromDate.getDate() - Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE));
       logger.info(`Too Soon - canFileFromDate = ${canFileFromDate.toUTCString()}`);
 
       return res.render(templatePaths.TOO_SOON, {
