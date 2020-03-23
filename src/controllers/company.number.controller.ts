@@ -64,11 +64,16 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     logger.info(`Retrieving company profile for company number ${companyNumber}`);
     const token: string = req.chSession.accessToken() as string;
     const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
+    logger.info(`${companyNumber} Due date = ${company.accountsDue}`);
 
     await sessionService.createExtensionSession(req.chSession, company.companyNumber);
 
-    if (isDateMoreThanXDaysFromToday(company.accountsDue, Number(process.env.TOO_EARLY_DAYS_BEFORE_DUE_DATE))) {
-      // show too early screen
+    if (isDateMoreThanXDaysFromToday(
+      company.accountsDue,
+      Number(process.env.TOO_EARLY_DAYS_BEFORE_DUE_DATE),
+      companyNumber)) {
+      // show too soon screen
+      logger.info(`${companyNumber} Too soon to apply`);
       return res.redirect(pageURLs.EXTENSIONS_TOO_SOON);
     } else {
       return res.redirect(pageURLs.EXTENSIONS_CONFIRM_COMPANY);
@@ -96,14 +101,15 @@ const buildError = (res: Response, errorMessage: string): void => {
   });
 };
 
-const isDateMoreThanXDaysFromToday = (dateToCheck: string, daysFromToday: number): boolean => {
+const isDateMoreThanXDaysFromToday = (dateToCheck: string, daysFromToday: number, companyNumber: string): boolean => {
   const currentDate: Date = new Date(Date.now());
   currentDate.setHours(0, 0, 0, 0);
+
   const dueDate: Date = new Date(dateToCheck);
   dueDate.setHours(0, 0, 0, 0);
   dueDate.setDate(dueDate.getDate() - daysFromToday);
-  // tslint:disable-next-line:no-console
-  console.log("DUE DATE after subtraction = " + dueDate);
+  logger.info(`${companyNumber} Due date after subtraction = ${dueDate.toUTCString()}`);
+
   return currentDate < dueDate;
 };
 

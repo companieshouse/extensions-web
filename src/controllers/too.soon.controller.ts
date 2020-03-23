@@ -10,12 +10,14 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
   const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
   if (companyNumber) {
     try {
-      logger.info(`Company number ${companyNumber} found in session, retrieving company profile`);
+      logger.info(`Too Soon - Company number ${companyNumber} found in session, retrieving company profile`);
       const token: string = req.chSession.accessToken() as string;
       const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
 
       const canFileFromDate: Date = new Date(company.accountsDue);
+      canFileFromDate.setHours(0, 0, 0, 0);
       canFileFromDate.setDate(canFileFromDate.getDate() - Number(process.env.TOO_EARLY_DAYS_BEFORE_DUE_DATE));
+      logger.info(`Too Soon - canFileFromDate = ${canFileFromDate.toUTCString()}`);
 
       return res.render(templatePaths.TOO_SOON, {
         accountsDue: formatDateForDisplay(company.accountsDue),
@@ -23,7 +25,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
         templateName: templatePaths.TOO_SOON,
       });
     } catch (e) {
-      logger.error(`Error retrieving company number ${companyNumber} from redis`, e);
+      logger.error(`Too Soon - Error retrieving company number ${companyNumber} from redis`, e);
       return next(e);
     }
   } else {
