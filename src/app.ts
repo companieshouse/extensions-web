@@ -13,6 +13,7 @@ import accessibilityRoutes from "./routes/accessibility.routes";
 import {ERROR_SUMMARY_TITLE} from "./model/error.messages";
 import {PIWIK_SITE_ID, PIWIK_URL} from "./session/config";
 import activeFeature from "./feature.flag";
+import logger from "./logger";
 
 const app = express();
 
@@ -48,5 +49,7 @@ if (activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
 }
 app.use(pageURLs.EXTENSIONS, appRouter);
 app.use(...errorHandlers);
+
+logger.info("Extensions service started");
 
 export default app;

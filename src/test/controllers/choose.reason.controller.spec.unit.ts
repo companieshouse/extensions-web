@@ -77,7 +77,7 @@ describe("choose reason validation tests", () => {
     expect(mockGetCurrentReason).toHaveBeenCalled();
   });
 
-  it("should receive no error message when reason is missing company authentication code", async () => {
+  it("should receive no error message when reason is covid-19", async () => {
     mockCacheService.prototype.constructor.mockImplementation(dummySession);
     mockApiClient.prototype.constructor.mockReturnValueOnce({id: "1234"});
     const res = await superTest(app)
@@ -86,13 +86,13 @@ describe("choose reason validation tests", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
-        extensionReason: "missing company authentication code",
+        extensionReason: "covid-19",
       });
     expect("/" + res.header.location).toEqual(pageURLs.ADD_EXTENSION_REASON);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(EXTENSION_REASON_NOT_SELECTED);
     expect(mockApiClient).toBeCalledWith("00006400", "ACCESS_TOKEN", "12345",
-      "missing company authentication code");
+      "covid-19");
     expect(mockDeleteReason).not.toHaveBeenCalled();
     expect(mockGetCurrentReason).toHaveBeenCalled();
   });
