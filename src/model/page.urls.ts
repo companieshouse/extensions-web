@@ -26,6 +26,7 @@ export const PRINT_APPLICATION: string = SEPARATOR + templates.PRINT_APPLICATION
 export const REMOVE_REASON: string = SEPARATOR + templates.REMOVE_REASON;
 export const NO_FOUND: string = "/no-found";
 export const ERROR: string = SEPARATOR + templates.ERROR;
+export const SERVICE_UNAVAILABLE: string = SEPARATOR + templates.SERVICE_UNAVAILABLE;
 export const CHECK_YOUR_ANSWERS: string = SEPARATOR + templates.CHECK_YOUR_ANSWERS;
 export const DOWNLOAD_ATTACHMENT: string =
   "/company/:companyId/extensions/requests/:requestId/*/attachments/*/download";
@@ -56,3 +57,4 @@ export const EXTENSIONS_REMOVE_REASON: string = EXTENSIONS + REMOVE_REASON;
 export const EXTENSIONS_ERROR: string = EXTENSIONS + ERROR;
 export const EXTENSIONS_CHECK_YOUR_ANSWERS: string = EXTENSIONS + CHECK_YOUR_ANSWERS;
 export const EXTENSIONS_BACK_LINK: string = EXTENSIONS + BACK_LINK;
+export const EXTENSIONS_SERVICE_UNAVAILABLE: string = EXTENSIONS + SERVICE_UNAVAILABLE;
