@@ -14,7 +14,7 @@ import {ERROR_SUMMARY_TITLE} from "./model/error.messages";
 import {PIWIK_SITE_ID, PIWIK_URL} from "./session/config";
 import activeFeature from "./feature.flag";
 import logger from "./logger";
-import serviceAvailability from "./availability/middleware/service.availability";
+import checkServiceAvailability from "./availability/middleware/service.availability";
 
 const app = express();
 
@@ -39,7 +39,9 @@ app.enable("trust proxy");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(`${pageURLs.EXTENSIONS}`, serviceAvailability);
+// check if we should show the service unavailable page
+app.use(`${pageURLs.EXTENSIONS}`, checkServiceAvailability);
+
 app.use(cookieParser());
 app.use(sessionMiddleware);
 app.use(`${pageURLs.EXTENSIONS}/*`, authenticate);
