@@ -3,6 +3,9 @@ import logger from "../../logger";
 import * as templates from "../../model/template.paths";
 import activeFeature from "../../feature.flag";
 
+/**
+ * Shows service unavailable page if config flag SERVICE_AVAILABLE=off
+ */
 export default (req: Request, res: Response, next: NextFunction) => {
   logger.info("Checking service availability");
   if (!activeFeature(process.env.SERVICE_AVAILABLE)) {
