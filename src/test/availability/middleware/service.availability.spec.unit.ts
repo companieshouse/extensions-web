@@ -7,13 +7,13 @@ jest.mock("../../../services/redis.service");
 const UNAVAILABLE_TEXT = "service is unavailable";
 
 afterAll(() => {
-  process.env.SERVICE_AVAILABLE = "on";
+  process.env.SHOW_SERVICE_UNAVAILABLE_PAGE = "off";
 });
 
 describe("Availability tests", () => {
 
   it("should show the service unavailable page", async () => {
-    process.env.SERVICE_AVAILABLE = "off";
+    process.env.SHOW_SERVICE_UNAVAILABLE_PAGE = "on";
 
     const response = await request(app)
       .get("/extensions");
@@ -21,7 +21,7 @@ describe("Availability tests", () => {
   });
 
   it("should show the service unavailable page with slash", async () => {
-    process.env.SERVICE_AVAILABLE = "off";
+    process.env.SHOW_SERVICE_UNAVAILABLE_PAGE = "on";
 
     const response = await request(app)
       .get("/extensions/");
@@ -29,7 +29,7 @@ describe("Availability tests", () => {
   });
 
   it("should show the service unavailable page for non start page", async () => {
-    process.env.SERVICE_AVAILABLE = "off";
+    process.env.SHOW_SERVICE_UNAVAILABLE_PAGE = "on";
 
     const response = await request(app)
       .get("/extensions/company-number");
@@ -37,7 +37,7 @@ describe("Availability tests", () => {
   });
 
   it("should NOT show the service unavailable page", async () => {
-    process.env.SERVICE_AVAILABLE = "on";
+    process.env.SHOW_SERVICE_UNAVAILABLE_PAGE = "off";
 
     const response = await request(app)
       .get("/extensions")

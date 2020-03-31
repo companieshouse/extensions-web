@@ -21,5 +21,5 @@ export default async () => {
   process.env.MAX_FILE_SIZE_BYTES = "10";
   process.env.PIWIK_URL = "test";
   process.env.PIWIK_SITE_ID = "test";
-  process.env.SERVICE_AVAILABLE = "on"
+  process.env.SHOW_SERVICE_UNAVAILABLE_PAGE = "off"
 };
