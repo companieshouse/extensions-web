@@ -11,7 +11,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
   // sign in then access the page directly
   if (!activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
     logger.debug("Check if user has referer");
-    if (referringPageURL === undefined && !req.originalUrl.endsWith(pageURLs.DOWNLOAD_PREFIX)) {
+    if (referringPageURL === undefined && !req.originalUrl.endsWith(pageURLs.DOWNLOAD_SUFFIX)) {
       logger.debug("User has no referer - redirecting to index");
       return res.redirect(pageURLs.EXTENSIONS);
     }
