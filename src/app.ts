@@ -14,6 +14,7 @@ import {ERROR_SUMMARY_TITLE} from "./model/error.messages";
 import {PIWIK_SITE_ID, PIWIK_URL} from "./session/config";
 import activeFeature from "./feature.flag";
 import logger from "./logger";
+import checkServiceAvailability from "./availability/middleware/service.availability";
 
 const app = express();
 
@@ -31,15 +32,19 @@ env.addGlobal("ERROR_SUMMARY_TITLE", ERROR_SUMMARY_TITLE);
 env.addGlobal("PIWIK_URL", PIWIK_URL);
 env.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
 
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "html");
+
 app.enable("trust proxy");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// check if we should show the service unavailable page
+app.use(`${pageURLs.EXTENSIONS}`, checkServiceAvailability);
+
 app.use(cookieParser());
 app.use(sessionMiddleware);
 app.use(`${pageURLs.EXTENSIONS}/*`, authenticate);
-
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "html");
 
 if (activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
   app.use(pageURLs.EXTENSIONS, accessibilityRoutes);
