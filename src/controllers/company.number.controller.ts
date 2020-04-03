@@ -68,7 +68,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
     await sessionService.createExtensionSession(req.chSession, company.companyNumber);
 
-    if (isTooSoonToApply(company.accountsDue, companyNumber)) {
+    if (isTooSoonToApply(company)) {
       // show too soon screen
       logger.info(`Company ${companyNumber} Too soon to apply`);
       return res.redirect(pageURLs.EXTENSIONS_TOO_SOON);
@@ -98,13 +98,13 @@ const buildError = (res: Response, errorMessage: string): void => {
   });
 };
 
-const isTooSoonToApply = (accountsDueDate: string, companyNumber: string): boolean => {
+const isTooSoonToApply = ({accountsDue, companyNumber}): boolean => {
   const daysFromToday = Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE);
 
   const currentDate = new Date(Date.now());
   currentDate.setHours(0, 0, 0, 0);
 
-  const dueDate: Date = new Date(accountsDueDate);
+  const dueDate: Date = new Date(accountsDue);
   dueDate.setHours(0, 0, 0, 0);
   dueDate.setDate(dueDate.getDate() - daysFromToday);
   logger.info(`${companyNumber} Due date after subtraction = ${dueDate.toUTCString()}`);
