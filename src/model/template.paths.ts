@@ -24,6 +24,7 @@ export const DOWNLOAD_NOT_AUTHORISED: string = "download-not-authorised";
 export const ERROR_404: string = "404.html";
 export const ERROR_MAX_REQUESTS: string = "error-max-requests";
 export const ERROR: string = "error";
+export const SERVICE_UNAVAILABLE: string = "service-unavailable";
 export const FILE_ERROR: string = "file-error";
 export const UPLOAD_FILE_LIST: string = "includes/document-upload-file-list";
 export const UPLOAD_FILE_PICKER: string = "includes/document-upload-file-picker";

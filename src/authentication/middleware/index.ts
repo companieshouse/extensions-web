@@ -6,10 +6,15 @@ import * as pageURLs from "../../model/page.urls";
 export default (req: Request, res: Response, next: NextFunction) => {
   const referringPageURL = req.header("Referer") as string;
 
-  logger.debug("Check if user has referer");
-  if (referringPageURL === undefined && !req.originalUrl.endsWith(pageURLs.DOWNLOAD_PREFIX)) {
-    logger.debug("User has no referer - redirecting to index");
-    return res.redirect(pageURLs.EXTENSIONS);
+  // If in accessibility testing mode, don't return user to start
+  // we want them to be shown the sign in screen below, so the tests can
+  // sign in then access the page directly
+  if (!activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
+    logger.debug("Check if user has referer");
+    if (referringPageURL === undefined && !req.originalUrl.endsWith(pageURLs.DOWNLOAD_PREFIX)) {
+      logger.debug("User has no referer - redirecting to index");
+      return res.redirect(pageURLs.EXTENSIONS);
+    }
   }
 
   logger.debug("Check if user is signed in");
