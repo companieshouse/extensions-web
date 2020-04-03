@@ -64,7 +64,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     logger.info(`Retrieving company profile for company number ${companyNumber}`);
     const token: string = req.chSession.accessToken() as string;
     const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
-    logger.info(`${companyNumber} Due date = ${company.accountsDue}`);
+    logger.debug(`${companyNumber} Due date = ${company.accountsDue}`);
 
     await sessionService.createExtensionSession(req.chSession, company.companyNumber);
 
@@ -105,9 +105,9 @@ const isTooSoonToApply = ({accountsDue, companyNumber}): boolean => {
   currentDate.setHours(0, 0, 0, 0);
 
   const dueDate: Date = new Date(accountsDue);
-  dueDate.setHours(0, 0, 0, 0);
   dueDate.setDate(dueDate.getDate() - daysFromToday);
-  logger.info(`${companyNumber} Due date after subtraction = ${dueDate.toUTCString()}`);
+  dueDate.setHours(0, 0, 0, 0);
+  logger.debug(`${companyNumber} Due date after subtraction = ${dueDate.toString()}`);
 
   return currentDate < dueDate;
 };

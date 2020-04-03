@@ -16,13 +16,17 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
 
       // calculate the 'can file from date' to show on screen
       const canFileFromDate: Date = new Date(company.accountsDue);
-      canFileFromDate.setHours(0, 0, 0, 0);
       canFileFromDate.setDate(canFileFromDate.getDate() - Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE));
-      logger.info(`Too Soon - canFileFromDate = ${canFileFromDate.toUTCString()}`);
+      canFileFromDate.setHours(0, 0, 0, 0);
+
+      const formattedAccountsDueDate = formatDateForDisplay(company.accountsDue);
+      logger.info(`Company ${companyNumber} Too Soon - accountsDueDate = ${formattedAccountsDueDate}`);
+      const formattedCanFileFromDate = formatDateForDisplay(canFileFromDate.toUTCString());
+      logger.info(`Company ${companyNumber} Too Soon - canFileFromDate = ${formattedCanFileFromDate}`);
 
       return res.render(templatePaths.TOO_SOON, {
-        accountsDue: formatDateForDisplay(company.accountsDue),
-        fileFromDate: formatDateForDisplay(canFileFromDate.toUTCString()),
+        accountsDue: formattedAccountsDueDate,
+        fileFromDate: formattedCanFileFromDate,
         templateName: templatePaths.TOO_SOON,
       });
     } catch (e) {
