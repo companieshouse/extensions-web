@@ -24,11 +24,11 @@ const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeo
 
 
   beforeEach(() => {
-  mockCompanyProfile.mockRestore();
-  mockCacheService.mockRestore();
-  mockUtils.loadMockSession(mockCacheService);
-  mockGetCompanyInContext.mockReturnValueOnce(() => "00006400");
-  mockHasExtensionRequest.prototype.constructor.mockImplementation(() => {
+    mockCompanyProfile.mockRestore();
+    mockCacheService.mockRestore();
+    mockUtils.loadMockSession(mockCacheService);
+    mockGetCompanyInContext.mockReturnValueOnce(() => "00006400");
+    mockHasExtensionRequest.prototype.constructor.mockImplementation(() => {
     return true
   });
   mockAddRequest.prototype.constructor.mockImplementation(() => {
