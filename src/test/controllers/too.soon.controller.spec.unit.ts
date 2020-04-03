@@ -18,6 +18,8 @@ const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeo
 
 const ERROR_MSG = "Sorry, there is a problem with the service";
 const ERROR_TITLE = "Sorry, there is a problem with the service - GOV.UK";
+const TOO_SOON_MSG = "It's too soon to apply for an extension";
+const TOO_SOON_TITLE = "Accounts not due";
 
 beforeEach(() => {
   mockCompanyProfile.mockRestore();
@@ -32,9 +34,15 @@ beforeEach(() => {
   });
 });
 
+afterAll(() => {
+  // reset back to default value
+  process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE = "273";
+});
+
 describe("too.soon.controller tests", () => {
 
   it("should render the too soon page", async () => {
+    process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE = "273";
     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
     mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
 
@@ -44,7 +52,9 @@ describe("too.soon.controller tests", () => {
 
     expect(res.status).toEqual(200);
     expect(res.text).toContain("12 May 2019");
-    expect(res.text).toContain("12 January 2019");
+    expect(res.text).toContain("12 August 2018");
+    expect(res.text).toContain(TOO_SOON_MSG);
+    expect(res.text).toContain(TOO_SOON_TITLE);
   });
 
   it("should show error screen if company number search throws an error", async () => {

@@ -215,6 +215,7 @@ describe("company number validation tests", () => {
       exactlyOnLimitAccountsDueDate.getDate() + Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE));
 
     companyProfileTooEarly.accountsDue = exactlyOnLimitAccountsDueDate.toDateString();
+
     mockCompanyProfile.mockResolvedValue(companyProfileTooEarly);
 
     const response = await request(app)
@@ -234,20 +235,21 @@ describe("company number validation tests", () => {
     const companyProfileTooEarly: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
     const withinLimitAccountsDueDate: Date = new Date(Date.now());
     withinLimitAccountsDueDate.setDate(
-      withinLimitAccountsDueDate.getDate() + Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE) - 1);
+      withinLimitAccountsDueDate.getDate() + (Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE) - 1));
 
     companyProfileTooEarly.accountsDue = withinLimitAccountsDueDate.toDateString();
+
     mockCompanyProfile.mockResolvedValue(companyProfileTooEarly);
 
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
-      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
+      .set("Referer", "/")
       .send({companyNumber: "6400"});
 
-    expect(response.header.location).toEqual(pageURLs.EXTENSIONS_CONFIRM_COMPANY);
     expect(response.status).toEqual(302);
+    expect(response.header.location).toEqual(pageURLs.EXTENSIONS_CONFIRM_COMPANY);
     expect(mockCompanyProfile).toHaveBeenCalledWith(COMPANY_NUMBER, mockUtils.ACCESS_TOKEN);
   });
 });

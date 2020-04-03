@@ -22,5 +22,5 @@ export default async () => {
   process.env.PIWIK_URL = "test";
   process.env.PIWIK_SITE_ID = "test";
   process.env.SHOW_SERVICE_UNAVAILABLE_PAGE = "off";
-  process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE="120";
+  process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE="273";
 };

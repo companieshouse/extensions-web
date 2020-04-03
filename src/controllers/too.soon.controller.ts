@@ -14,6 +14,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
       const token: string = req.chSession.accessToken() as string;
       const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
 
+      // calculate the 'can file from date' to show on screen
       const canFileFromDate: Date = new Date(company.accountsDue);
       canFileFromDate.setHours(0, 0, 0, 0);
       canFileFromDate.setDate(canFileFromDate.getDate() - Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE));

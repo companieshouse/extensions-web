@@ -68,12 +68,9 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
     await sessionService.createExtensionSession(req.chSession, company.companyNumber);
 
-    if (isDateMoreThanXDaysFromToday(
-      company.accountsDue,
-      Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE),
-      companyNumber)) {
+    if (isTooSoonToApply(company.accountsDue, companyNumber)) {
       // show too soon screen
-      logger.info(`${companyNumber} Too soon to apply`);
+      logger.info(`Company ${companyNumber} Too soon to apply`);
       return res.redirect(pageURLs.EXTENSIONS_TOO_SOON);
     } else {
       return res.redirect(pageURLs.EXTENSIONS_CONFIRM_COMPANY);
@@ -101,11 +98,13 @@ const buildError = (res: Response, errorMessage: string): void => {
   });
 };
 
-const isDateMoreThanXDaysFromToday = (dateToCheck: string, daysFromToday: number, companyNumber: string): boolean => {
-  const currentDate: Date = new Date(Date.now());
+const isTooSoonToApply = (accountsDueDate: string, companyNumber: string): boolean => {
+  const daysFromToday = Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE);
+
+  const currentDate = new Date(Date.now());
   currentDate.setHours(0, 0, 0, 0);
 
-  const dueDate: Date = new Date(dateToCheck);
+  const dueDate: Date = new Date(accountsDueDate);
   dueDate.setHours(0, 0, 0, 0);
   dueDate.setDate(dueDate.getDate() - daysFromToday);
   logger.info(`${companyNumber} Due date after subtraction = ${dueDate.toUTCString()}`);
