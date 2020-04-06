@@ -41,6 +41,13 @@ describe("Authentication middleware", () => {
     expect(response.status).toEqual(302);
   });
 
+  it("should not redirect to signin if loading accessibility statement page", async () => {
+    const response = await request(app)
+      .get("/extensions/accessibility-statement")
+      .set("Referer", "/extensions");
+    expect(response.status).toEqual(200);
+  });
+
   it("should redirect to signin if /extensions/* called and not signed in", async () => {
     setNotSignedIn();
     const response = await request(app)
