@@ -46,6 +46,7 @@ describe("Authentication middleware", () => {
       .get("/extensions/accessibility-statement")
       .set("Referer", "/extensions");
     expect(response.status).toEqual(200);
+    expect(response.text).toContain("Accessibility statement");
   });
 
   it("should redirect to signin if /extensions/* called and not signed in", async () => {
