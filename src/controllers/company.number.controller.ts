@@ -38,7 +38,7 @@ const padCompanyNumber = async (req: Request, res: Response, next: NextFunction)
 // validator middleware
 const postValidators = [
   check("companyNumber").blacklist(" ").escape().custom((value: string) => {
-    if (!/^[0-9]{8}$|^([a-zA-Z]{1})[0-9]{7}$|^([a-zA-Z]{2})[0-9]{6}$/gm.test(value)) {
+    if (!/^[0-9]{8}$|^([a-zA-Z])[0-9]{7}$|^([a-zA-Z]{2})[0-9]{6}$/gm.test(value)) {
       throw new Error(errorMessages.INVALID_COMPANY_NUMBER);
     }
     return true;
