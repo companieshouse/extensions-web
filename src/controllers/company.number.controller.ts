@@ -17,13 +17,19 @@ const preValidators = [
 
 const padCompanyNumber = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   let companyNumber: string = req.body.companyNumber;
-  if (/^([a-zA-Z]{2}?)/gm.test(companyNumber)) {
-    const leadingLetters = companyNumber.substring(0, 2);
-    let trailingChars = companyNumber.substring(2, companyNumber.length);
-    trailingChars = trailingChars.padStart(6, "0");
-    companyNumber = leadingLetters + trailingChars;
-  } else {
-    companyNumber = companyNumber.padStart(8, "0");
+
+  // find index of first integer
+  const numStartIndex = companyNumber.search(/\d/);
+  if (numStartIndex !== -1) {
+    // extract letters
+    const leadingLetters = companyNumber.substring(0, numStartIndex);
+
+    // extract and pad everything from first number
+    const paddedNumber = companyNumber
+      .substring(numStartIndex, companyNumber.length)
+      .padStart((8 - numStartIndex), "0");
+
+    companyNumber = leadingLetters + paddedNumber;
   }
   req.body.companyNumber = companyNumber;
   return next();
@@ -32,7 +38,7 @@ const padCompanyNumber = async (req: Request, res: Response, next: NextFunction)
 // validator middleware
 const postValidators = [
   check("companyNumber").blacklist(" ").escape().custom((value: string) => {
-    if (!/^([a-zA-Z]{2})?[0-9]{6,8}$/gm.test(value)) {
+    if (!/^[0-9]{8}$|^([a-zA-Z]{1})[0-9]{7}$|^([a-zA-Z]{2})[0-9]{6}$/gm.test(value)) {
       throw new Error(errorMessages.INVALID_COMPANY_NUMBER);
     }
     return true;
