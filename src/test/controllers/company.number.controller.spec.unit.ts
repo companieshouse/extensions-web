@@ -16,17 +16,17 @@ const INVALID_COMPANY_NUMBER = "Invalid company number";
 const COMPANY_NUMBER_TOO_LONG = "Company number too long";
 const COMPANY_NUMBER_NOT_FOUND: string = "Company number not found";
 
+const mockCompanyProfile: jest.Mock = (<unknown>getCompanyProfile as jest.Mock<typeof getCompanyProfile>);
+const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
+
+beforeEach(() => {
+  mockCompanyProfile.mockRestore();
+  mockCacheService.mockRestore();
+
+  mockUtils.loadMockSession(mockCacheService);
+});
+
 describe("company number validation tests", () => {
-
-  const mockCompanyProfile: jest.Mock = (<unknown>getCompanyProfile as jest.Mock<typeof getCompanyProfile>);
-  const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
-
-  beforeEach(() => {
-    mockCompanyProfile.mockRestore();
-    mockCacheService.mockRestore();
-
-    mockUtils.loadMockSession(mockCacheService);
-  });
 
   it("should display company details for a valid company number", async() => {
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(true, true));
@@ -73,7 +73,7 @@ describe("company number validation tests", () => {
     expect(mockCompanyProfile).toBeCalledWith(COMPANY_NUMBER, mockUtils.ACCESS_TOKEN);
   });
 
-  it("should pass validation using a company number with leading letters", async() => {
+  it("should pass validation using a company number with 2 leading letters", async() => {
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(true, true));
 
     const response = await request(app)
@@ -88,7 +88,7 @@ describe("company number validation tests", () => {
     expect(mockCompanyProfile).toBeCalledWith("SC100079", mockUtils.ACCESS_TOKEN);
   });
 
-  it("should pass validation using a company number with leading letters (padded)", async() => {
+  it("should pass validation using a company number with 2 leading letters (padded)", async() => {
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(true, true));
 
     const response = await request(app)
@@ -101,6 +101,28 @@ describe("company number validation tests", () => {
     expect(response.header.location).toEqual(pageURLs.EXTENSIONS_CONFIRM_COMPANY);
     expect(response.status).toEqual(302);
     expect(mockCompanyProfile).toBeCalledWith("SC000079", mockUtils.ACCESS_TOKEN);
+  });
+
+  it("should pass validation using a company number with 1 leading letter", async() => {
+    const response = await request(app)
+      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .set("Accept", "application/json")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({companyNumber: "R1000079"});
+
+    expect(mockCompanyProfile).toBeCalledWith("R1000079", mockUtils.ACCESS_TOKEN);
+  });
+
+  it("should pass validation using a company number with 1 leading letter (padded)", async() => {
+    const response = await request(app)
+      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .set("Accept", "application/json")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({companyNumber: "R79"});
+      
+    expect(mockCompanyProfile).toBeCalledWith("R0000079", mockUtils.ACCESS_TOKEN);
   });
 
   it("should create an error message when no company number is supplied (empty string)", async() => {
@@ -185,7 +207,9 @@ describe("company number validation tests", () => {
     expect(response.text).not.toContain(INVALID_COMPANY_NUMBER);
     expect(response.text).toContain(COMPANY_NUMBER_TOO_LONG);
   });
+});
 
+describe("Too Soon To Apply tests", () => {
   it("should redirect to the too soon screen if due date too far in future", async() => {
     const companyProfileTooEarly: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
     const tooEarlyAccountsDueDate: Date = new Date(Date.now());
