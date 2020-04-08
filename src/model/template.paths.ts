@@ -30,3 +30,4 @@ export const UPLOAD_FILE_LIST: string = "includes/document-upload-file-list";
 export const UPLOAD_FILE_PICKER: string = "includes/document-upload-file-picker";
 export const UPLOAD_ERROR_SUMMARY: string = "includes/document-upload-error-summary";
 export const TOO_SOON: string = "too-soon";
+export const ACCESSIBILITY_STATEMENT: string = "accessibility-statement";

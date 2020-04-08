@@ -117,4 +117,6 @@ router.get(pageURLs.TOO_SOON, showTooSoonPage);
 
 router.get(pageURLs.BACK_LINK, backLinkRoute);
 
+router.get(pageURLs.ACCESSIBILITY_STATEMENT, renderTemplate(templatePaths.ACCESSIBILITY_STATEMENT));
+
 export const appRouter = router;

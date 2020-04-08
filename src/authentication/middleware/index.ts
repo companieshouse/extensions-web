@@ -18,20 +18,22 @@ export default (req: Request, res: Response, next: NextFunction) => {
   }
 
   logger.debug("Check if user is signed in");
-  if (!req.chSession.isSignedIn()) {
+  if (!req.originalUrl.endsWith(pageURLs.ACCESSIBILITY_STATEMENT)) {
+    if (!req.chSession.isSignedIn()) {
 
-    logger.debug("User not signed in");
+      logger.debug("User not signed in");
 
-    let returnToUrl: string = pageURLs.EXTENSIONS;
-    if (!activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
-      // if user is coming from start page or download page
-      if (req.originalUrl.endsWith("/download")
+      let returnToUrl: string = pageURLs.EXTENSIONS;
+      if (!activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
+        // if user is coming from start page or download page
+        if (req.originalUrl.endsWith("/download")
           || referringPageURL.endsWith(pageURLs.EXTENSIONS)) {
-        returnToUrl = req.originalUrl;
+          returnToUrl = req.originalUrl;
+        }
       }
+      logger.debug("User not signed in - redirecting to login screen");
+      return res.redirect("/signin?return_to=" + returnToUrl);
     }
-    logger.debug("User not signed in - redirecting to login screen");
-    return res.redirect("/signin?return_to=" + returnToUrl);
   }
   next();
 };

@@ -23,6 +23,7 @@ describe("Basic Url Tests", () => {
       .get("/extensions")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(response.status).toEqual(200);
+    expect(response.text).toContain("Accessibility statement");
   });
 
   it("should find company-number page", async () => {
@@ -31,6 +32,7 @@ describe("Basic Url Tests", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(response.status).toEqual(200);
+    expect(response.text).toContain("Accessibility statement");
   });
 
   it("should return 404 if page doesnt exist", async() => {
