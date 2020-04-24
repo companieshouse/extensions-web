@@ -1,4 +1,4 @@
-import axios, {AxiosError, AxiosRequestConfig, AxiosResponse, Method} from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import {lookupCompanyStatus, lookupCompanyType} from "./api.enumerations";
 import logger from "../logger";
 import { API_URL, EXTENSIONS_API_URL, EXTENSIONS_PROCESSOR_API_URL } from "../session/config";
