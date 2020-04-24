@@ -11,6 +11,15 @@ import { IExtensionRequest } from "session/types";
 import {createApiClient} from "ch-sdk-node";
 import Resource from "ch-sdk-node/dist/services/resource";
 import {CompanyProfile} from "ch-sdk-node/dist/services/company-profile";
+import {
+  getApiData,
+  getBaseAxiosRequestConfig,
+  HTTP_DELETE,
+  HTTP_GET,
+  HTTP_PATCH,
+  HTTP_POST,
+  makeAPICall,
+} from "./axios.api.call.handler";
 
 export interface ExtensionsCompanyProfile {
   hasBeenLiquidated: boolean;
@@ -51,43 +60,6 @@ export interface ExtensionFullRequest {
 export interface ListReasonResponse {
   items: ReasonWeb[];
 }
-
-const HTTP_GET: Method = "get";
-const HTTP_POST: Method = "post";
-const HTTP_PATCH: Method = "patch";
-const HTTP_DELETE: Method = "delete";
-
-const getBaseAxiosRequestConfig = (token: string): AxiosRequestConfig => {
-  return {
-    headers: {
-      Accept: "application/json",
-      Authorization: "Bearer " + token,
-    },
-    proxy: false,
-  };
-};
-
-const makeAPICall = async (config: AxiosRequestConfig): Promise<AxiosResponse> => {
-  try {
-    return await axios.request<any>(config);
-  } catch (err) {
-    logger.error(`API ERROR ${err}`);
-    const axiosError = err as AxiosError;
-    const {response, message} = axiosError;
-    throw {
-      data: response ? response.data.errors : [],
-      message,
-      status: response ? response.status : -1,
-    };
-  }
-};
-
-const getApiData = async (config: AxiosRequestConfig): Promise<any> => {
-  const axiosResponse: AxiosResponse = await makeAPICall(config);
-  const data = axiosResponse.data;
-  logger.debug(`data returned from axios api call : ${JSON.stringify(data)}`);
-  return data;
-};
 
 /**
  * Get the company profile from the api. If the company does not exist or there has been an error, an exception
