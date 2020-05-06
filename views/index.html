@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: {
+      text: "beta"
+    },
+    html: 'This is a new service - Help us improve it by providing <a class="govuk-link" href="https://www.research.net/r/extensions-feedback" target="_blank">feedback <span class="govuk-visually-hidden">(This link opens in a new window)</span></a>'
+  }) }}
   {{ govukBreadcrumbs({
     items: [
       {
@@ -21,6 +27,7 @@
       }
     ]
   }) }}
+  <div id="templateName" data-id='{{templateName}}' hidden></div>
 {% endblock %}
 
 {% block content %}
