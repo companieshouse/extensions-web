@@ -52,7 +52,7 @@
     "jest": "^24.1.0",
     "mockserver": "^3.0.0",
     "node-mocks-http": "^1.7.6",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "nodemon": "^1.18.9",
     "sonarqube-scanner": "^2.6.0",
     "supertest": "^3.4.2",
