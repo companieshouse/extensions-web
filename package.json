@@ -32,7 +32,7 @@
     "node-sass-middleware": "^0.11.0",
     "nunjucks": "^3.2.1",
     "redis": "^2.8.0",
-    "yargs": "^12.0.5"
+    "yargs": "^15.3.1"
   },
   "devDependencies": {
     "@pact-foundation/pact": "^9.9.2",
@@ -49,14 +49,14 @@
     "@types/nunjucks": "^3.1.1",
     "@types/redis": "^2.8.10",
     "@types/supertest": "^2.0.7",
-    "jest": "^24.1.0",
-    "mockserver": "^3.0.0",
+    "jest": "^24.9.0",
+    "mockserver": "^3.1.1",
     "node-mocks-http": "^1.7.6",
     "node-sass": "^4.14.1",
     "nodemon": "^1.18.9",
     "sonarqube-scanner": "^2.6.0",
     "supertest": "^3.4.2",
-    "ts-jest": "^24.1.0",
+    "ts-jest": "^25.5.1",
     "ts-node": "^8.0.2",
     "tslint": "^5.13.0",
     "typescript": "^3.3.1"
