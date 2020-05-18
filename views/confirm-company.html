@@ -14,73 +14,8 @@
       <h1 class="govuk-heading-xl">Confirm this is the right company</h1>
       <h2 class="govuk-heading-l">{{company.companyName}}</h2>
 
-      {% set accountsDueHTML %}
-        {{company.accountsDue}}
-        {% if (company.isAccountsOverdue) or (dueDatePassed) %}
-          <br/>
-          <span class="govuk-!-font-weight-bold">Your accounts are overdue</span>
-        {% endif %}
-      {% endset %}
-
-      {% set address %}
-        {{company.address.line_1}}
-        <br/>
-        {{company.address.line_2}}
-        <br/>
-        {{company.address.postCode}}
-      {% endset %}
-
       {{ govukSummaryList({
-        rows: [
-          {
-            key: {
-              text: "Company number"
-            },
-            value: {
-            text: company.companyNumber
-            }
-          },
-          {
-            key: {
-              text: "Status"
-            },
-            value: {
-              text: company.companyStatus
-            }
-          },
-          {
-            key: {
-              text: "Incorporation date"
-            },
-            value: {
-              text: company.incorporationDate
-            }
-          },
-          {
-            key: {
-              text: "Company type"
-            },
-            value: {
-              text: company.companyType
-            }
-          },
-          {
-            key: {
-              text: "Registered office address"
-            },
-            value: {
-              html: address
-            }
-          },
-          {
-            key: {
-              text: "Accounts due"
-            },
-            value: {
-              html: accountsDueHTML
-            }
-          }
-        ]
+        rows: companySummaryListRows
       })  }}
 
       <form method="post">

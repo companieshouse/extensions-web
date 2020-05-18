@@ -9,6 +9,7 @@ import {IExtensionRequest, ISignInInfo, IUserProfile} from "session/types";
 import {ReasonWeb} from "../model/reason/extension.reason.web";
 import {formatDateForDisplay} from "../client/date.formatter";
 import * as keys from "../session/keys";
+import {buildCompanySummaryListRows} from "../global/summary.list.rows.builder";
 
 const createMissingError = (item: string): Error => {
   const errMsg: string = item + " missing from session";
@@ -32,13 +33,16 @@ const printApplicationRoute = async (req: Request, res: Response, next: NextFunc
       const request: IExtensionRequest = sessionService.getRequest(req.chSession);
       const fullRequest: ExtensionFullRequest =
         await apiClient.getFullRequest(companyNumber, token, request.extension_request_id);
+      let companySummaryListRows = buildCompanySummaryListRows(companyInSession, true);
+      companySummaryListRows = companySummaryListRows.concat(
+        {key: {html: "Contact email address"}, value: {html: email}});
 
       return res.render(templatePaths.PRINT_APPLICATION, {
         company: companyInSession,
+        companySummaryListRows,
         extensionLength: 0,
         extensionReasons: formatReasonDates(fullRequest.reasons),
         templateName: templatePaths.PRINT_APPLICATION,
-        userEmail: email,
       });
     } catch (e) {
       logger.error(`Error retrieving company number ${companyNumber} from redis`, e);

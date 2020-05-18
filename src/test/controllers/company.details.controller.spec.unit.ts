@@ -2,7 +2,7 @@ import * as request from "supertest";
 import {getCompanyProfile} from "../../client/apiclient"
 import app from "../../app";
 import {COOKIE_NAME } from "../../session/config";
-import * as pageURLs from "../../model/page.urls";
+import {EXTENSIONS_CONFIRM_COMPANY} from "../../model/page.urls";
 import {loadSession} from "../../services/redis.service";
 import * as mockUtils from "../mock.utils";
 import {addRequest, getCompanyInContext, hasExtensionRequest, createHistoryIfNone} from "../../services/session.service";
@@ -54,7 +54,7 @@ describe("company.details.controller tests", () => {
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
 
-    const res = await request(app).get("/extensions/confirm-company")
+    const res = await request(app).get(EXTENSIONS_CONFIRM_COMPANY)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -71,6 +71,30 @@ describe("company.details.controller tests", () => {
     expect(res.text).toContain(mockUtils.ACCOUNTS_NEXT_DUE_DATE);
   });
 
+  it("should return a company profile with no accounts date row if no date is found", async () => {
+    mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfileNoAccounts());
+
+    const mockPresent: Date = new Date("2019-05-11");
+    mockPresent.setHours(0,0,0);
+    jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
+
+    const res = await request(app).get(EXTENSIONS_CONFIRM_COMPANY)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(res.status).toEqual(200);
+    expect(res.text).toContain(mockUtils.COMPANY_NAME);
+    expect(res.text).toContain(mockUtils.COMPANY_NUMBER);
+    expect(res.text).toContain(mockUtils.COMPANY_STATUS_ACTIVE);
+    expect(res.text).toContain(mockUtils.COMPANY_TYPE);
+    expect(res.text).toContain(mockUtils.COMPANY_INC_DATE);
+    expect(res.text).not.toContain("Your accounts are overdue");
+    expect(res.text).toContain(mockUtils.LINE_1);
+    expect(res.text).toContain(mockUtils.LINE_2);
+    expect(res.text).toContain(mockUtils.POST_CODE);
+    expect(res.text).not.toContain("Accounts due");
+  });
+
   it("should return a overdue message when flag true but date has not passed", async () => {
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(true, true));
 
@@ -78,7 +102,7 @@ describe("company.details.controller tests", () => {
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
 
-    const res = await request(app).get("/extensions/confirm-company")
+    const res = await request(app).get(EXTENSIONS_CONFIRM_COMPANY)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -102,7 +126,7 @@ describe("company.details.controller tests", () => {
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
 
-    const res = await request(app).get("/extensions/confirm-company")
+    const res = await request(app).get(EXTENSIONS_CONFIRM_COMPANY)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -126,7 +150,7 @@ describe("company.details.controller tests", () => {
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
 
-    const res = await request(app).get("/extensions/confirm-company")
+    const res = await request(app).get(EXTENSIONS_CONFIRM_COMPANY)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -149,7 +173,7 @@ describe("company.details.controller tests", () => {
     const mockPresent: Date = new Date("2019-05-11");
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
-    const res = await request(app).post("/extensions/confirm-company")
+    const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -164,7 +188,7 @@ describe("company.details.controller tests", () => {
     const mockPresent: Date = new Date("2019-05-11");
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
-    const res = await request(app).post("/extensions/confirm-company")
+    const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -178,7 +202,7 @@ describe("company.details.controller tests", () => {
     const mockPresent: Date = new Date("2019-05-13");
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
-    const res = await request(app).post("/extensions/confirm-company")
+    const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -192,7 +216,7 @@ describe("company.details.controller tests", () => {
     const mockPresent: Date = new Date("2019-05-13");
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
-    const res = await request(app).post("/extensions/confirm-company")
+    const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -206,7 +230,7 @@ describe("company.details.controller tests", () => {
     const mockPresent: Date = new Date("2019-05-12");
     mockPresent.setHours(0,0,0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
-    const res = await request(app).post("/extensions/confirm-company")
+    const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -219,7 +243,7 @@ describe("company.details.controller tests", () => {
     mockCompanyProfile.mockRejectedValue(new Error());
 
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_CONFIRM_COMPANY)
+      .get(EXTENSIONS_CONFIRM_COMPANY)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -233,7 +257,7 @@ describe("company.details.controller tests", () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(() => undefined);
 
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_CONFIRM_COMPANY)
+      .get(EXTENSIONS_CONFIRM_COMPANY)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 

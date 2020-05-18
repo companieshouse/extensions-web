@@ -10,6 +10,7 @@ import {IExtensionRequest, ISignInInfo, IUserProfile} from "session/types";
 import {ReasonWeb} from "../model/reason/extension.reason.web";
 import {formatDateForDisplay} from "../client/date.formatter";
 import * as keys from "../session/keys";
+import {buildCompanySummaryListRows} from "../global/summary.list.rows.builder";
 
 const recordLandingOnCheckDetailsPage = async (req: Request): Promise<void> => {
   await sessionService.changingDetails(req.chSession, true);
@@ -26,12 +27,16 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       const request: IExtensionRequest = sessionService.getRequest(req.chSession);
       const fullRequest: ExtensionFullRequest =
         await apiClient.getFullRequest(companyNumber, token, request.extension_request_id);
+      let companySummaryListRows = buildCompanySummaryListRows(companyInSession, true);
+      companySummaryListRows = companySummaryListRows.concat(
+        {key: {html: "Contact email address"}, value: {html: getUserEmail(req)}});
+
       return res.render(templatePaths.CHECK_YOUR_ANSWERS, {
         company: companyInSession,
+        companySummaryListRows,
         extensionLength: 0,
         extensionReasons: formatReasonDates(fullRequest.reasons),
         templateName: templatePaths.CHECK_YOUR_ANSWERS,
-        userEmail: getUserEmail(req),
       });
     } catch (e) {
       logger.error(`Error retrieving company number ${companyNumber} from redis`, e);

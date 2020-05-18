@@ -120,6 +120,28 @@ export const getDummyCompanyProfile = (isOverdue: boolean, isActive): Extensions
   }
 };
 
+export const getDummyCompanyProfileNoAccounts = (): ExtensionsCompanyProfile => {
+  return {
+    accountingPeriodEndOn: ACCOUNTS_NEXT_DUE_DATE,
+    accountingPeriodStartOn: ACCOUNTS_NEXT_DUE_DATE,
+    hasBeenLiquidated: HAS_BEEN_LIQUIDATED,
+    hasCharges: HAS_CHARGES,
+    hasInsolvencyHistory: HAS_INSOLVENCY_HISTORY,
+    companyName: COMPANY_NAME,
+    companyNumber: COMPANY_NUMBER,
+    companyStatus: COMPANY_STATUS_ACTIVE,
+    companyType: COMPANY_TYPE,
+    incorporationDate: COMPANY_INC_DATE,
+    address: {
+      line_1: LINE_1,
+      line_2: LINE_2,
+      postCode: POST_CODE
+    },
+    accountsDue: "",
+    isAccountsOverdue: true
+  }
+};
+
 export const getDummyFullRequest: ExtensionFullRequest = {
   id : "77d8cdd9ddb57bb22e7997c5c",
   reasons : [

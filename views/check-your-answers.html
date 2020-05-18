@@ -10,7 +10,9 @@
       <h1 class="govuk-heading-xl">
         Check your application
       </h1>
-      {% include "includes/company-details-summary.html" %}
+      {{ govukSummaryList({
+        rows: companySummaryListRows
+      })  }}
       {% if extensionReasons.length > 1 %}
        <h2 class="govuk-heading-l">Extension reasons</h2>
      {% else %}
