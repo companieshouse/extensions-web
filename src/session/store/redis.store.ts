@@ -13,6 +13,7 @@ export interface IRedisStoreOptions {
 }
 
 const REDIS_URL_PREFIX: string = "redis://";
+const REDIS_PROBLEM: string = "There is a problem with redis: ";
 
 export class RedisStore implements IStore {
 
@@ -35,6 +36,7 @@ export class RedisStore implements IStore {
         return msgpack().decode(raw);
       }
     } catch (e) {
+      logger.error(REDIS_PROBLEM + " Unable to get data", e);
       throw e;
     }
     return {};
