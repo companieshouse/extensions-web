@@ -15,7 +15,7 @@ const createMissingError = (item: string): Error => {
 };
 
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const companyNum: string = await sessionService.getCompanyInContext(req.chSession);
+  const companyNum: string = sessionService.getCompanyInContext(req.chSession);
   let isMissingAuthenticationCodeJourney: boolean = false;
   let numOfReasons: number = 0;
   if (!companyNum) {

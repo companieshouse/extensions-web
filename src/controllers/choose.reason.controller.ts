@@ -19,7 +19,7 @@ export const render = (req: Request, res: Response, next: NextFunction): void =>
   let illnessChecked: boolean = false;
   let missingAuthenticationCodeChecked: boolean = false;
   let otherChecked: boolean = false;
-  if (!(req.chSession.data[keys.EXTENSION_SESSION] === undefined)) {
+  if (req.chSession.data[keys.EXTENSION_SESSION] !== undefined) {
     accountingIssuesChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.ACCOUNTING_ISSUES_CHOSEN];
     missingAuthenticationCodeChecked = req.chSession.data
       [keys.EXTENSION_SESSION]
