@@ -160,7 +160,7 @@ describe("confirmation controller", () => {
   it("should return the error page if company number is missing from session", async () => {
     mockCacheService.mockClear();
     mockCacheService.prototype.constructor.mockResolvedValueOnce(dummySession(null, EMAIL));
-    mockGetCompanyInContext.prototype.constructor.mockResolvedValueOnce(undefined);
+    mockGetCompanyInContext.prototype.constructor.mockImplementation(() => undefined);
 
     const resp = await request(app)
       .get(pageURLs.EXTENSIONS_CONFIRMATION)

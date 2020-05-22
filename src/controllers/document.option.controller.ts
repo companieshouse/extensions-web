@@ -15,7 +15,7 @@ const validators = [
 export const render = (req: Request, res: Response, next: NextFunction): void => {
   let noChecked: boolean = false;
   let yesChecked: boolean = false;
-  if (!(req.chSession.data[keys.EXTENSION_SESSION] === undefined)) {
+  if (req.chSession.data[keys.EXTENSION_SESSION] !== undefined) {
     noChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.UPLOAD_DOCUMENTS_NO];
     yesChecked = req.chSession.data[keys.EXTENSION_SESSION][keys.UPLOAD_DOCUMENTS_YES];
   }
