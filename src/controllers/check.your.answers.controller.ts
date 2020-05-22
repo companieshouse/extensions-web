@@ -6,10 +6,9 @@ import * as templatePaths from "../model/template.paths";
 import * as errorMessages from "../model/error.messages";
 import {EXTENSIONS_CONFIRMATION} from "../model/page.urls";
 import * as apiClient from "../client/apiclient";
-import {IExtensionRequest, ISignInInfo, IUserProfile} from "session/types";
+import {IExtensionRequest} from "session/types";
 import {ReasonWeb} from "../model/reason/extension.reason.web";
 import {formatDateForDisplay} from "../client/date.formatter";
-import * as keys from "../session/keys";
 import {buildCompanySummaryListRows} from "../global/summary.list.rows.builder";
 
 const recordLandingOnCheckDetailsPage = async (req: Request): Promise<void> => {
@@ -27,9 +26,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       const request: IExtensionRequest = sessionService.getRequest(req.chSession);
       const fullRequest: ExtensionFullRequest =
         await apiClient.getFullRequest(companyNumber, token, request.extension_request_id);
-      let companySummaryListRows = buildCompanySummaryListRows(companyInSession, true);
-      companySummaryListRows = companySummaryListRows.concat(
-        {key: {html: "Contact email address"}, value: {html: getUserEmail(req)}});
+      const companySummaryListRows = buildCompanySummaryListRows(companyInSession, true, true, req);
 
       return res.render(templatePaths.CHECK_YOUR_ANSWERS, {
         company: companyInSession,
@@ -58,13 +55,6 @@ const formatReasonDates = (reasons: ReasonWeb[]): ReasonWeb[] => {
     reason.end_on = formatDateForDisplay(reason.end_on);
   });
   return reasons;
-};
-
-const getUserEmail = (req: Request): string => {
-  const signInInfo: ISignInInfo = req.chSession.data[keys.SIGN_IN_INFO] as ISignInInfo;
-  const userProfile: IUserProfile = signInInfo[keys.USER_PROFILE] as IUserProfile;
-  const email = userProfile.email;
-  return email ? email : "";
 };
 
 export default [route];

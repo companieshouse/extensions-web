@@ -18,7 +18,7 @@ export const route = async (req: Request, res: Response, next: NextFunction): Pr
       const isDueDatePassed: boolean = checkDueDate(company);
       return res.render(templatePaths.CONFIRM_COMPANY, {
         company,
-        companySummaryListRows: buildCompanySummaryListRows(company, false, isDueDatePassed),
+        companySummaryListRows: buildCompanySummaryListRows(company, false, false, req, isDueDatePassed),
         dueDatePassed: isDueDatePassed,
         templateName: templatePaths.CONFIRM_COMPANY,
       });

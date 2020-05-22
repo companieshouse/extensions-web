@@ -33,9 +33,7 @@ const printApplicationRoute = async (req: Request, res: Response, next: NextFunc
       const request: IExtensionRequest = sessionService.getRequest(req.chSession);
       const fullRequest: ExtensionFullRequest =
         await apiClient.getFullRequest(companyNumber, token, request.extension_request_id);
-      let companySummaryListRows = buildCompanySummaryListRows(companyInSession, true);
-      companySummaryListRows = companySummaryListRows.concat(
-        {key: {html: "Contact email address"}, value: {html: email}});
+      const companySummaryListRows = buildCompanySummaryListRows(companyInSession, true, true, req);
 
       return res.render(templatePaths.PRINT_APPLICATION, {
         company: companyInSession,

@@ -1,7 +1,10 @@
 import {ExtensionsCompanyProfile} from "../client/apiclient";
+import {Request} from "express";
+import {ISignInInfo, IUserProfile} from "../session/types";
+import * as keys from "../session/keys";
 
 export function buildCompanySummaryListRows(company: ExtensionsCompanyProfile, isCompanyNameRequired: boolean,
-                                            isDueDatePassed?: boolean) {
+                                            isEmailRequired: boolean, req: Request, isDueDatePassed?: boolean) {
   const companyAddress = company.address.line_1 + "</br>"
     + company.address.line_2 + "</br>"
     + company.address.postCode;
@@ -26,5 +29,20 @@ export function buildCompanySummaryListRows(company: ExtensionsCompanyProfile, i
     }
     rowsArray = rowsArray.concat({key: {html: "Accounts due"}, value: {html: accountsOverdueHTML}});
   }
+  if (isEmailRequired) {
+    const email = getUserEmail(req);
+    rowsArray = rowsArray.concat({key: {html: "Contact email address"}, value: {html: email}});
+  }
   return rowsArray;
 }
+
+const getUserEmail = (req: Request): string => {
+  const signInInfo: ISignInInfo = req.chSession.data[keys.SIGN_IN_INFO] as ISignInInfo;
+  const userProfile: IUserProfile = signInInfo[keys.USER_PROFILE] as IUserProfile;
+  const email = userProfile.email;
+  if (email) {
+    return email;
+  } else {
+    throw new Error("Email is missing for user " + userProfile.id);
+  }
+};
