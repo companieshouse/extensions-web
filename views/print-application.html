@@ -24,7 +24,9 @@ Print a copy of your application
         <strong>{{ company.companyNumber }}</strong>
       </div>
     </div>
-    {% include "includes/company-details-summary.html" %}
+    {{ govukSummaryList({
+      rows: companySummaryListRows
+    })  }}
     {% if extensionReasons.length > 1 %}
     <h2 class="govuk-heading-l">Extension reasons</h2>
     {% else %}

@@ -89,7 +89,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
   return {
     accountingPeriodEndOn: companyProfile.accounts.nextAccounts.periodEndOn,
     accountingPeriodStartOn: companyProfile.accounts.nextAccounts.periodStartOn,
-    accountsDue: formatDateForDisplay(companyProfile.accounts.nextDue),
+    accountsDue: companyProfile.accounts.nextDue ? formatDateForDisplay(companyProfile.accounts.nextDue) : "",
     address: {
       line_1: companyProfile.registeredOfficeAddress.addressLineOne,
       line_2: companyProfile.registeredOfficeAddress.addressLineTwo,

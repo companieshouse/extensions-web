@@ -1,6 +1,6 @@
 import app from "../../app";
 import * as request from "supertest";
-import * as pageURLs from "../../model/page.urls";
+import {EXTENSIONS_CHECK_YOUR_ANSWERS, EXTENSIONS_CONFIRMATION} from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
 import {loadMockSession, fullDummySession, EMAIL} from "../mock.utils";
 import * as keys from "../../session/keys";
@@ -8,6 +8,7 @@ import {getCompanyProfile, getReasons, getFullRequest} from "../../client/apicli
 import {loadSession} from "../../services/redis.service";
 import Session from "../../session/session";
 import {createHistoryIfNone, getRequest} from "../../services/session.service";
+import * as mockUtils from "../mock.utils";
 
 jest.mock("../../client/apiclient");
 jest.mock("../../services/redis.service");
@@ -48,7 +49,6 @@ beforeEach( () => {
   });
   mockGetRequest.prototype.constructor.mockImplementation(() => {
     return {
-      company_number: "00006400",
       extension_request_id: "request1",
       reason_in_context_string: "reason1"
     }
@@ -62,33 +62,75 @@ beforeEach( () => {
 
 describe("check your answers url tests", () => {
   it ("should find check your answers page with get", async () => {
+    mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
     mockCacheService.mockClear();
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
 
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS)
+      .get(EXTENSIONS_CHECK_YOUR_ANSWERS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
     expect(res.text).toContain(TITLE);
-    expect(mockFullRequest).toBeCalledWith("00006400", "KGGGUYUYJHHVK1234", "request1");
+    expect(res.text).toContain(mockUtils.COMPANY_NAME);
+    expect(mockFullRequest).toBeCalledWith(mockUtils.COMPANY_NUMBER, "KGGGUYUYJHHVK1234", "request1");
   });
 
-  it ("should display correct user email on page", async () => {
+  it("should return correct company profile upon render", async () => {
+    mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
     mockCacheService.mockClear();
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
 
-    const res = await request(app)
-      .get(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS)
+    const mockPresent: Date = new Date("2019-05-11");
+    mockPresent.setHours(0,0,0);
+    jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
+
+    const res = await request(app).get(EXTENSIONS_CHECK_YOUR_ANSWERS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
-    expect(res.text).toContain("Contact email address");
+
+    expect(res.status).toEqual(200);
+    expect(res.text).toContain(mockUtils.COMPANY_NAME);
+    expect(res.text).toContain(mockUtils.COMPANY_NUMBER);
+    expect(res.text).toContain(mockUtils.COMPANY_STATUS_ACTIVE);
+    expect(res.text).toContain(mockUtils.COMPANY_TYPE);
+    expect(res.text).toContain(mockUtils.COMPANY_INC_DATE);
+    expect(res.text).toContain(mockUtils.LINE_1);
+    expect(res.text).toContain(mockUtils.LINE_2);
+    expect(res.text).toContain(mockUtils.POST_CODE);
+    expect(res.text).toContain(mockUtils.ACCOUNTS_NEXT_DUE_DATE);
+    expect(res.text).toContain(EMAIL);
+  });
+
+  it("should return correct company profile with no accounts date row if no date is found", async () => {
+    mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfileNoAccounts());
+    mockCacheService.mockClear();
+    mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
+
+    const mockPresent: Date = new Date("2019-05-11");
+    mockPresent.setHours(0,0,0);
+    jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
+
+    const res = await request(app).get(EXTENSIONS_CHECK_YOUR_ANSWERS)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(res.status).toEqual(200);
+    expect(res.text).toContain(mockUtils.COMPANY_NAME);
+    expect(res.text).toContain(mockUtils.COMPANY_NUMBER);
+    expect(res.text).toContain(mockUtils.COMPANY_STATUS_ACTIVE);
+    expect(res.text).toContain(mockUtils.COMPANY_TYPE);
+    expect(res.text).toContain(mockUtils.COMPANY_INC_DATE);
+    expect(res.text).toContain(mockUtils.LINE_1);
+    expect(res.text).toContain(mockUtils.LINE_2);
+    expect(res.text).toContain(mockUtils.POST_CODE);
+    expect(res.text).not.toContain(mockUtils.ACCOUNTS_NEXT_DUE_DATE);
     expect(res.text).toContain(EMAIL);
   });
 
   it ("should return 404 if check your answers page with put", async () => {
     const res = await request(app)
-      .put(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS)
+      .put(EXTENSIONS_CHECK_YOUR_ANSWERS)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
@@ -111,7 +153,7 @@ describe("check your answers url tests", () => {
     });
 
     const resp = await request(app)
-      .get(pageURLs.EXTENSIONS_CONFIRMATION)
+      .get(EXTENSIONS_CONFIRMATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -124,19 +166,20 @@ describe("check your answers url tests", () => {
 
   it ("should forward to confirmation page on post", async () => {
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS)
+      .post(EXTENSIONS_CHECK_YOUR_ANSWERS)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(302);
-    expect(res.text).toContain(pageURLs.EXTENSIONS_CONFIRMATION);
+    expect(res.text).toContain(EXTENSIONS_CONFIRMATION);
   });
 
   it ("should format reason dates correctly", async () => {
+    mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
     mockCacheService.mockClear();
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
     
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS)
+      .get(EXTENSIONS_CHECK_YOUR_ANSWERS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);

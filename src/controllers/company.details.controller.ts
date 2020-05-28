@@ -6,6 +6,7 @@ import * as errorMessages from "../model/error.messages";
 import * as templatePaths from "../model/template.paths";
 import * as pageURLs from "../model/page.urls";
 import * as keys from "../session/keys";
+import {buildCompanySummaryListRows} from "../global/summary.list.rows.builder";
 
 export const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
@@ -17,6 +18,7 @@ export const route = async (req: Request, res: Response, next: NextFunction): Pr
       const isDueDatePassed: boolean = checkDueDate(company);
       return res.render(templatePaths.CONFIRM_COMPANY, {
         company,
+        companySummaryListRows: buildCompanySummaryListRows(company, false, false, req, isDueDatePassed),
         dueDatePassed: isDueDatePassed,
         templateName: templatePaths.CONFIRM_COMPANY,
       });

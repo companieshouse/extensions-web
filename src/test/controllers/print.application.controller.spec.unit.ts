@@ -1,18 +1,18 @@
 import app from "../../app";
 import * as request from "supertest";
-import * as pageURLs from "../../model/page.urls";
+import {EXTENSIONS_PRINT_APPLICATION} from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
 import {loadMockSession, fullDummySession} from "../mock.utils";
 import * as keys from "../../session/keys";
 import {getCompanyProfile, getReasons, getFullRequest} from "../../client/apiclient";
 import {loadSession} from "../../services/redis.service";
 import Session from "../../session/session";
+import * as mockUtils from "../mock.utils";
 
 jest.mock("../../client/apiclient");
 jest.mock("../../services/redis.service");
 
 const EMAIL: string = "demo@ch.gov.uk";
-const COMPANY_NUMBER: string = "00006400";
 const PAGE_TITLE: string = "Print a copy of your application";
 const ERROR_PAGE: string = "Sorry, there is a problem with the service";
 
@@ -48,11 +48,12 @@ beforeEach( () => {
 describe("print application controller", () => {
 
   it ("should render print application page with get", async () => {
+    mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
     mockCacheService.mockClear();
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
 
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_PRINT_APPLICATION)
+      .get(EXTENSIONS_PRINT_APPLICATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -61,9 +62,61 @@ describe("print application controller", () => {
     expect(mockFullRequest).toBeCalledWith("00006400", "KGGGUYUYJHHVK1234", "request1");
   });
 
+  it("should return correct company profile upon render", async () => {
+    mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
+    mockCacheService.mockClear();
+    mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
+
+    const mockPresent: Date = new Date("2019-05-11");
+    mockPresent.setHours(0,0,0);
+    jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
+
+    const res = await request(app).get(EXTENSIONS_PRINT_APPLICATION)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(res.status).toEqual(200);
+    expect(res.text).toContain(mockUtils.COMPANY_NAME);
+    expect(res.text).toContain(mockUtils.COMPANY_NUMBER);
+    expect(res.text).toContain(mockUtils.COMPANY_STATUS_ACTIVE);
+    expect(res.text).toContain(mockUtils.COMPANY_TYPE);
+    expect(res.text).toContain(mockUtils.COMPANY_INC_DATE);
+    expect(res.text).toContain(mockUtils.LINE_1);
+    expect(res.text).toContain(mockUtils.LINE_2);
+    expect(res.text).toContain(mockUtils.POST_CODE);
+    expect(res.text).toContain(mockUtils.ACCOUNTS_NEXT_DUE_DATE);
+    expect(res.text).toContain(EMAIL);
+  });
+
+  it("should return correct company profile with no accounts date row if no date is found", async () => {
+    mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfileNoAccounts());
+    mockCacheService.mockClear();
+    mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
+
+    const mockPresent: Date = new Date("2019-05-11");
+    mockPresent.setHours(0,0,0);
+    jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
+
+    const res = await request(app).get(EXTENSIONS_PRINT_APPLICATION)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(res.status).toEqual(200);
+    expect(res.text).toContain(mockUtils.COMPANY_NAME);
+    expect(res.text).toContain(mockUtils.COMPANY_NUMBER);
+    expect(res.text).toContain(mockUtils.COMPANY_STATUS_ACTIVE);
+    expect(res.text).toContain(mockUtils.COMPANY_TYPE);
+    expect(res.text).toContain(mockUtils.COMPANY_INC_DATE);
+    expect(res.text).toContain(mockUtils.LINE_1);
+    expect(res.text).toContain(mockUtils.LINE_2);
+    expect(res.text).toContain(mockUtils.POST_CODE);
+    expect(res.text).not.toContain("Accounts due");
+    expect(res.text).toContain(EMAIL);
+  });
+
   it ("should return 404 if print application page with put", async () => {
     const res = await request(app)
-      .put(pageURLs.EXTENSIONS_PRINT_APPLICATION)
+      .put(EXTENSIONS_PRINT_APPLICATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
@@ -71,16 +124,16 @@ describe("print application controller", () => {
 
   it("should return the error page if email is missing from session", async () => {
     mockCacheService.mockClear();
-    mockCacheService.prototype.constructor.mockResolvedValueOnce(dummySession(COMPANY_NUMBER, null));
+    mockCacheService.prototype.constructor.mockResolvedValueOnce(dummySession(mockUtils.COMPANY_NUMBER, null));
 
     const resp = await request(app)
-      .get(pageURLs.EXTENSIONS_PRINT_APPLICATION)
+      .get(EXTENSIONS_PRINT_APPLICATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(resp.status).toEqual(500);
     expect(resp.text).not.toContain(EMAIL);
-    expect(resp.text).not.toContain(COMPANY_NUMBER);
+    expect(resp.text).not.toContain(mockUtils.COMPANY_NUMBER);
     expect(resp.text).not.toContain(PAGE_TITLE);
     expect(resp.text).toContain(ERROR_PAGE);
   });
@@ -90,23 +143,24 @@ describe("print application controller", () => {
     mockCacheService.prototype.constructor.mockResolvedValueOnce(dummySession(null, EMAIL));
 
     const resp = await request(app)
-      .get(pageURLs.EXTENSIONS_PRINT_APPLICATION)
+      .get(EXTENSIONS_PRINT_APPLICATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(resp.status).toEqual(500);
     expect(resp.text).not.toContain(EMAIL);
-    expect(resp.text).not.toContain(COMPANY_NUMBER);
+    expect(resp.text).not.toContain(mockUtils.COMPANY_NUMBER);
     expect(resp.text).not.toContain(PAGE_TITLE);
     expect(resp.text).toContain(ERROR_PAGE);
   });
 
   it ("should format reason dates correctly", async () => {
+    mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
     mockCacheService.mockClear();
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
 
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_PRINT_APPLICATION)
+      .get(EXTENSIONS_PRINT_APPLICATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
