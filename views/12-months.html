@@ -1,20 +1,9 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-You cannot use this service
+  You cannot use this service
 {% endblock %}
-{% block beforeContent %}
-{{ govukPhaseBanner({
-tag: {
-text: "alpha"
-},
-html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
-  }) }}
-{{ govukBackLink({
-text: "Back",
-href: "confirm-company"
-}) }}
-{% endblock %}
+
 {% block content %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -30,10 +19,9 @@ href: "confirm-company"
     <p>
       You must
       <a href="https://www.gov.uk/file-your-company-annual-accounts">file your company accounts</a>
-      (opens a new tab) as soon as possible to avoid a late filing penalty.
-      The penalty will increase depending on how late the accounts reach Companies house.
+      (opens in a new tab) as soon as possible to avoid a late filing penalty.
+      The penalty will increase depending on how late the accounts reach Companies House.
     </p>
-
   </div>
 </div>
 {% endblock %}
