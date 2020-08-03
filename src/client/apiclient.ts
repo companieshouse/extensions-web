@@ -5,7 +5,7 @@ import { API_URL, EXTENSIONS_API_URL, EXTENSIONS_PROCESSOR_API_URL } from "../se
 import * as FormData from "form-data";
 import { ReasonWeb } from "model/reason/extension.reason.web";
 import {formatDateForDisplay} from "./date.formatter";
-import {Response} from "express";
+import {Request, Response} from "express";
 import { IExtensionRequest } from "session/types";
 
 import {createApiClient} from "ch-sdk-node";
@@ -259,6 +259,11 @@ export const download = async (downloadUri: string, token: string, res: Response
   prefixFilename(res, contentDispositionHeader);
   // copy data into response
   axiosResponse.data.pipe(res);
+};
+
+export const isFilingDateAfterTwelveMonths = async (req: Request, token: string): Promise<boolean> => {
+   // TODO LFA-1925 decide path and make call to api
+  return Promise.resolve(false);
 };
 
 export const prefixFilename = (res: Response, contentDispositionHeader: string ): void => {

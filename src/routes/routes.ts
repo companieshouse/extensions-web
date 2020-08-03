@@ -1,10 +1,10 @@
-import {NextFunction, Request, Response, Router} from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import addExtensionReasonRoute from "../controllers/add.extension.reason.controller";
 import chooseReasonRoute, {render as renderChooseReason} from "../controllers/choose.reason.controller";
 import * as companyDetailsRoute from "../controllers/company.details.controller";
 import companyNumberRoute from "../controllers/company.number.controller";
 import illnessStartDateRoute, {
-  render as renderIllnessStartDate} from "../controllers/illness/illness.start.date.controller";
+  render as renderIllnessStartDate } from "../controllers/illness/illness.start.date.controller";
 import checkAnswersRoute from "../controllers/check.your.answers.controller";
 import illnessInformationRoute, {
   render as renderIllnessInformation} from "../controllers/illness/illness.information.controller";
@@ -12,7 +12,7 @@ import * as illnessEndDateRoute from "../controllers/illness/illness.end.date.co
 import * as continuedIllnessRoute from "../controllers/illness/continued.illness.controller";
 import accountsDateRoute, {render as renderAccountsDate} from "../controllers/accounts/accounts.date.controller";
 import accountsInformationRoute, {
-  render as renderAccountsInformation} from "../controllers/accounts/accounts.information.controller";
+  render as renderAccountsInformation } from "../controllers/accounts/accounts.information.controller";
 import documentsOptionRoute, {render as renderDocumentsOption} from "../controllers/document.option.controller";
 import removeDocumentRoute, {render as renderRemoveDocument} from "../controllers/remove.document.controller";
 import documentsUploadRoute, {
@@ -27,12 +27,13 @@ import removeReasonPostRoute, {removeReasonGetRoute} from "../controllers/remove
 import downloadAttachmentRoute from "../controllers/download.attachment.controller";
 import downloadAttachmentLandingRoute from "../controllers/download.attachment.landing.controller";
 import printApplicationRoute from "../controllers/print.application.controller";
-import {render as renderAddExtensionReason} from "../controllers/add.extension.reason.controller";
+import { render as renderAddExtensionReason } from "../controllers/add.extension.reason.controller";
 import * as pageURLs from "../model/page.urls";
 import * as templatePaths from "../model/template.paths";
 import sessionQuery from "../session/middleware/session.query";
 import backLinkRoute from "../controllers/back.link.controller";
-import {render as showTooSoonPage} from "../controllers/too.soon.controller";
+import { render as showTooSoonPage } from "../controllers/too.soon.controller";
+import { render as showAfterTwelveMonthsPage } from "../controllers/twelve.months.cotroller";
 
 const router: Router = Router();
 
@@ -114,6 +115,8 @@ router.get(pageURLs.ERROR, (res: Response) => {
 });
 
 router.get(pageURLs.TOO_SOON, showTooSoonPage);
+
+router.get(pageURLs.AFTER_TWELVE_MONTHS, showAfterTwelveMonthsPage);
 
 router.get(pageURLs.BACK_LINK, backLinkRoute);
 

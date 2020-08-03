@@ -28,6 +28,7 @@ export const NO_FOUND: string = "/no-found";
 export const ERROR: string = SEPARATOR + templates.ERROR;
 export const CHECK_YOUR_ANSWERS: string = SEPARATOR + templates.CHECK_YOUR_ANSWERS;
 export const TOO_SOON: string = SEPARATOR + templates.TOO_SOON;
+export const AFTER_TWELVE_MONTHS: string = SEPARATOR + templates.AFTER_TWELVE_MONTHS;
 export const DOWNLOAD_ATTACHMENT: string =
   "/company/:companyId/extensions/requests/:requestId/*/attachments/*/download";
 export const BACK_LINK: string =  "/back-link";

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ExtensionsCompanyProfile, getCompanyProfile, createExtensionRequest } from "../client/apiclient";
+import { ExtensionsCompanyProfile, getCompanyProfile, createExtensionRequest, isFilingDateAfterTwelveMonths } from "../client/apiclient";
 import logger from "../logger";
 import * as sessionService from "../services/session.service";
 import * as errorMessages from "../model/error.messages";
@@ -46,6 +46,12 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
   try {
     const token: string = req.chSession.accessToken() as string;
     if (token) {
+
+      const isFilingDateEligible = await isFilingDateAfterTwelveMonths(req, token);
+      if (!isFilingDateEligible) {
+        return res.redirect(pageURLs.AFTER_TWELVE_MONTHS);
+      }
+
       const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
       const isDueDatePassed = checkDueDate(company);
       if (company.isAccountsOverdue || isDueDatePassed) {
