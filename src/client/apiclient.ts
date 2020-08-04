@@ -261,11 +261,6 @@ export const download = async (downloadUri: string, token: string, res: Response
   axiosResponse.data.pipe(res);
 };
 
-export const isFilingDateAfterTwelveMonths = async (req: Request, token: string): Promise<boolean> => {
-   // TODO LFA-1925 decide path and make call to api
-  return Promise.resolve(false);
-};
-
 export const prefixFilename = (res: Response, contentDispositionHeader: string ): void => {
   let header: string = res.get(contentDispositionHeader);
   header = header.replace("filename=\"", "filename=\"CH_EXT_");

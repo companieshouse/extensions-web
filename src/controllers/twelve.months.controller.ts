@@ -7,13 +7,13 @@ import * as errorMessages from "../model/error.messages";
 
 export const render = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
-  const token: string = req.chSession.accessToken() as string;
-  if (companyNumber && token) {
+  if (companyNumber) {
     try {
+      const token: string = req.chSession.accessToken() as string;
       const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
       res.render(templatePaths.AFTER_TWELVE_MONTHS, {
-        companyName: company.companyNumber,
-        companyNumber: company.companyName,
+        companyName: company.companyName,
+        companyNumber: company.companyNumber,
       });
     } catch (e) {
       logger.error(`Too Soon - Error retrieving company number ${companyNumber} from redis`, e);

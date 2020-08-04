@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ExtensionsCompanyProfile, getCompanyProfile, createExtensionRequest, isFilingDateAfterTwelveMonths } from "../client/apiclient";
+import { ExtensionsCompanyProfile, getCompanyProfile, createExtensionRequest } from "../client/apiclient";
 import logger from "../logger";
 import * as sessionService from "../services/session.service";
 import * as errorMessages from "../model/error.messages";
@@ -46,13 +46,13 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
   try {
     const token: string = req.chSession.accessToken() as string;
     if (token) {
+      const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
 
-      const isFilingDateEligible = await isFilingDateAfterTwelveMonths(req, token);
+      const isFilingDateEligible: boolean = checkIsEligibleForExtension(company);
       if (!isFilingDateEligible) {
-        return res.redirect(pageURLs.AFTER_TWELVE_MONTHS);
+        return res.redirect(pageURLs.EXTENSIONS_AFTER_TWELVE_MONTHS);
       }
 
-      const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
       const isDueDatePassed = checkDueDate(company);
       if (company.isAccountsOverdue || isDueDatePassed) {
         return res.render(templatePaths.ACCOUNTS_OVERDUE, {
@@ -77,6 +77,15 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
   } catch (err) {
     return next(err);
   }
+};
+
+const checkIsEligibleForExtension = (company: ExtensionsCompanyProfile): boolean => {
+  const dueDate: Date = new Date(company.accountsDue);
+  const dueDateMinus12Months = new Date(dueDate.setMonth(dueDate.getMonth() - 12));
+  dueDateMinus12Months.setHours(0, 0, 0);
+  const endDate: Date = new Date(company.accountingPeriodEndOn);
+  endDate.setHours(0, 0, 0);
+  return dueDateMinus12Months < endDate;
 };
 
 const checkDueDate = (company: ExtensionsCompanyProfile): boolean => {
