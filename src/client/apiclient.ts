@@ -5,7 +5,7 @@ import { API_URL, EXTENSIONS_API_URL, EXTENSIONS_PROCESSOR_API_URL } from "../se
 import * as FormData from "form-data";
 import { ReasonWeb } from "model/reason/extension.reason.web";
 import {formatDateForDisplay} from "./date.formatter";
-import {Request, Response} from "express";
+import {Response} from "express";
 import { IExtensionRequest } from "session/types";
 
 import {createApiClient} from "ch-sdk-node";
