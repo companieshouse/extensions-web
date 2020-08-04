@@ -33,7 +33,7 @@ import * as templatePaths from "../model/template.paths";
 import sessionQuery from "../session/middleware/session.query";
 import backLinkRoute from "../controllers/back.link.controller";
 import { render as showTooSoonPage } from "../controllers/too.soon.controller";
-import { render as showAfterTwelveMonthsPage } from "../controllers/twelve.months.cotroller";
+import { render as showAfterTwelveMonthsPage } from "../controllers/twelve.months.controller";
 
 const router: Router = Router();
 

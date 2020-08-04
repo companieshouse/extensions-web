@@ -1,5 +1,5 @@
 import * as request from "supertest";
-import {getCompanyProfile} from "../../client/apiclient"
+import {getCompanyProfile, isFilingDateAfterTwelveMonths} from "../../client/apiclient";
 import app from "../../app";
 import {COOKIE_NAME } from "../../session/config";
 import {EXTENSIONS_CONFIRM_COMPANY} from "../../model/page.urls";
@@ -21,7 +21,7 @@ const mockGetCompanyInContext = (<unknown>getCompanyInContext as jest.Mock<typeo
 const mockHasExtensionRequest = (<unknown>hasExtensionRequest as jest.Mock<typeof hasExtensionRequest>);
 const mockAddRequest = (<unknown>addRequest as jest.Mock<typeof addRequest>);
 const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
-
+const mockIsFilingDateAfterTwelveMonths: jest.Mock = (<unknown>isFilingDateAfterTwelveMonths as jest.Mock<typeof isFilingDateAfterTwelveMonths>);
 
   beforeEach(() => {
     mockCompanyProfile.mockRestore();
@@ -31,6 +31,8 @@ const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeo
     mockHasExtensionRequest.prototype.constructor.mockImplementation(() => {
     return true
   });
+
+  mockIsFilingDateAfterTwelveMonths.mockReturnValueOnce(() => true);
   mockAddRequest.prototype.constructor.mockImplementation(() => {
     return {
       company_number: "00006400",
