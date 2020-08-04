@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  You cannot use this service
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-xl">We cannot grant an extension to the filing deadline</h1>
+    <p class="govuk-body-m">
+      The last filing date for {{companyName}} ({{companyNumber}})
+      is already 12 months or more after the end of the accounting reference period.
+    </p>
+    <p>
+      Filing extensions are granted to allow a company to meet its filing obligations.
+      They cannot be used to extend the filing deadline to more than 12 months after the end of the accounting reference period.
+    </p>
+    <p>
+      You must
+      <a href="https://www.gov.uk/file-your-company-annual-accounts" target="_blank">file your company accounts</a>
+      (opens in a new tab) as soon as possible to avoid a late filing penalty.
+      The penalty will increase depending on how late the accounts reach Companies House.
+    </p>
+  </div>
+</div>
+{% endblock %}
