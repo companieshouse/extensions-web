@@ -48,7 +48,7 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
     if (token) {
       const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
 
-      const isFilingDateEligible: boolean = checkIsExtensionLimitReached(company);
+      const isFilingDateEligible: boolean = isExtensionDueDateWithinLimit(company);
       if (!isFilingDateEligible) {
         logger.info("Company not eligibile for extension as limit period has been exceeded");
         return res.redirect(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED);
@@ -80,8 +80,12 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
   }
 };
 
-const checkIsExtensionLimitReached = (company: ExtensionsCompanyProfile): boolean => {
-  const dueDate: Date = new Date(company.accountsDue);
+const isExtensionDueDateWithinLimit = (company: ExtensionsCompanyProfile): boolean => {
+  const dueDateString: string = company.accountsDue;
+  if (!dueDateString || dueDateString.length === 0) {
+    return true;
+  }
+  const dueDate: Date = new Date(dueDateString);
   // TODO 1927 get minus value from chs config
   const dueDateMinusLimitPeriod = new Date(dueDate.setMonth(dueDate.getMonth() - 12));
   dueDateMinusLimitPeriod.setHours(0, 0, 0);

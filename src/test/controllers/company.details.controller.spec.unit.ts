@@ -309,6 +309,19 @@ describe("company.details.controller tests", () => {
     expect(res.header.location).toEqual(pageURLs.EXTENSIONS_CHOOSE_REASON);
     expect(res.status).toEqual(302);
   });
+
+  it("should not return filing date page when due date is empty", async () => {
+    const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfileNoAccounts();
+    dummyCompanyProfile.isAccountsOverdue = false;
+    mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
+
+    const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
+      .set("referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_CHOOSE_REASON);
+    expect(res.status).toEqual(302);
+  });
 }); 
 
 
