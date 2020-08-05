@@ -50,7 +50,7 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
 
       const isFilingDateEligible: boolean = checkIsEligibleForExtension(company);
       if (!isFilingDateEligible) {
-        return res.redirect(pageURLs.EXTENSIONS_AFTER_TWELVE_MONTHS);
+        return res.redirect(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED);
       }
 
       const isDueDatePassed = checkDueDate(company);

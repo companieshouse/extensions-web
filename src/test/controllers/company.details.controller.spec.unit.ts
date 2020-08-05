@@ -278,7 +278,7 @@ describe("company.details.controller tests", () => {
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_AFTER_TWELVE_MONTHS);
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED);
     expect(res.status).toEqual(302);
   });
 
@@ -292,7 +292,7 @@ describe("company.details.controller tests", () => {
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_AFTER_TWELVE_MONTHS);
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED);
     expect(res.status).toEqual(302);
   });
 

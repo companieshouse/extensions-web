@@ -11,7 +11,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
     try {
       const token: string = req.chSession.accessToken() as string;
       const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
-      res.render(templatePaths.AFTER_TWELVE_MONTHS, {
+      res.render(templatePaths.EXTENSION_LIMIT_REACHED, {
         companyName: company.companyName,
         companyNumber: company.companyNumber,
       });

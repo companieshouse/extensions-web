@@ -34,13 +34,13 @@ beforeEach(() => {
   });
 });
 
-describe("twelve months controller tests",() => {
+describe("extension limit reached controller tests",() => {
 
   it("should render the page", async() => {
     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
     mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
 
-    const res = await request(app).get(pageURLs.EXTENSIONS_AFTER_TWELVE_MONTHS)
+    const res = await request(app).get(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -53,7 +53,7 @@ describe("twelve months controller tests",() => {
     mockCompanyProfile.mockRejectedValue(new Error());
 
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_AFTER_TWELVE_MONTHS)
+      .get(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -67,7 +67,7 @@ describe("twelve months controller tests",() => {
     mockCacheService.prototype.constructor.mockImplementationOnce(() => undefined);
 
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_AFTER_TWELVE_MONTHS)
+      .get(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
