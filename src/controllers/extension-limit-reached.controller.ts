@@ -14,6 +14,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
       res.render(templatePaths.EXTENSION_LIMIT_REACHED, {
         companyName: company.companyName,
         companyNumber: company.companyNumber,
+        monthLimit: 12, // TODO LFA-1927 get value from chs config
       });
     } catch (e) {
       logger.error(`Too Soon - Error retrieving company number ${companyNumber} from redis`, e);

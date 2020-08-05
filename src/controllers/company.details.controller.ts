@@ -48,8 +48,9 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
     if (token) {
       const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
 
-      const isFilingDateEligible: boolean = checkIsEligibleForExtension(company);
+      const isFilingDateEligible: boolean = checkIsExtensionLimitReached(company);
       if (!isFilingDateEligible) {
+        logger.info("Company not eligibile for extension as the limit has been reached")
         return res.redirect(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED);
       }
 
@@ -79,7 +80,7 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
   }
 };
 
-const checkIsEligibleForExtension = (company: ExtensionsCompanyProfile): boolean => {
+const checkIsExtensionLimitReached = (company: ExtensionsCompanyProfile): boolean => {
   const dueDate: Date = new Date(company.accountsDue);
   const dueDateMinus12Months = new Date(dueDate.setMonth(dueDate.getMonth() - 12));
   dueDateMinus12Months.setHours(0, 0, 0);
