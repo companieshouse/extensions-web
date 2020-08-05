@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
 import {lookupCompanyStatus, lookupCompanyType} from "./api.enumerations";
 import logger from "../logger";
 import { API_URL, EXTENSIONS_API_URL, EXTENSIONS_PROCESSOR_API_URL } from "../session/config";
@@ -20,6 +20,7 @@ import {
   HTTP_POST,
   makeAPICall,
 } from "./axios.api.call.handler";
+import {ExtensionRequestStatus} from "../model/extension.request.status";
 
 export interface ExtensionsCompanyProfile {
   hasBeenLiquidated: boolean;
@@ -274,5 +275,23 @@ export const callProcessorApi = async (companyNumber: string, token: string, req
   config.method = HTTP_POST;
   config.url = PROCESSOR_API_PATH;
   logger.info(`Calling processor api for request ${requestId} for company ${companyNumber}`);
+  return await makeAPICall(config);
+};
+
+export const setExtensionRequestStatus = async (status: ExtensionRequestStatus,
+                                                requestId: string,
+                                                companyNumber: string,
+                                                token: string) => {
+  const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
+  // tslint:disable-next-line:no-console
+  console.log(config);
+  config.headers["Content-Type"] = "application/json";
+  config.data = {
+    status,
+  };
+  config.method = HTTP_PATCH;
+  config.url = `${EXTENSIONS_API_URL}/company/${companyNumber}/extensions/requests/${requestId}`;
+
+  logger.info(`Updating status to ${status} for request ${requestId} for company ${companyNumber}`);
   return await makeAPICall(config);
 };
