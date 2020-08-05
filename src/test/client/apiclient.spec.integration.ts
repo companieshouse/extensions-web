@@ -99,9 +99,9 @@ describe("apiclient integration tests", () => {
     try {
       await setExtensionRequestStatus(
         ExtensionRequestStatus.REJECTED_MAX_EXT_LENGTH_EXCEEDED,
+        requestId,
         companyNumber,
-        accessToken,
-        requestId);
+        accessToken);
     } catch(e) {
       fail(JSON.stringify(e));
     }

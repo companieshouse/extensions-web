@@ -30,11 +30,11 @@ describe("apiclient setExtensionRequestStatus", () => {
     mockGetBaseAxiosRequestConfig.mockClear();
   });
 
-  it("calls makeApiCall with correct values", () => {
+  it("calls makeApiCall with correct values", async () => {
     mockGetBaseAxiosRequestConfig.mockReturnValueOnce(dummyAxiosBaseConfig);
-    mockMakeAPICall.mockReturnValueOnce(dummyAxiosResponse);
+    mockMakeAPICall.mockResolvedValueOnce(dummyAxiosResponse);
 
-    setExtensionRequestStatus(ExtensionRequestStatus.REJECTED_MAX_EXT_LENGTH_EXCEEDED, REQUEST_ID, COMPANY_NUMBER, TOKEN);
+    await setExtensionRequestStatus(ExtensionRequestStatus.REJECTED_MAX_EXT_LENGTH_EXCEEDED, REQUEST_ID, COMPANY_NUMBER, TOKEN);
 
     const expectedAxiosConfig = {
       url: "http://localhost:9333/company/123456/extensions/requests/" + REQUEST_ID,
@@ -53,4 +53,20 @@ describe("apiclient setExtensionRequestStatus", () => {
     expect(mockMakeAPICall).toBeCalledTimes(1);
     expect(mockMakeAPICall).toBeCalledWith(expectedAxiosConfig);
   });
+
+  it("throws error if makeApiCall throws error", async () => {
+    mockGetBaseAxiosRequestConfig.mockReturnValueOnce(dummyAxiosBaseConfig);
+
+    const error = new Error("oh no");
+    mockMakeAPICall.mockRejectedValueOnce(error);
+
+    await expect(setExtensionRequestStatus(
+      ExtensionRequestStatus.REJECTED_MAX_EXT_LENGTH_EXCEEDED,
+      REQUEST_ID,
+      COMPANY_NUMBER,
+      TOKEN)).rejects.toThrow(error);
+
+    expect(mockMakeAPICall).toBeCalledTimes(1);
+  });
+
 });
