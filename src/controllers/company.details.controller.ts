@@ -48,8 +48,7 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
     if (token) {
       const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
 
-      const isFilingDateEligible: boolean = isExtensionDueDateWithinLimit(company);
-      if (!isFilingDateEligible) {
+      if (!isExtensionDueDateWithinLimit(company)) {
         logger.info("Company not eligibile for extension as limit period has been exceeded");
         return res.redirect(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED);
       }

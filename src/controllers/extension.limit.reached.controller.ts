@@ -11,13 +11,15 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
     try {
       const token: string = req.chSession.accessToken() as string;
       const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
-      res.render(templatePaths.EXTENSION_LIMIT_REACHED, {
-        companyName: company.companyName,
-        companyNumber: company.companyNumber,
-        monthLimit: 12, // TODO LFA-1927 get value from chs config
+      const companyName: string = company.companyName;
+      const monthLimit = 12; // TODO LFA-1927 get value from chs config
+      return res.render(templatePaths.EXTENSION_LIMIT_REACHED, {
+        companyName,
+        companyNumber,
+        monthLimit,
       });
     } catch (e) {
-      logger.error(`Too Soon - Error retrieving company number ${companyNumber} from redis`, e);
+      logger.error(`Due date limit exceeded - Error retrieving company number ${companyNumber} from redis`, e);
       return next(e);
     }
    } else {
