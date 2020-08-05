@@ -47,8 +47,8 @@ describe("apiclient setExtensionRequestStatus", () => {
       data: {
         status: "REJECTED_MAX_EXT_LENGTH_EXCEEDED",
       },
-    proxy: false,
-  } as AxiosRequestConfig;
+      proxy: false,
+    } as AxiosRequestConfig;
 
     expect(mockMakeAPICall).toBeCalledTimes(1);
     expect(mockMakeAPICall).toBeCalledWith(expectedAxiosConfig);

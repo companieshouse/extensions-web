@@ -283,8 +283,6 @@ export const setExtensionRequestStatus = async (status: ExtensionRequestStatus,
                                                 companyNumber: string,
                                                 token: string) => {
   const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
-  // tslint:disable-next-line:no-console
-  console.log(config);
   config.headers["Content-Type"] = "application/json";
   config.data = {
     status,
@@ -293,5 +291,5 @@ export const setExtensionRequestStatus = async (status: ExtensionRequestStatus,
   config.url = `${EXTENSIONS_API_URL}/company/${companyNumber}/extensions/requests/${requestId}`;
 
   logger.info(`Updating status to ${status} for request ${requestId} for company ${companyNumber}`);
-  return await makeAPICall(config);
+  await makeAPICall(config);
 };

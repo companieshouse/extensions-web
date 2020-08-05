@@ -1,18 +1,22 @@
 import * as mockserver from 'mockserver';
 import * as http from 'http';
 import {
-  createExtensionRequest,
   addExtensionReasonToRequest,
-  updateReason,
+  callProcessorApi,
+  createExtensionRequest,
+  ExtensionFullRequest,
+  ExtensionsCompanyProfile,
+  getCompanyProfile,
+  getFullRequest,
   removeAttachment,
   removeExtensionReasonFromRequest,
-  getCompanyProfile,
-  ExtensionsCompanyProfile,
-  ExtensionFullRequest,
-  getFullRequest, callProcessorApi
+  setExtensionRequestStatus,
+  updateReason
 } from "../../client/apiclient";
-import axios from "axios"
-import { IExtensionRequest } from 'session/types';
+import axios from "axios";
+import {IExtensionRequest} from 'session/types';
+import {ExtensionRequestStatus} from "../../model/extension.request.status";
+
 const port = 9333;
 const companyNumber = "00006400";
 const accessToken: string = "dummy-token";
@@ -86,6 +90,18 @@ describe("apiclient integration tests", () => {
   it("should be able to call processor api without failing", async () => {
     try {
       const response = await callProcessorApi(companyNumber, accessToken, requestId);
+    } catch(e) {
+      fail(JSON.stringify(e));
+    }
+  });
+
+  it("should be able to set status without failing", async () => {
+    try {
+      await setExtensionRequestStatus(
+        ExtensionRequestStatus.REJECTED_MAX_EXT_LENGTH_EXCEEDED,
+        companyNumber,
+        accessToken,
+        requestId);
     } catch(e) {
       fail(JSON.stringify(e));
     }
