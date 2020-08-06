@@ -270,8 +270,8 @@ describe("company.details.controller tests", () => {
 
   it("should return filing date page when filing date is after configured period after due date", async () => {
     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
-    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,1,0,0,0).toDateString();
-    dummyCompanyProfile.accountsDue = new Date(2022,1,2,0,0,0).toUTCString();
+    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,1,2,30,31).toDateString();
+    dummyCompanyProfile.accountsDue = new Date(2022,1,2,1,11,10).toUTCString();
     mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
 
     const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
@@ -284,8 +284,8 @@ describe("company.details.controller tests", () => {
 
   it("should return filing date page when filing date is on the configured period after due date", async () => {
     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
-    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,1,0,0,0).toDateString();
-    dummyCompanyProfile.accountsDue = new Date(2022,1,1,0,0,0).toUTCString();
+    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,1,16,15,3).toDateString();
+    dummyCompanyProfile.accountsDue = new Date(2022,1,1,1,30,56).toUTCString();
     mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
 
     const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
@@ -298,8 +298,8 @@ describe("company.details.controller tests", () => {
 
   it("should not return filing date page when filing date is before configured period after due date", async () => {
     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
-    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,2,0,0,0).toDateString();
-    dummyCompanyProfile.accountsDue = new Date(2022,1,1,0,0,0).toUTCString();
+    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,2,18,16,4).toDateString();
+    dummyCompanyProfile.accountsDue = new Date(2022,1,1,5,11,34).toUTCString();
     mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
 
     const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)

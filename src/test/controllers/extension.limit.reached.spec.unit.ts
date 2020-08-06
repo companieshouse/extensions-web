@@ -11,10 +11,10 @@ jest.mock("../../client/apiclient");
 jest.mock("../../services/redis.service");
 jest.mock("../../services/session.service");
 
-const mockCompanyProfile: jest.Mock = (<unknown>getCompanyProfile as jest.Mock<typeof getCompanyProfile>);
-const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
-const mockGetCompanyInContext = (<unknown>getCompanyInContext as jest.Mock<typeof getCompanyInContext>);
-const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
+const mockCompanyProfile = getCompanyProfile as jest.Mock;
+const mockCacheService = loadSession as jest.Mock;
+const mockGetCompanyInContext = getCompanyInContext as jest.Mock;
+const mockCreateHistoryIfNone = createHistoryIfNone as jest.Mock;
 
 const ERROR_MSG = "Sorry, there is a problem with the service";
 const ERROR_TITLE = "Sorry, there is a problem with the service - GOV.UK";
