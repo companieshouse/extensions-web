@@ -1,0 +1,3 @@
+export enum ExtensionRequestStatus {
+  REJECTED_MAX_EXT_LENGTH_EXCEEDED = "REJECTED_MAX_EXT_LENGTH_EXCEEDED",
+}
