@@ -81,7 +81,7 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
 
 const isExtensionDueDateWithinLimit = (company: ExtensionsCompanyProfile): boolean => {
   const dueDateString: string = company.accountsDue;
-  if (!dueDateString || dueDateString.length === 0) {
+  if (!dueDateString || dueDateString.trim().length === 0) {
     return true;
   }
   const dueDate: Date = new Date(dueDateString);

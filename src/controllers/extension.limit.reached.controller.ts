@@ -19,7 +19,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
         monthLimit,
       });
     } catch (e) {
-      logger.error(`Due date limit exceeded - Error retrieving company number ${companyNumber} from redis`, e);
+      logger.error(`Due date limit reached - Error retrieving company number ${companyNumber} from redis`, e);
       return next(e);
     }
    } else {
