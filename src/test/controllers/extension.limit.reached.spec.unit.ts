@@ -20,6 +20,7 @@ const ERROR_MSG = "Sorry, there is a problem with the service";
 const ERROR_TITLE = "Sorry, there is a problem with the service - GOV.UK";
 const AFTER_TWELVE_MONTHS_MSG = "We cannot grant an extension to the filing deadline";
 const AFTER_TWELVE_MONTHS_TITLE = "You cannot use this service";
+const MAX_EXTENSION_PERIOD_IN_MONTHS = 12;
 
 beforeEach(() => {
   mockCompanyProfile.mockRestore();
@@ -47,6 +48,7 @@ describe("extension limit reached controller tests",() => {
     expect(res.status).toEqual(200);
     expect(res.text).toContain(AFTER_TWELVE_MONTHS_MSG);
     expect(res.text).toContain(AFTER_TWELVE_MONTHS_TITLE);
+    expect(res.text).toContain(MAX_EXTENSION_PERIOD_IN_MONTHS);
   });
 
   it("should show error screen if company number search throws an error", async () => {

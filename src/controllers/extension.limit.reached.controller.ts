@@ -4,6 +4,7 @@ import * as templatePaths from "../model/template.paths";
 import {ExtensionsCompanyProfile, getCompanyProfile} from "../client/apiclient";
 import logger from "../logger";
 import * as errorMessages from "../model/error.messages";
+import {MAX_EXTENSION_PERIOD_IN_MONTHS} from "../session/config";
 
 export const render = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
@@ -12,7 +13,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
       const token: string = req.chSession.accessToken() as string;
       const company: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
       const companyName: string = company.companyName;
-      const monthLimit = 12; // TODO LFA-1927 get value from chs config
+      const monthLimit = MAX_EXTENSION_PERIOD_IN_MONTHS;
       return res.render(templatePaths.EXTENSION_LIMIT_REACHED, {
         companyName,
         companyNumber,

@@ -40,6 +40,8 @@ export const EXTENSIONS_PROCESSOR_API_URL = getEnvironmentValue("EXTENSIONS_PROC
 
 export const MAXIMUM_EXTENSION_REQUESTS_PER_DAY = getEnvironmentValue("MAXIMUM_EXTENSION_REQUESTS_PER_DAY");
 
+export const MAX_EXTENSION_PERIOD_IN_MONTHS = getEnvironmentValue("MAX_EXTENSION_PERIOD_IN_MONTHS");
+
 export const FEATURE_REQUEST_COUNT = getEnvironmentValue("FEATURE_REQUEST_COUNT");
 
 export const MAX_FILE_SIZE_BYTES = getEnvironmentValue("MAX_FILE_SIZE_BYTES");
