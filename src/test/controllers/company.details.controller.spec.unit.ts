@@ -1,11 +1,12 @@
 import * as request from "supertest";
-import {getCompanyProfile} from "../../client/apiclient"
+import {ExtensionsCompanyProfile, getCompanyProfile} from "../../client/apiclient";
 import app from "../../app";
 import {COOKIE_NAME } from "../../session/config";
 import {EXTENSIONS_CONFIRM_COMPANY} from "../../model/page.urls";
 import {loadSession} from "../../services/redis.service";
 import * as mockUtils from "../mock.utils";
 import {addRequest, getCompanyInContext, hasExtensionRequest, createHistoryIfNone} from "../../services/session.service";
+import * as pageURLs from "../../model/page.urls";
 
 jest.mock("../../client/api.enumerations");
 jest.mock("../../client/apiclient");
@@ -22,7 +23,6 @@ const mockHasExtensionRequest = (<unknown>hasExtensionRequest as jest.Mock<typeo
 const mockAddRequest = (<unknown>addRequest as jest.Mock<typeof addRequest>);
 const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
 
-
   beforeEach(() => {
     mockCompanyProfile.mockRestore();
     mockCacheService.mockRestore();
@@ -31,6 +31,7 @@ const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeo
     mockHasExtensionRequest.prototype.constructor.mockImplementation(() => {
     return true
   });
+
   mockAddRequest.prototype.constructor.mockImplementation(() => {
     return {
       company_number: "00006400",
@@ -265,6 +266,61 @@ describe("company.details.controller tests", () => {
     expect(mockCompanyProfile).toBeCalledTimes(0);
     expect(res.text).toContain(GENERIC_ERROR);
     expect(res.text).toContain(TITLE);
+  });
+
+  it("should return filing date page when filing date is after configured period after due date", async () => {
+    const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
+    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,1,2,30,31).toDateString();
+    dummyCompanyProfile.accountsDue = new Date(2022,1,2,1,11,10).toUTCString();
+    mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
+
+    const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
+      .set("referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED);
+    expect(res.status).toEqual(302);
+  });
+
+  it("should return filing date page when filing date is on the configured period after due date", async () => {
+    const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
+    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,1,16,15,3).toDateString();
+    dummyCompanyProfile.accountsDue = new Date(2022,1,1,1,30,56).toUTCString();
+    mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
+
+    const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
+      .set("referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED);
+    expect(res.status).toEqual(302);
+  });
+
+  it("should not return filing date page when filing date is before configured period after due date", async () => {
+    const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
+    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,2,18,16,4).toDateString();
+    dummyCompanyProfile.accountsDue = new Date(2022,1,1,5,11,34).toUTCString();
+    mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
+
+    const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
+      .set("referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_CHOOSE_REASON);
+    expect(res.status).toEqual(302);
+  });
+
+  it("should not return filing date page when due date is empty", async () => {
+    const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfileNoAccounts();
+    dummyCompanyProfile.isAccountsOverdue = false;
+    mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
+
+    const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
+      .set("referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_CHOOSE_REASON);
+    expect(res.status).toEqual(302);
   });
 }); 
 

@@ -28,6 +28,7 @@ export const NO_FOUND: string = "/no-found";
 export const ERROR: string = SEPARATOR + templates.ERROR;
 export const CHECK_YOUR_ANSWERS: string = SEPARATOR + templates.CHECK_YOUR_ANSWERS;
 export const TOO_SOON: string = SEPARATOR + templates.TOO_SOON;
+export const EXTENSION_LIMIT_REACHED: string = SEPARATOR + templates.EXTENSION_LIMIT_REACHED;
 export const DOWNLOAD_ATTACHMENT: string =
   "/company/:companyId/extensions/requests/:requestId/*/attachments/*/download";
 export const BACK_LINK: string =  "/back-link";
@@ -58,4 +59,5 @@ export const EXTENSIONS_REMOVE_REASON: string = EXTENSIONS + REMOVE_REASON;
 export const EXTENSIONS_ERROR: string = EXTENSIONS + ERROR;
 export const EXTENSIONS_CHECK_YOUR_ANSWERS: string = EXTENSIONS + CHECK_YOUR_ANSWERS;
 export const EXTENSIONS_TOO_SOON: string = EXTENSIONS + TOO_SOON;
+export const EXTENSIONS_EXTENSION_LIMIT_REACHED: string = EXTENSIONS + EXTENSION_LIMIT_REACHED;
 export const EXTENSIONS_BACK_LINK: string = EXTENSIONS + BACK_LINK;

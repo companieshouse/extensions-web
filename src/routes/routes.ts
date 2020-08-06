@@ -33,6 +33,7 @@ import * as templatePaths from "../model/template.paths";
 import sessionQuery from "../session/middleware/session.query";
 import backLinkRoute from "../controllers/back.link.controller";
 import {render as showTooSoonPage} from "../controllers/too.soon.controller";
+import {render as showExtensionLimitReachedPage} from "../controllers/extension.limit.reached.controller";
 
 const router: Router = Router();
 
@@ -114,6 +115,8 @@ router.get(pageURLs.ERROR, (res: Response) => {
 });
 
 router.get(pageURLs.TOO_SOON, showTooSoonPage);
+
+router.get(pageURLs.EXTENSION_LIMIT_REACHED, showExtensionLimitReachedPage);
 
 router.get(pageURLs.BACK_LINK, backLinkRoute);
 
