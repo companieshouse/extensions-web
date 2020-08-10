@@ -1,52 +1,77 @@
 import * as request from "supertest";
-import {ExtensionsCompanyProfile, getCompanyProfile} from "../../client/apiclient";
+import {ExtensionsCompanyProfile, getCompanyProfile, setExtensionRequestStatus} from "../../client/apiclient";
 import app from "../../app";
 import {COOKIE_NAME } from "../../session/config";
 import {EXTENSIONS_CONFIRM_COMPANY} from "../../model/page.urls";
 import {loadSession} from "../../services/redis.service";
 import * as mockUtils from "../mock.utils";
-import {addRequest, getCompanyInContext, hasExtensionRequest, createHistoryIfNone} from "../../services/session.service";
+import {
+  addRequest,
+  getCompanyInContext,
+  hasExtensionRequest,
+  createHistoryIfNone,
+  getRequest
+} from "../../services/session.service";
 import * as pageURLs from "../../model/page.urls";
+import {IExtensionRequest} from "../../session/types";
+import {ExtensionRequestStatus} from "../../model/extension.request.status";
+import logger from "../../logger";
 
 jest.mock("../../client/api.enumerations");
 jest.mock("../../client/apiclient");
 jest.mock("../../services/redis.service");
 jest.mock("../../services/session.service");
+jest.mock("../../logger");
 
 const GENERIC_ERROR = "Sorry, there is a problem with the service";
 const TITLE = "Sorry, there is a problem with the service - GOV.UK";
 
-const mockCompanyProfile: jest.Mock = (<unknown>getCompanyProfile as jest.Mock<typeof getCompanyProfile>);
-const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
-const mockGetCompanyInContext = (<unknown>getCompanyInContext as jest.Mock<typeof getCompanyInContext>);
-const mockHasExtensionRequest = (<unknown>hasExtensionRequest as jest.Mock<typeof hasExtensionRequest>);
-const mockAddRequest = (<unknown>addRequest as jest.Mock<typeof addRequest>);
-const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
+const mockCompanyProfile = getCompanyProfile as jest.Mock;
+const mockCacheService = loadSession as jest.Mock;
+const mockGetCompanyInContext = getCompanyInContext as jest.Mock;
+const mockHasExtensionRequest = hasExtensionRequest as jest.Mock;
+const mockAddRequest = addRequest as jest.Mock;
+const mockCreateHistoryIfNone = createHistoryIfNone as jest.Mock;
+const mockSetExtensionRequestStatus = setExtensionRequestStatus as jest.Mock;
+const mockGetRequest = getRequest as jest.Mock;
+const mockLoggerError = logger.error as jest.Mock;
 
-  beforeEach(() => {
-    mockCompanyProfile.mockRestore();
-    mockCacheService.mockRestore();
-    mockUtils.loadMockSession(mockCacheService);
-    mockGetCompanyInContext.mockReturnValueOnce(() => "00006400");
-    mockHasExtensionRequest.prototype.constructor.mockImplementation(() => {
-    return true
-  });
+const EXTENSION_REQUEST_ID = "12345";
 
-  mockAddRequest.prototype.constructor.mockImplementation(() => {
-    return {
-      company_number: "00006400",
-      extension_request_id: "request1",
-      reason_in_context_string: "reason1"
-    }
-  });
-  mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
-    return {
-      page_history:[],
-    };
-  });
-});
+mockGetRequest.mockReturnValue(
+  {
+    extension_request_id: EXTENSION_REQUEST_ID,
+  } as IExtensionRequest
+);
 
-describe("company.details.controller tests", () => {
+ describe("company.details.controller tests", () => {
+
+   beforeEach(() => {
+     mockLoggerError.mockClear();
+     mockSetExtensionRequestStatus.mockClear();
+     mockGetRequest.mockClear();
+     mockCompanyProfile.mockRestore();
+     mockCacheService.mockRestore();
+     mockUtils.loadMockSession(mockCacheService);
+     mockGetCompanyInContext.mockReturnValueOnce("00006400");
+     mockHasExtensionRequest.prototype.constructor.mockImplementation(() => {
+       return true
+     });
+
+     mockAddRequest.prototype.constructor.mockImplementation(() => {
+       return {
+         company_number: "00006400",
+         extension_request_id: "request1",
+         reason_in_context_string: "reason1"
+       }
+     });
+
+     mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
+       return {
+         page_history:[],
+       };
+     });
+   });
 
   it("should return a company profile if company number exists in session with no overdue message", async () => {
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
@@ -268,7 +293,7 @@ describe("company.details.controller tests", () => {
     expect(res.text).toContain(TITLE);
   });
 
-  it("should return filing date page when filing date is after configured period after due date", async () => {
+  it("should return extension limit reached page when filing date is after configured period after due date", async () => {
     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
     dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,1,2,30,31).toDateString();
     dummyCompanyProfile.accountsDue = new Date(2022,1,2,1,11,10).toUTCString();
@@ -280,9 +305,15 @@ describe("company.details.controller tests", () => {
 
     expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED);
     expect(res.status).toEqual(302);
+
+    expect(mockSetExtensionRequestStatus).toBeCalledTimes(1);
+    expect(mockSetExtensionRequestStatus.mock.calls[0][0]).toStrictEqual(ExtensionRequestStatus.REJECTED_MAX_EXT_LENGTH_EXCEEDED);
+    expect(mockSetExtensionRequestStatus.mock.calls[0][1]).toStrictEqual(EXTENSION_REQUEST_ID);
+    expect(mockSetExtensionRequestStatus.mock.calls[0][2]).toStrictEqual(mockUtils.COMPANY_NUMBER);
+    expect(mockSetExtensionRequestStatus.mock.calls[0][3]).toStrictEqual(mockUtils.ACCESS_TOKEN);
   });
 
-  it("should return filing date page when filing date is on the configured period after due date", async () => {
+  it("should return extension limit reached page when filing date is on the configured period after due date", async () => {
     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
     dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,1,16,15,3).toDateString();
     dummyCompanyProfile.accountsDue = new Date(2022,1,1,1,30,56).toUTCString();
@@ -294,9 +325,36 @@ describe("company.details.controller tests", () => {
 
     expect(res.header.location).toEqual(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED);
     expect(res.status).toEqual(302);
+
+    expect(mockSetExtensionRequestStatus).toBeCalledTimes(1);
+    expect(mockSetExtensionRequestStatus.mock.calls[0][0]).toStrictEqual(ExtensionRequestStatus.REJECTED_MAX_EXT_LENGTH_EXCEEDED);
+    expect(mockSetExtensionRequestStatus.mock.calls[0][1]).toStrictEqual(EXTENSION_REQUEST_ID);
+    expect(mockSetExtensionRequestStatus.mock.calls[0][2]).toStrictEqual(mockUtils.COMPANY_NUMBER);
+    expect(mockSetExtensionRequestStatus.mock.calls[0][3]).toStrictEqual(mockUtils.ACCESS_TOKEN);
   });
 
-  it("should not return filing date page when filing date is before configured period after due date", async () => {
+   it("should show error screen when unable to get request from session on extension limit check", async () => {
+     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
+     dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,1,16,15,3).toDateString();
+     dummyCompanyProfile.accountsDue = new Date(2022,1,1,1,30,56).toUTCString();
+     mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
+
+     mockGetRequest.mockReturnValueOnce(undefined);
+
+     const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
+       .set("referer", "/")
+       .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+     expect(res.status).toEqual(500);
+     expect(setExtensionRequestStatus).toBeCalledTimes(0);
+     expect(res.text).toContain(GENERIC_ERROR);
+     expect(res.text).toContain(TITLE);
+
+     expect(logger.error)
+       .toHaveBeenNthCalledWith(1, expect.stringContaining("Unable to retrieve extension request from session"));
+   });
+
+  it("should not return extension limit reached page when filing date is before configured period after due date", async () => {
     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
     dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,2,18,16,4).toDateString();
     dummyCompanyProfile.accountsDue = new Date(2022,1,1,5,11,34).toUTCString();
@@ -310,7 +368,7 @@ describe("company.details.controller tests", () => {
     expect(res.status).toEqual(302);
   });
 
-  it("should not return filing date page when due date is empty", async () => {
+  it("should not return extension limit reached page when due date is empty", async () => {
     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfileNoAccounts();
     dummyCompanyProfile.isAccountsOverdue = false;
     mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
