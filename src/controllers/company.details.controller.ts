@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import {
-  createExtensionRequest, ExtensionFullRequest,
+  createExtensionRequest,
+  ExtensionFullRequest,
   ExtensionsCompanyProfile,
   getCompanyProfile,
   setExtensionRequestStatus,
@@ -15,6 +16,7 @@ import {buildCompanySummaryListRows} from "../global/summary.list.rows.builder";
 import {ExtensionRequestStatus} from "../model/extension.request.status";
 import Session from "../session/session";
 import {IExtensionRequest, IUserProfile} from "../session/types";
+import {MAX_EXTENSION_PERIOD_IN_MONTHS} from "../session/config";
 
 export const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
@@ -103,8 +105,8 @@ const isExtensionDueDateWithinLimit = (companyProfile: ExtensionsCompanyProfile)
     return true;
   }
   const dueDate: Date = new Date(dueDateString);
-  // TODO 1927 get minus value from chs config
-  const dueDateMinusLimitPeriod: Date = new Date(dueDate.setMonth(dueDate.getMonth() - 12));
+  const dueDateMinusLimitPeriod: Date = new Date(dueDate.setMonth(dueDate.getMonth() -
+    parseInt(MAX_EXTENSION_PERIOD_IN_MONTHS, 10)));
   dueDateMinusLimitPeriod.setHours(0, 0, 0);
   const endDate: Date = new Date(companyProfile.accountingPeriodEndOn);
   endDate.setHours(0, 0, 0);
