@@ -21,13 +21,13 @@
 
 {% block head %}
   <!--[if !IE 8]><!-->
-  <link href="{{CDN_URL}}/stylesheets/extensions/application.css" rel="stylesheet" />
+  <link href="{{assetPath}}/stylesheets/extensions/application.css" rel="stylesheet" />
   <!--<![endif]-->
 
   {# For Internet Explorer 8, you need to compile specific stylesheet #}
   {# see https://github.com/alphagov/govuk-frontend/blob/master/docs/installation/supporting-internet-explorer-8.md #}
   <!--[if IE 8]>
-  <link href="{{CDN_URL}}/stylesheets/extensions/application-ie8.css" rel="stylesheet" />
+  <link href="{{assetPath}}/stylesheets/extensions/application-ie8.css" rel="stylesheet" />
   <![endif]-->
 
   {# For older browsers to allow them to recognise HTML5 elements such as `<header>` #}
@@ -96,9 +96,9 @@
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  <script src="{{CDN_URL}}/javascripts/app/extensions/all.js"></script>
-  <script src="{{CDN_URL}}/javascripts/app/extensions/application.js"></script>
-  <script src="{{CDN_URL}}/javascripts/app/piwik-enable.js"></script>
+  <script src="{{assetPath}}/javascripts/app/extensions/all.js"></script>
+  <script src="{{assetPath}}/javascripts/app/extensions/application.js"></script>
+  <script src="{{assetPath}}/javascripts/app/piwik-enable.js"></script>
   <script>window.GOVUKFrontend.initAll()</script>
   <script type="application/javascript">
     (function() {
