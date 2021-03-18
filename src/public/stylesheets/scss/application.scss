@@ -2,8 +2,8 @@
 $govuk-global-styles: true;
 
 $govuk-assets-path: '/';
-$govuk-images-path: "/images/extensions/";
-$govuk-fonts-path: "/fonts/extensions/";
+$govuk-images-path: "/images/govuk-frontend/v3.11.0/images/";
+$govuk-fonts-path: "/fonts/govuk-frontend/v3.11.0/fonts/";
 
 // Import GOV.UK Frontend
 @import "node_modules/govuk-frontend/govuk/all";
