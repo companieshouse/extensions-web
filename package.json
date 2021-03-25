@@ -28,7 +28,7 @@
     "js-yaml": "^3.13.1",
     "log4js": "^4.0.2",
     "moment": "^2.24.0",
-    "msgpack5": "^4.2.1",
+    "msgpack5": "^4.5.1",
     "node-sass-middleware": "^0.11.0",
     "nunjucks": "^3.2.1",
     "redis": "^2.8.0",
