@@ -104,7 +104,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
         if (!href) {
           href = valErr.param;
         }
-        switch ((valErr.param)) {
+        switch (valErr.param) {
           case ILLNESS_START_DAY_FIELD:
             dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;
