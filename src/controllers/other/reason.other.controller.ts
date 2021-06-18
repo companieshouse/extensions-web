@@ -74,7 +74,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       .forEach((valErr: ValidationError) => {
         const govUkErrorData: GovUkErrorData = createGovUkErrorData(
           valErr.msg, "#" + valErr.param, true, "");
-        switch ((valErr.param)) {
+        switch (valErr.param) {
           case OTHER_REASON_FIELD:
             otherReasonErrorData = govUkErrorData;
             break;

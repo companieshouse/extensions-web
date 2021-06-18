@@ -113,7 +113,7 @@ export const processForm = [extractFullDate, ...validators,
         if (!href) {
           href = valErr.param;
         }
-        switch ((valErr.param)) {
+        switch (valErr.param) {
           case ILLNESS_END_DAY_FIELD:
             dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;
