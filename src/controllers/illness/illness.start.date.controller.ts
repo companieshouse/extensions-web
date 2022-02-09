@@ -18,10 +18,10 @@ const ILLNESS_START_MONTH_FIELD: string = "illness-start-month";
 const ILLNESS_START_YEAR_FIELD: string = "illness-start-year";
 const ILLNESS_START_FULL_DATE_FIELD: string = "fullDate";
 
-const allDateFieldsPresent = (body: any): boolean => {
-  return body[ILLNESS_START_DAY_FIELD]
-    && body[ILLNESS_START_MONTH_FIELD]
-    && body[ILLNESS_START_YEAR_FIELD];
+const allDateFieldsPresent = (req: Request): boolean => {
+  return req.body[ILLNESS_START_DAY_FIELD]
+    && req.body[ILLNESS_START_MONTH_FIELD]
+    && req.body[ILLNESS_START_YEAR_FIELD];
 };
 
 const extractFullDate = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -42,7 +42,7 @@ const validators = [
 
   // Check date is a valid date and not in the future
   check(ILLNESS_START_FULL_DATE_FIELD).escape().custom((fullDate, {req}) => {
-    if (allDateFieldsPresent(req.body)) {
+    if (allDateFieldsPresent(req as Request)) { 
       if (!moment(fullDate, "YYYY-MM-DD", true).isValid()) {
         throw Error(errorMessages.DATE_INVALID);
       }
@@ -60,7 +60,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
   if (req.query.reasonId) {
     await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId);
   }
-  let dateStr;
+  let dateStr: any;
   const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
   if (reason && reason.start_on) {
     dateStr = reason.start_on;
