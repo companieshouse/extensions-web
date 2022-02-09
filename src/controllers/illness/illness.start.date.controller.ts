@@ -1,10 +1,9 @@
 import {NextFunction, Request, Response} from "express";
-import {check, validationResult} from "express-validator/check";
+import {check, validationResult, ValidationError} from "express-validator";
 import * as moment from "moment";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
 import * as templatePaths from "../../model/template.paths";
-import {ValidationError} from "../../model/validation.error";
 import {EXTENSIONS_CONTINUED_ILLNESS} from "../../model/page.urls";
 import * as dateValidationUtils from "../../global/date.validation.utils";
 import * as keys from "../../session/keys";
@@ -19,10 +18,10 @@ const ILLNESS_START_MONTH_FIELD: string = "illness-start-month";
 const ILLNESS_START_YEAR_FIELD: string = "illness-start-year";
 const ILLNESS_START_FULL_DATE_FIELD: string = "fullDate";
 
-const allDateFieldsPresent = (req: Request): boolean => {
-  return req.body[ILLNESS_START_DAY_FIELD]
-    && req.body[ILLNESS_START_MONTH_FIELD]
-    && req.body[ILLNESS_START_YEAR_FIELD];
+const allDateFieldsPresent = (body: any): boolean => {
+  return body[ILLNESS_START_DAY_FIELD]
+    && body[ILLNESS_START_MONTH_FIELD]
+    && body[ILLNESS_START_YEAR_FIELD];
 };
 
 const extractFullDate = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -43,7 +42,7 @@ const validators = [
 
   // Check date is a valid date and not in the future
   check(ILLNESS_START_FULL_DATE_FIELD).escape().custom((fullDate, {req}) => {
-    if (allDateFieldsPresent(req)) {
+    if (allDateFieldsPresent(req.body)) {
       if (!moment(fullDate, "YYYY-MM-DD", true).isValid()) {
         throw Error(errorMessages.DATE_INVALID);
       }

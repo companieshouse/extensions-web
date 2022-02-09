@@ -1,6 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import {check, validationResult} from "express-validator/check";
-import {ValidationError} from "../../model/validation.error";
+import {check, validationResult, ValidationError} from "express-validator";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
 import * as templatePaths from "../../model/template.paths";
 import * as errorMessages from "../../model/error.messages";

@@ -1,9 +1,8 @@
 import {NextFunction, Request, Response} from "express";
-import {check, validationResult} from "express-validator/check";
+import {check, validationResult, ValidationError} from "express-validator";
 import * as moment from "moment";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
-import {ValidationError} from "../../model/validation.error";
 import {EXTENSIONS_ACCOUNTS_INFORMATION} from "../../model/page.urls";
 import * as dateValidationUtils from "../../global/date.validation.utils";
 import * as keys from "../../session/keys";
@@ -43,7 +42,7 @@ const validators = [
 
   // Check date is present, valid and not in the future
   check(ACCOUNTING_ISSUE_FULL_DATE_FIELD).escape().custom((fullDate, {req}) => {
-    if (allDateFieldsPresent(req)) {
+    if (allDateFieldsPresent(req as Request)) {
       if (!moment(fullDate, "YYYY-MM-DD", true).isValid()) {
         throw Error(errorMessages.DATE_INVALID);
       }
