@@ -42,7 +42,7 @@ const validators = [
 
   // Check date is a valid date and not in the future
   check(ILLNESS_START_FULL_DATE_FIELD).escape().custom((fullDate, {req}) => {
-    if (allDateFieldsPresent(req as Request)) { 
+    if (allDateFieldsPresent(req as Request)) {
       if (!moment(fullDate, "YYYY-MM-DD", true).isValid()) {
         throw Error(errorMessages.DATE_INVALID);
       }
