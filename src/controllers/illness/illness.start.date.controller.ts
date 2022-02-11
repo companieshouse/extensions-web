@@ -1,10 +1,9 @@
 import {NextFunction, Request, Response} from "express";
-import {check, validationResult} from "express-validator/check";
+import {check, validationResult, ValidationError} from "express-validator";
 import * as moment from "moment";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
 import * as templatePaths from "../../model/template.paths";
-import {ValidationError} from "../../model/validation.error";
 import {EXTENSIONS_CONTINUED_ILLNESS} from "../../model/page.urls";
 import * as dateValidationUtils from "../../global/date.validation.utils";
 import * as keys from "../../session/keys";
@@ -43,7 +42,7 @@ const validators = [
 
   // Check date is a valid date and not in the future
   check(ILLNESS_START_FULL_DATE_FIELD).escape().custom((fullDate, {req}) => {
-    if (allDateFieldsPresent(req)) {
+    if (allDateFieldsPresent(req as Request)) { 
       if (!moment(fullDate, "YYYY-MM-DD", true).isValid()) {
         throw Error(errorMessages.DATE_INVALID);
       }
@@ -61,7 +60,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
   if (req.query.reasonId) {
     await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId);
   }
-  let dateStr;
+  let dateStr: any;
   const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
   if (reason && reason.start_on) {
     dateStr = reason.start_on;

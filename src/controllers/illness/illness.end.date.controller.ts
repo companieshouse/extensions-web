@@ -1,9 +1,8 @@
 import {NextFunction, Request, Response} from "express";
-import {check, validationResult} from "express-validator/check";
+import {check, validationResult, ValidationError} from "express-validator";
 import * as moment from "moment";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
-import {ValidationError} from "../../model/validation.error";
 import * as dateValidationUtils from "../../global/date.validation.utils";
 import * as keys from "../../session/keys";
 import * as pageURLs from "../../model/page.urls";
@@ -41,14 +40,14 @@ const validators = [
   check(ILLNESS_END_YEAR_FIELD).escape().not().isEmpty().withMessage("year"),
 
   check(ILLNESS_END_FULL_DATE_FIELD).escape().custom(async (fullDate, {req}) => {
-    if (allDateFieldsPresent(req)) {
+    if (allDateFieldsPresent(req as Request)) {
       if (!moment(fullDate, "YYYY-MM-DD", true).isValid()) {
         throw Error(errorMessages.DATE_INVALID);
       }
       if (moment().isBefore(fullDate)) {
         throw Error(errorMessages.ILLNESS_END_DATE_FUTURE);
       }
-      const reason = await getCurrentExtensionReason(req);
+      const reason = await getCurrentExtensionReason(req as Request);
       const illnessStartDate: string = reason.start_on;
       if (moment(illnessStartDate, "YYYY-MM-DD", true).isAfter(fullDate)) {
         throw Error(errorMessages.ILLNESS_END_BEFORE_START_DATE);
