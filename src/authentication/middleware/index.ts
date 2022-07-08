@@ -21,7 +21,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
   if (!req.originalUrl.endsWith(pageURLs.ACCESSIBILITY_STATEMENT)) {
     if (!req.chSession.isSignedIn()) {
 
-      logger.debug("User not signed in");
+      logger.debug("User not signed in TEMP CHANGE TO TEST BUILD!!!");
 
       let returnToUrl: string = pageURLs.EXTENSIONS;
       if (!activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
