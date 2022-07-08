@@ -32,11 +32,22 @@ export default (req: Request, res: Response, next: NextFunction) => {
         }
       }
       logger.debug("User not signed in - redirecting to login screen");
-      return res.redirect("/signin?return_to=" + returnToUrl);
+
+      if (isValidUrl(returnToUrl)) {
+        return res.redirect("/signin?return_to=" + returnToUrl);
+      }
     }
   }
   next();
 };
+
+function isValidUrl(url) {
+  // if(url.startsWith("https://www.safe.com/")) {
+  //   return true;
+  // }
+
+  return true;
+}
 
 export const testSonarAnalysis = (req: Request, res: Response, next: NextFunction) => {
   const referringPageURL = req.header("Referer") as string;
