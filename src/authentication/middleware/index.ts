@@ -42,7 +42,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
 };
 
 function isValidUrl(url) {
-  if(url.startsWith("https://www.safe.com/")) {
+  if (url.startsWith("https://www.safe.com/")) {
     return true;
   }
 
