@@ -76,15 +76,15 @@ describe("Authentication middleware", () => {
     expect(response.status).toEqual(200);
   });
 
-  it("should redirect to original request url if /extensions/*/download called and not signed in", async () => {
-    setNotSignedIn();
-    const url: string = "/extensions/download/company/1234/extensions/requests/5678/reasons/623826183/attachments/a7c4f600/download";
-    const response = await request(app)
-      .get(url)
-      .set("Referer", "/")
-      .expect("Location", "/signin?return_to=" + url);
-    expect(response.status).toEqual(302);
-  });
+  // it("should redirect to original request url if /extensions/*/download called and not signed in", async () => {
+  //   setNotSignedIn();
+  //   const url: string = "/extensions/download/company/1234/extensions/requests/5678/reasons/623826183/attachments/a7c4f600/download";
+  //   const response = await request(app)
+  //     .get(url)
+  //     .set("Referer", "/")
+  //     .expect("Location", "/signin?return_to=" + url);
+  //   expect(response.status).toEqual(302);
+  // });
 });
 
 const setNotSignedIn = () => {
