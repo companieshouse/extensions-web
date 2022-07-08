@@ -34,7 +34,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
       logger.debug("User not signed in - redirecting to login screen");
 
       if (isValidUrl(returnToUrl)) {
-        return res.redirect("/signin?return_to=" + returnToUrl);
+        return res.redirect(returnToUrl);
       }
     }
   }
@@ -42,11 +42,11 @@ export default (req: Request, res: Response, next: NextFunction) => {
 };
 
 function isValidUrl(url) {
-  // if(url.startsWith("https://www.safe.com/")) {
-  //   return true;
-  // }
+  if(url.startsWith("https://www.safe.com/")) {
+    return true;
+  }
 
-  return true;
+  return false;
 }
 
 export const testSonarAnalysis = (req: Request, res: Response, next: NextFunction) => {
@@ -78,7 +78,9 @@ export const testSonarAnalysis = (req: Request, res: Response, next: NextFunctio
         }
       }
       logger.debug("User not signed in - redirecting to login screen");
-      return res.redirect("/signin?return_to=" + returnToUrl);
+      if (isValidUrl(returnToUrl)) {
+        return res.redirect(returnToUrl);
+      }
     }
   }
   next();
