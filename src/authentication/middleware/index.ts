@@ -21,29 +21,13 @@ export default (req: Request, res: Response, next: NextFunction) => {
   if (!req.originalUrl.endsWith(pageURLs.ACCESSIBILITY_STATEMENT)) {
     if (!req.chSession.isSignedIn()) {
 
-      logger.debug("User not signed in TEMP CHANGE TO TEST BUILD!!!");
+      logger.debug("User not signed in");
 
-      // let returnToUrl: string = pageURLs.EXTENSIONS;
-      // if (!activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
-      //   // if user is coming from start page or download page
-      //   if (req.originalUrl.endsWith("/download")
-      //     || referringPageURL.endsWith(pageURLs.EXTENSIONS)) {
-      //     returnToUrl = req.originalUrl;
-      //   }
-      // }
       logger.debug("User not signed in - redirecting to login screen");
 
-      // ***** ORIGINAL LINE:
-      // return res.redirect("/signin?return_to=" + returnToUrl);
-      // *****
+      const returnToUrl = getReturnToUrl(req.originalUrl, referringPageURL);
 
-//      const newUrl = getValidUrl(returnToUrl);
-      const newReturnToUrl = getReturnToUrl(req.originalUrl, referringPageURL);
-
-      // if (newUrl === "new-url") {
-//        return res.redirect(returnToUrl);
-      return res.redirect("/signin?return_to=" + newReturnToUrl);
-      // }
+      return res.redirect("/signin?return_to=" + returnToUrl);
     }
   }
   next();
@@ -61,18 +45,8 @@ function getReturnToUrl(originalUrl: string, referringPageURL: string) {
       REDIRECTS_WHITELIST[pageURLs.EXTENSIONS_COMPANY_NUMBER] = pageURLs.EXTENSIONS_COMPANY_NUMBER;
 
       returnToUrl = REDIRECTS_WHITELIST[originalUrl];
-
-      // returnToUrl = originalUrl;
     }
   }
 
   return returnToUrl;
-}
-
-function getValidUrl(url) {
-  if (url.startsWith("https://www.safe.com/")) {
-    return url;
-  }
-
-  return "bad-url";
 }
