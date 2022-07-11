@@ -37,7 +37,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
       // return res.redirect("/signin?return_to=" + returnToUrl);
       // *****
 
-      const newUrl = getValidUrl(returnToUrl);
+//      const newUrl = getValidUrl(returnToUrl);
+      const newUrl = getReturnToUrl(req.originalUrl, referringPageURL);
 
       // if (newUrl === "new-url") {
 //        return res.redirect(returnToUrl);
@@ -47,6 +48,17 @@ export default (req: Request, res: Response, next: NextFunction) => {
   }
   next();
 };
+
+function getReturnToUrl(originalUrl: string, referringPageURL: string) {
+  let returnToUrl: string = pageURLs.EXTENSIONS;
+  if (!activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
+    // if user is coming from start page or download page
+    if (originalUrl.endsWith("/download")
+      || referringPageURL.endsWith(pageURLs.EXTENSIONS)) {
+      returnToUrl = originalUrl;
+    }
+  }
+}
 
 function getValidUrl(url) {
   if (url.startsWith("https://www.safe.com/")) {
