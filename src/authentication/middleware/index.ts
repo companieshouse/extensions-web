@@ -58,6 +58,8 @@ function getReturnToUrl(originalUrl: string, referringPageURL: string) {
       returnToUrl = originalUrl;
     }
   }
+
+  return returnToUrl;
 }
 
 function getValidUrl(url) {
