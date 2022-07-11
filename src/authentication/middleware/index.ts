@@ -23,14 +23,14 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
       logger.debug("User not signed in TEMP CHANGE TO TEST BUILD!!!");
 
-      let returnToUrl: string = pageURLs.EXTENSIONS;
-      if (!activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
-        // if user is coming from start page or download page
-        if (req.originalUrl.endsWith("/download")
-          || referringPageURL.endsWith(pageURLs.EXTENSIONS)) {
-          returnToUrl = req.originalUrl;
-        }
-      }
+      // let returnToUrl: string = pageURLs.EXTENSIONS;
+      // if (!activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
+      //   // if user is coming from start page or download page
+      //   if (req.originalUrl.endsWith("/download")
+      //     || referringPageURL.endsWith(pageURLs.EXTENSIONS)) {
+      //     returnToUrl = req.originalUrl;
+      //   }
+      // }
       logger.debug("User not signed in - redirecting to login screen");
 
       // ***** ORIGINAL LINE:
@@ -38,11 +38,11 @@ export default (req: Request, res: Response, next: NextFunction) => {
       // *****
 
 //      const newUrl = getValidUrl(returnToUrl);
-      const newUrl = getReturnToUrl(req.originalUrl, referringPageURL);
+      const newReturnToUrl = getReturnToUrl(req.originalUrl, referringPageURL);
 
       // if (newUrl === "new-url") {
 //        return res.redirect(returnToUrl);
-      return res.redirect("/signin?return_to=" + newUrl);
+      return res.redirect("/signin?return_to=" + newReturnToUrl);
       // }
     }
   }
@@ -55,7 +55,14 @@ function getReturnToUrl(originalUrl: string, referringPageURL: string) {
     // if user is coming from start page or download page
     if (originalUrl.endsWith("/download")
       || referringPageURL.endsWith(pageURLs.EXTENSIONS)) {
-      returnToUrl = originalUrl;
+
+      const REDIRECTS_WHITELIST = {};
+      REDIRECTS_WHITELIST[originalUrl] = originalUrl;
+      REDIRECTS_WHITELIST[pageURLs.EXTENSIONS_COMPANY_NUMBER] = pageURLs.EXTENSIONS_COMPANY_NUMBER;
+
+      returnToUrl = REDIRECTS_WHITELIST[originalUrl];
+
+      // returnToUrl = originalUrl;
     }
   }
 
