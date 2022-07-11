@@ -80,8 +80,11 @@ export const testSonarAnalysis = (req: Request, res: Response, next: NextFunctio
         }
       }
       logger.debug("User not signed in - redirecting to login screen");
-      if (isValidUrl(returnToUrl)) {
-        return res.redirect(returnToUrl);
+
+      const newUrl = getValidUrl(returnToUrl);
+
+      if (newUrl === "new-url") {
+        return res.redirect(newUrl);
       }
     }
   }
