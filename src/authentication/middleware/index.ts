@@ -33,20 +33,22 @@ export default (req: Request, res: Response, next: NextFunction) => {
       }
       logger.debug("User not signed in - redirecting to login screen");
 
-      if (isValidUrl(returnToUrl)) {
-        return res.redirect(returnToUrl);
+      const newUrl = getValidUrl(returnToUrl);
+
+      if (newUrl === "new-url") {
+        return res.redirect(newUrl);
       }
     }
   }
   next();
 };
 
-function isValidUrl(url) {
+function getValidUrl(url) {
   if (url.startsWith("https://www.safe.com/")) {
-    return true;
+    return "new-url";
   }
 
-  return false;
+  return "bad-url";
 }
 
 export const testSonarAnalysis = (req: Request, res: Response, next: NextFunction) => {
