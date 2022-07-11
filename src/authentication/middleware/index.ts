@@ -36,7 +36,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
       const newUrl = getValidUrl(returnToUrl);
 
       if (newUrl === "new-url") {
-        return res.redirect(newUrl);
+        return res.redirect(returnToUrl);
+//        return res.redirect(newUrl);
       }
     }
   }
