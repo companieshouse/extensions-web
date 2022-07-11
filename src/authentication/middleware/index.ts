@@ -41,7 +41,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
       if (newUrl === "new-url") {
 //        return res.redirect(returnToUrl);
-        return res.redirect(newUrl);
+        return res.redirect("/signin?return_to=" + newUrl);
       }
     }
   }
