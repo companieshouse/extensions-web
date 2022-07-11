@@ -33,11 +33,15 @@ export default (req: Request, res: Response, next: NextFunction) => {
       }
       logger.debug("User not signed in - redirecting to login screen");
 
+      // ***** ORIGINAL LINE:
+      // return res.redirect("/signin?return_to=" + returnToUrl);
+      // *****
+
       const newUrl = getValidUrl(returnToUrl);
 
       if (newUrl === "new-url") {
-        return res.redirect(returnToUrl);
-//        return res.redirect(newUrl);
+//        return res.redirect(returnToUrl);
+        return res.redirect(newUrl);
       }
     }
   }
