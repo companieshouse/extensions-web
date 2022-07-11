@@ -39,10 +39,10 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
       const newUrl = getValidUrl(returnToUrl);
 
-      if (newUrl === "new-url") {
+      // if (newUrl === "new-url") {
 //        return res.redirect(returnToUrl);
         return res.redirect("/signin?return_to=" + newUrl);
-      }
+      // }
     }
   }
   next();
