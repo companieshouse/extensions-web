@@ -50,7 +50,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
 function getValidUrl(url) {
   if (url.startsWith("https://www.safe.com/")) {
-    return "new-url";
+    return url;
   }
 
   return "bad-url";
