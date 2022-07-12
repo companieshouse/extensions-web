@@ -21,12 +21,9 @@ export default (req: Request, res: Response, next: NextFunction) => {
   if (!req.originalUrl.endsWith(pageURLs.ACCESSIBILITY_STATEMENT)) {
     if (!req.chSession.isSignedIn()) {
 
-      logger.debug("User not signed in");
-
       logger.debug("User not signed in - redirecting to login screen");
 
       const returnToUrl = getReturnToUrl(req.originalUrl, referringPageURL);
-
       return res.redirect("/signin?return_to=" + returnToUrl);
     }
   }
@@ -41,13 +38,13 @@ function getReturnToUrl(originalUrl: string, referringPageURL: string) {
 
       // TODO Add some further checks on the URL here? Perhaps using a reg exp?
 
-      const REDIRECTS_WHITELIST = {};
-      REDIRECTS_WHITELIST[originalUrl] = originalUrl;
+      const ALLOWED_DOWNLOAD_URL = {};
+      ALLOWED_DOWNLOAD_URL[originalUrl] = originalUrl;
 
-      returnToUrl = REDIRECTS_WHITELIST[originalUrl];
+      returnToUrl = ALLOWED_DOWNLOAD_URL[originalUrl];
     } else if (referringPageURL.endsWith(pageURLs.EXTENSIONS)) {
       // User has come here from the start page
-      return pageURLs.EXTENSIONS_COMPANY_NUMBER;
+      returnToUrl = pageURLs.EXTENSIONS_COMPANY_NUMBER;
     }
   }
 
