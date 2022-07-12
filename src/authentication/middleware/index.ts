@@ -36,15 +36,18 @@ export default (req: Request, res: Response, next: NextFunction) => {
 function getReturnToUrl(originalUrl: string, referringPageURL: string) {
   let returnToUrl: string = pageURLs.EXTENSIONS;
   if (!activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
-    // if user is coming from start page or download page
-    if (originalUrl.endsWith("/download")
-      || referringPageURL.endsWith(pageURLs.EXTENSIONS)) {
+    if (originalUrl.endsWith("/download")) {
+      // User has come here from clicking a download link
+
+      // TODO Add some further checks on the URL here? Perhaps using a reg exp?
 
       const REDIRECTS_WHITELIST = {};
       REDIRECTS_WHITELIST[originalUrl] = originalUrl;
-      REDIRECTS_WHITELIST[pageURLs.EXTENSIONS_COMPANY_NUMBER] = pageURLs.EXTENSIONS_COMPANY_NUMBER;
 
       returnToUrl = REDIRECTS_WHITELIST[originalUrl];
+    } else if (referringPageURL.endsWith(pageURLs.EXTENSIONS)) {
+      // User has come here from the start page
+      return pageURLs.EXTENSIONS_COMPANY_NUMBER;
     }
   }
 
