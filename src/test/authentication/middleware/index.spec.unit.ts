@@ -85,6 +85,25 @@ describe("Authentication middleware", () => {
       .expect("Location", "/signin?return_to=" + url);
     expect(response.status).toEqual(302);
   });
+
+  it("should redirect to start page if invalid download URL supplied and no referer and not signed in", async () => {
+    setNotSignedIn();
+    const url: string = "/extensions/download/company/1234/extensions/NOT-ALLOWED/requests/5678/reasons/623826183/attachments/a7c4f600/download";
+    const response = await request(app)
+      .get(url)
+      .expect("Location", "/extensions");
+    expect(response.status).toEqual(302);
+  });
+
+  it("should redirect to signin and thereafter start page if invalid download URL supplied with referer and not signed in", async () => {
+    setNotSignedIn();
+    const url: string = "/extensions/NOT-ALLOWED/download/company/1234/extensions/requests/5678/reasons/623826183/attachments/a7c4f600/download";
+    const response = await request(app)
+      .get(url)
+      .set("Referer", "/")
+      .expect("Location", "/signin?return_to=/extensions");
+    expect(response.status).toEqual(302);
+  });
 });
 
 const setNotSignedIn = () => {
