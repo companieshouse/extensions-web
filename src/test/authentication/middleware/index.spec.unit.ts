@@ -41,7 +41,7 @@ describe("Authentication middleware", () => {
     expect(response.status).toEqual(302);
   });
 
-  it("should not redirect to signin if loading accessibility statement page", async () => {
+  it("should NOT redirect to signin if loading accessibility statement page", async () => {
     const response = await request(app)
       .get("/extensions/accessibility-statement")
       .set("Referer", "/extensions");
@@ -58,7 +58,7 @@ describe("Authentication middleware", () => {
     expect(response.status).toEqual(302);
   });
 
-  it("should not redirect to signin if navigating from /extensions page and not signed in", async () => {
+  it("should redirect to signin if navigating from /extensions page and not signed in", async () => {
     setNotSignedIn();
     const response = await request(app)
       .get("/extensions/company-number")
@@ -68,7 +68,7 @@ describe("Authentication middleware", () => {
   });
 
 
-  it("should not redirect to signin if /extensions/* called while signed in", async () => {
+  it("should NOT redirect to signin if /extensions/* called while signed in", async () => {
     const response = await request(app)
       .get("/extensions/company-number")
       .set("Referer", "/")
@@ -76,13 +76,32 @@ describe("Authentication middleware", () => {
     expect(response.status).toEqual(200);
   });
 
-  it("should redirect to original request url if /extensions/*/download called and not signed in", async () => {
+  it("should redirect to signin if /extensions/*/download called and not signed in", async () => {
     setNotSignedIn();
     const url: string = "/extensions/download/company/1234/extensions/requests/5678/reasons/623826183/attachments/a7c4f600/download";
     const response = await request(app)
       .get(url)
       .set("Referer", "/")
       .expect("Location", "/signin?return_to=" + url);
+    expect(response.status).toEqual(302);
+  });
+
+  it("should redirect to start page if invalid download URL supplied and no referer and not signed in", async () => {
+    setNotSignedIn();
+    const url: string = "/extensions/download/company/1234/extensions/NOT-ALLOWED/requests/5678/reasons/623826183/attachments/a7c4f600/download";
+    const response = await request(app)
+      .get(url)
+      .expect("Location", "/extensions");
+    expect(response.status).toEqual(302);
+  });
+
+  it("should redirect to signin and thereafter start page if invalid download URL supplied with referer and not signed in", async () => {
+    setNotSignedIn();
+    const url: string = "/extensions/NOT-ALLOWED/download/company/1234/extensions/requests/5678/reasons/623826183/attachments/a7c4f600/download";
+    const response = await request(app)
+      .get(url)
+      .set("Referer", "/")
+      .expect("Location", "/signin?return_to=/extensions");
     expect(response.status).toEqual(302);
   });
 });

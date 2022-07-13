@@ -29,8 +29,10 @@ export const ERROR: string = SEPARATOR + templates.ERROR;
 export const CHECK_YOUR_ANSWERS: string = SEPARATOR + templates.CHECK_YOUR_ANSWERS;
 export const TOO_SOON: string = SEPARATOR + templates.TOO_SOON;
 export const EXTENSION_LIMIT_REACHED: string = SEPARATOR + templates.EXTENSION_LIMIT_REACHED;
+export const DOWNLOAD_SUFFIX: string = "/download";
+export const DOWNLOAD_EXTENSIONS_REQUESTS = "/extensions/requests/";
 export const DOWNLOAD_ATTACHMENT: string =
-  "/company/:companyId/extensions/requests/:requestId/*/attachments/*/download";
+  "/company/:companyId" + DOWNLOAD_EXTENSIONS_REQUESTS + ":requestId/*/attachments/*" + DOWNLOAD_SUFFIX;
 export const BACK_LINK: string =  "/back-link";
 export const ACCESSIBILITY_STATEMENT: string = SEPARATOR + templates.ACCESSIBILITY_STATEMENT;
 export const REASON_ID: string = "reasonId=";
