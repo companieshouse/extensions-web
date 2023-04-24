@@ -64,10 +64,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       await updateChosenReasonKeys(req, true, false, false, false);
       return await addReason(req, res, (request) =>
         request.body.extensionReason, templatePaths.REASON_ILLNESS);
-    case "COVID-19":
-      await updateChosenReasonKeys(req, false, false, true, false);
-      return await addReason(req, res, (request) =>
-        request.body.extensionReason, templatePaths.ADD_EXTENSION_REASON);
     case "accounting issues":
       await updateChosenReasonKeys(req, false, true, false, false);
       return await addReason(req, res, (request) =>
