@@ -5,6 +5,8 @@ COPY --from=0 ./ ./
 WORKDIR /opt
 COPY api-enumerations ./api-enumerations
 COPY dist ./package.json ./package-lock.json docker_start.sh routes.yaml ./
+RUN npm i
+
 CMD ["./docker_start.sh"]
 
 EXPOSE 3000
