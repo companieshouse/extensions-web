@@ -1,6 +1,6 @@
 local_resource(
   name = 'dev:extensions-web',
-  cmd = 'npm --silent install --only=prod && npm --silent run build',
+  cmd = 'npm install && npm run build',
   deps = ['src']
 )
 
