@@ -76,7 +76,7 @@ const addAttachment = async (req: Request,
 
   const chunkArray: Buffer[] = [];
 
-  const busboy: busboy.Busboy = new Busboy({
+  const busboy: Busboy.Busboy = Busboy({
     headers: req.headers,
     limits: {
       fileSize: maxSizeBytes,
@@ -85,11 +85,10 @@ const addAttachment = async (req: Request,
 
   // Busboy on file received event - start of file upload process when start of a file is initially received
   busboy.on("file",
-    (fieldName: string,
+    (_fieldName: string,
      fileStream: Socket,
-     filename: string,
-     encoding: string,
-     mimeType: string) => {
+     fileInfo: Busboy.FileInfo) => {
+    const { filename, mimeType } = fileInfo;
 
     // File on data event - fired when a new chunk of data arrives into busboy
     fileStream.on("data", (chunk: Buffer) => {
