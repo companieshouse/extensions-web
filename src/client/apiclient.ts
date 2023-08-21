@@ -263,7 +263,7 @@ export const download = async (downloadUri: string, token: string, res: Response
 };
 
 export const prefixFilename = (res: Response, contentDispositionHeader: string ): void => {
-  let header: string = res.get(contentDispositionHeader);
+  let header: string = res.get(contentDispositionHeader) as string;
   header = header.replace("filename=\"", "filename=\"CH_EXT_");
   res.setHeader(contentDispositionHeader, header);
 };

@@ -22,7 +22,7 @@ const validators = [
 
 export const render = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   if (req.query.reasonId) {
-    await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId);
+    await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId as string);
   }
   const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
   let existingInformation;

@@ -24,7 +24,7 @@ const maxSizeBytes: number = parseInt(MAX_FILE_SIZE_BYTES, 10);
 // GET /extensions/document-upload
 export const render = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   if (req.query.reasonId) {
-    await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId);
+    await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId as string);
   }
   const thisReason: ReasonWeb = await getCurrentReasonFull(req.chSession);
   return res.render(templatePaths.DOCUMENT_UPLOAD,

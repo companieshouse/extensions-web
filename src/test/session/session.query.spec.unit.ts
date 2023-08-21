@@ -18,7 +18,7 @@ describe("Query param session tests", () => {
         reasonId: "123"
       },
       chSession: {}
-    } as Request;
+    } as unknown as Request;
     const dummyResponse = {} as Response;
     const dummyNext = (() => {}) as NextFunction;
     sessionMiddleware(dummyRequest, dummyResponse, dummyNext);
