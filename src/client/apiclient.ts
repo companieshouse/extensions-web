@@ -8,9 +8,9 @@ import {formatDateForDisplay} from "./date.formatter";
 import {Response} from "express";
 import { IExtensionRequest } from "session/types";
 
-import {createApiClient} from "ch-sdk-node";
-import Resource from "ch-sdk-node/dist/services/resource";
-import {CompanyProfile} from "ch-sdk-node/dist/services/company-profile";
+import {createApiClient} from "@companieshouse/api-sdk-node";
+import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
+import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile";
 import {
   getApiData,
   getBaseAxiosRequestConfig,
