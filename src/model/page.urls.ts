@@ -39,6 +39,8 @@ export const REASON_ID: string = "reasonId=";
 export const OAUTH_LOGIN_URL: string = "/oauth2/user/signin?";
 export const DOWNLOAD_PREFIX: string = "/download";
 export const DOWNLOAD_ATTACHMENT_LANDING: string = DOWNLOAD_PREFIX + DOWNLOAD_ATTACHMENT;
+export const HEALTHCHECK = "/healthcheck";
+
 export const EXTENSIONS_COMPANY_NUMBER: string = EXTENSIONS + COMPANY_NUMBER;
 export const EXTENSIONS_CHOOSE_REASON: string = EXTENSIONS + CHOOSE_REASON;
 export const EXTENSIONS_CONFIRM_COMPANY: string = EXTENSIONS + CONFIRM_COMPANY;
@@ -63,3 +65,4 @@ export const EXTENSIONS_CHECK_YOUR_ANSWERS: string = EXTENSIONS + CHECK_YOUR_ANS
 export const EXTENSIONS_TOO_SOON: string = EXTENSIONS + TOO_SOON;
 export const EXTENSIONS_EXTENSION_LIMIT_REACHED: string = EXTENSIONS + EXTENSION_LIMIT_REACHED;
 export const EXTENSIONS_BACK_LINK: string = EXTENSIONS + BACK_LINK;
+export const EXTENSIONS_HEALTHCHECK: string = EXTENSIONS + HEALTHCHECK;
