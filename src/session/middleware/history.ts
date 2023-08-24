@@ -12,8 +12,15 @@ import {
 } from "../../model/page.urls";
 import {PageHistory} from "../types";
 import Session from "../session";
+import logger from "../../logger";
+import * as pageURLs from "../../model/page.urls";
 
 export default async (req: Request, res: Response, next: NextFunction) => {
+  if (req.originalUrl === pageURLs.EXTENSIONS_HEALTHCHECK) {
+    logger.debug("/healthcheck endpoint called, skipping history middleware.");
+    return next();
+  }
+
   if (req.method.toString() === "GET" && !containsProhibitedUrls(
     [BACK_LINK, DOCUMENT_UPLOAD_CONTINUE_NO_DOCS, DOWNLOAD_PREFIX],
     req.baseUrl)) {
