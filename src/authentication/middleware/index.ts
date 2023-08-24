@@ -4,6 +4,11 @@ import logger from "../../logger";
 import * as pageURLs from "../../model/page.urls";
 
 export default (req: Request, res: Response, next: NextFunction) => {
+  if (req.originalUrl === pageURLs.EXTENSIONS_HEALTHCHECK) {
+    logger.debug("/healthcheck endpoint called, skipping authentication.");
+    return next();
+  }
+
   const referringPageURL = req.header("Referer") as string;
 
   // If in accessibility testing mode, don't return user to start

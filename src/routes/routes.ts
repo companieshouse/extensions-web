@@ -34,6 +34,7 @@ import sessionQuery from "../session/middleware/session.query";
 import backLinkRoute from "../controllers/back.link.controller";
 import {render as showTooSoonPage} from "../controllers/too.soon.controller";
 import {render as showExtensionLimitReachedPage} from "../controllers/extension.limit.reached.controller";
+import * as healthcheck from "../controllers/healthcheck.controller";
 
 const router: Router = Router();
 
@@ -121,5 +122,7 @@ router.get(pageURLs.EXTENSION_LIMIT_REACHED, showExtensionLimitReachedPage);
 router.get(pageURLs.BACK_LINK, backLinkRoute);
 
 router.get(pageURLs.ACCESSIBILITY_STATEMENT, renderTemplate(templatePaths.ACCESSIBILITY_STATEMENT));
+
+router.get(pageURLs.HEALTHCHECK, healthcheck.get);
 
 export const appRouter = router;
