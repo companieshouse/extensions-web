@@ -11,7 +11,8 @@
     "integration": "jest -c src/test/jest.config.integration.js --detectOpenHandles",
     "contract-consumer": "jest -c src/test/jest.config.contract.js --detectOpenHandles",
     "sass": "node-sass src/public/stylesheets/scss -o src/public/stylesheets/css -i false",
-    "lint": "tslint -p .",
+    "lint": "eslint '{src,test}/**/*'",
+    "lint:fix": "eslint '{src,test}/**/*' --fix",
     "sonarqube": "sonar-scanner",
     "sonar-test": "jest -c jest.config.sonar.js --forceExit --coverage"
   },
@@ -48,15 +49,17 @@
     "@types/nunjucks": "^3.1.1",
     "@types/redis": "^2.8.10",
     "@types/supertest": "^2.0.7",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "eslint": "^8.47.0",
     "jest": "^26.6.3",
     "mockserver": "^2.0.0",
     "node-mocks-http": "^1.7.6",
     "nodemon": "^2.0.7",
     "sonarqube-scanner": "^2.6.0",
-    "supertest": "^3.4.2",
+    "supertest": "^6.2.2",
     "ts-jest": "^26.4.4",
-    "ts-node": "^8.0.2",
-    "tslint": "^5.13.0",
-    "typescript": "^3.6.5"
+    "ts-node": "^10.9.1",
+    "typescript": "^4.6.2"
   }
 }
