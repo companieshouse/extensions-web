@@ -34,7 +34,7 @@ test:
 	npm run sonar-test
 
 .PHONY: test-unit
-test-unit:
+test-unit: clean
 	npm run unit
 
 .PHONY: test-integration
@@ -66,7 +66,7 @@ endif
 	rm -rf $(tmpdir)
 
 .PHONY: dist
-dist: lint test clean build package
+dist: lint test-unit clean build package
 
 .PHONY: update_submodules
 update_submodules:
