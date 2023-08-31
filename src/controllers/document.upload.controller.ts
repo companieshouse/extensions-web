@@ -24,7 +24,7 @@ const maxSizeBytes: number = parseInt(MAX_FILE_SIZE_BYTES, 10);
 // GET /extensions/document-upload
 export const render = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   if (req.query.reasonId) {
-    await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId);
+    await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId as string);
   }
   const thisReason: ReasonWeb = await getCurrentReasonFull(req.chSession);
   return res.render(templatePaths.DOCUMENT_UPLOAD,
@@ -76,7 +76,7 @@ const addAttachment = async (req: Request,
 
   const chunkArray: Buffer[] = [];
 
-  const busboy: busboy.Busboy = new Busboy({
+  const busboy: Busboy.Busboy = Busboy({
     headers: req.headers,
     limits: {
       fileSize: maxSizeBytes,
@@ -85,11 +85,10 @@ const addAttachment = async (req: Request,
 
   // Busboy on file received event - start of file upload process when start of a file is initially received
   busboy.on("file",
-    (fieldName: string,
+    (_fieldName: string,
      fileStream: Socket,
-     filename: string,
-     encoding: string,
-     mimeType: string) => {
+     fileInfo: Busboy.FileInfo) => {
+    const { filename, mimeType } = fileInfo;
 
     // File on data event - fired when a new chunk of data arrives into busboy
     fileStream.on("data", (chunk: Buffer) => {

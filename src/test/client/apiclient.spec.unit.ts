@@ -1,13 +1,13 @@
 import {getCompanyProfile, ExtensionsCompanyProfile} from "../../client/apiclient";
 import * as mockUtils from "../mock.utils";
-import Resource from "ch-sdk-node/dist/services/resource";
-import {CompanyProfile} from "ch-sdk-node/dist/services/company-profile";
-import CompanyProfileService from "ch-sdk-node/dist/services/company-profile/service";
+import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
+import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile";
+import CompanyProfileService from "@companieshouse/api-sdk-node/dist/services/company-profile/service";
 
 //////////////////
 //Set up mocks
 
-jest.mock("ch-sdk-node/dist/services/company-profile/service");
+jest.mock("@companieshouse/api-sdk-node/dist/services/company-profile/service");
 
 // end of set up mocks
 ///////////////////////
@@ -48,11 +48,13 @@ const dummySDKResponse: Resource<CompanyProfile> = {
     companyStatus: "active",
     companyStatusDetail: "company status detail",
     dateOfCreation: "1872-06-26",
+    jurisdiction: "England",
     sicCodes: ["123"],
     hasBeenLiquidated: false,
     type: "limited",
     hasCharges: false,
     hasInsolvencyHistory: false,
+    links: {},
     registeredOfficeAddress: {
       addressLineOne: "line1",
       addressLineTwo: "line2",
@@ -62,7 +64,7 @@ const dummySDKResponse: Resource<CompanyProfile> = {
       poBox: "123",
       postalCode: "post code",
       premises: "premises",
-      region: "region"
+      region: "region",
     }
   },
 };
