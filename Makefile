@@ -66,7 +66,7 @@ endif
 	rm -rf $(tmpdir)
 
 .PHONY: dist
-dist: lint test clean build package
+dist: lint test-unit clean package
 
 .PHONY: update_submodules
 update_submodules:
