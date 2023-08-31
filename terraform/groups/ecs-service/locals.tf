@@ -23,7 +23,6 @@ locals {
     "cache_server"              = local.service_secrets["cache_server"]
     "oauth2_client_id"          = local.service_secrets["oauth2_client_id"]
     "oauth2_client_secret"      = local.service_secrets["oauth2_client_secret"]
-    "payments_api_url"          = local.service_secrets["payments_api_url"]
   }
 
   vpc_name                  = local.service_secrets["vpc_name"]
@@ -36,7 +35,6 @@ locals {
   cache_server              = local.service_secrets["cache_server"]
   oauth2_client_id          = local.service_secrets["oauth2_client_id"]
   oauth2_client_secret      = local.service_secrets["oauth2_client_secret"]
-  payments_api_url          = local.service_secrets["payments_api_url"]
 
   # create a map of secret name => secret arn to pass into ecs service module
   # using the trimprefix function to remove the prefixed path from the secret name
@@ -59,7 +57,6 @@ locals {
     { "name": "OAUTH2_CLIENT_SECRET", "valueFrom": "${local.service_secrets_arn_map.oauth2_client_secret}" },
     { "name": "ACCOUNT_URL", "valueFrom": "${local.service_secrets_arn_map.account_url}" },
     { "name": "INTERNAL_API_URL", "valueFrom": "${local.service_secrets_arn_map.internal.api.url}"},
-    { "name": "PAYMENTS_API_URL", "valueFrom": "${local.service_secrets_arn_map.payments_api_url}" }
   ]
 
   task_environment = [
