@@ -48,7 +48,6 @@ locals {
       trimprefix(sec.name, "/${local.service_name}-${var.environment}/") => sec.arn
   }
 
-  # TODO: task_secrets don't seem to correspond with 'parameter_store_secrets'. What is the difference?
   task_secrets = [
     { "name": "COOKIE_SECRET", "valueFrom": "${local.secrets_arn_map.web-oauth2-cookie-secret}" },
     { "name": "CHS_API_KEY", "valueFrom": "${local.service_secrets_arn_map.chs_api_key}" },
@@ -56,7 +55,7 @@ locals {
     { "name": "OAUTH2_CLIENT_ID", "valueFrom": "${local.service_secrets_arn_map.oauth2_client_id}" },  
     { "name": "OAUTH2_CLIENT_SECRET", "valueFrom": "${local.service_secrets_arn_map.oauth2_client_secret}" },
     { "name": "ACCOUNT_URL", "valueFrom": "${local.service_secrets_arn_map.account_url}" },
-    { "name": "INTERNAL_API_URL", "valueFrom": "${local.service_secrets_arn_map.internal.api.url}"},
+    { "name": "INTERNAL_API_URL", "valueFrom": "${local.service_secrets_arn_map.internal_api_url}"},
   ]
 
   task_environment = [
