@@ -34,8 +34,8 @@ test:
 	npm run sonar-test
 
 .PHONY: test-unit
-test-unit:
-	npm run unit
+test-unit: clean
+	npm run coverage
 
 .PHONY: test-integration
 test-integration:
