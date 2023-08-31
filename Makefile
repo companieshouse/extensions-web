@@ -35,7 +35,7 @@ test:
 
 .PHONY: test-unit
 test-unit: clean
-	npm run coverage
+	npm run unit
 
 .PHONY: test-integration
 test-integration:
@@ -66,7 +66,7 @@ endif
 	rm -rf $(tmpdir)
 
 .PHONY: dist
-dist: lint test-unit clean package
+dist: lint test-unit clean build package
 
 .PHONY: update_submodules
 update_submodules:
