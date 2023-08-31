@@ -97,6 +97,7 @@ variable "cookie_expiration_in_seconds" {
 }
 variable "cookie_name" {
   type        = string
+  default     = "__SID"
 }
 variable "cookie_secret" {
   type        = string
