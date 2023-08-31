@@ -135,7 +135,7 @@ variable "maximum_extension_requests_per_day" {
   type        = string
   default     = "50"
 }
-variable "max_extension_period_in_month" {
+variable "max_extension_period_in_months" {
   type        = string
   default     = "12"
 }
