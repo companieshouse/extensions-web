@@ -30,7 +30,7 @@ export const PIWIK_URL = getEnvironmentValue("PIWIK_URL");
 
 export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID");
 
-export const API_URL  = getEnvironmentValue("API_URL");
+export const API_URL  = getEnvironmentValue("API_LOCAL_URL");
 
 export const API_KEY  = getEnvironmentValue("CHS_API_KEY");
 
