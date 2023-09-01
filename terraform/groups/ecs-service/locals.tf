@@ -54,7 +54,7 @@ locals {
 
   task_environment = [
     { "name": "NODE_PORT", "value": "${local.container_port}" },
-    { "name": "API_URL", "valueFrom": "${var.api_url}"},
+    { "name": "API_LOCAL_URL", "valueFrom": "${var.api_local_url}"},
     { "name": "AUTHENTICATION_MIDDLEWARE", "valueFrom": "${var.authentication_middleware}"},
     { "name": "CACHE_SERVER", "valueFrom": "${var.cache_server}"},
     { "name": "CDN_HOST", "valueFrom": "${var.cdn_host}"},

@@ -7,7 +7,7 @@ aws_profile = "development-eu-west-2"
 kms_alias = "alias/development-eu-west-2/environment-services-kms"
 
 # service configs
-api_url = "https://api.cidev.aws.chdev.org"
+api_local_url = "https://api.cidev.aws.chdev.org"
 authentication_middleware = "on"
 cache_server = "cidev-chs-elasticache.9vgugg.ng.0001.euw2.cache.amazonaws.com:6379"
 cdn_host = "d3uvya5a8a1ncx.cloudfront.net"
