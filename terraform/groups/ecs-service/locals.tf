@@ -61,7 +61,7 @@ locals {
     { "name": "CHS_API_KEY", "valueFrom": "${var.chs_api_key}"},
     { "name": "CHS_URL", "valueFrom": "${var.chs_url}"},
     { "name": "COOKIE_DOMAIN", "valueFrom": "${var.cookie_domain}"},
-    { "name": "COOKIE_EXPIRATION_IN_SECONDS", "valueFrom": "${var.expiration_in_seconds}"},
+    { "name": "COOKIE_EXPIRATION_IN_SECONDS", "valueFrom": "${var.cookie_expiration_in_seconds}"},
     { "name": "COOKIE_NAME", "valueFrom": "${var.cookie_name}"},
     { "name": "COOKIE_SECRET", "valueFrom": "${var.cookie_secret}"},
     { "name": "COOKIE_SECURE_FLAG", "valueFrom": "${var.cookie_secret_flag}"},
