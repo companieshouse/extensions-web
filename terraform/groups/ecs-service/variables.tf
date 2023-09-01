@@ -68,7 +68,7 @@ variable "required_memory" {
 # ------------------------------------------------------------------------------
 # Service environment variable configs
 # ------------------------------------------------------------------------------
-variable "api_local_url" {
+variable "api_url" {
   type        = string
 }
 variable "authentication_middleware" {
