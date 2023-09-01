@@ -35,7 +35,7 @@ test:
 
 .PHONY: test-unit
 test-unit: clean
-	# npm run unit 'ECS pipeline calls test-unit so need to run sonar-test here'
+	# 'ECS pipeline calls test-unit so need to run sonar-test here'
 	npm run sonar-test
 
 .PHONY: test-integration
