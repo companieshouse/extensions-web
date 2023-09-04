@@ -51,12 +51,12 @@ locals {
 
   task_environment = [
     { "name": "NODE_PORT", "value": "${local.container_port}" },
-    { "name": "API_LOCAL_URL", "valueFrom": "${var.api_local_url}"},    
+    { "name": "API_LOCAL_URL", "valueFrom": "${var.api_local_url}"},  
+    { "name": "CDN_HOST", "valueFrom": "${var.cdn_host}"},
     { "name": "CHS_URL", "valueFrom": "${var.chs_url}"},
     { "name": "COOKIE_DOMAIN", "valueFrom": "${var.cookie_domain}"},
     { "name": "COOKIE_EXPIRATION_IN_SECONDS", "valueFrom": "${var.cookie_expiration_in_seconds}"},
     { "name": "COOKIE_NAME", "valueFrom": "${var.cookie_name}"},
-    { "name": "COOKIE_SECRET", "valueFrom": "${var.cookie_secret}"},
     { "name": "COOKIE_SECURE_FLAG", "valueFrom": "${var.cookie_secret_flag}"},
     { "name": "DEFAULT_SESSION_EXPIRATION", "valueFrom": "${var.default_session_expiration}"},
     { "name": "EXTENSIONS_API_URL", "valueFrom": "${var.extensions_api_url}"},
