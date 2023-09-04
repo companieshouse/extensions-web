@@ -42,10 +42,7 @@ locals {
       trimprefix(sec.name, "/${local.service_name}-${var.environment}/") => sec.arn
   }
 
-  task_secrets = [
-    { "name": "COOKIE_SECRET", "valueFrom": "${local.secrets_arn_map.web-oauth2-cookie-secret}" },
-    { "name": "CHS_API_KEY", "valueFrom": "${local.service_secrets_arn_map.chs_api_key}" },
-    { "name": "CACHE_SERVER", "valueFrom": "${local.service_secrets_arn_map.cache_server}" },
+  task_secrets = [   
     { "name": "OAUTH2_CLIENT_ID", "valueFrom": "${local.service_secrets_arn_map.oauth2_client_id}" },  
     { "name": "OAUTH2_CLIENT_SECRET", "valueFrom": "${local.service_secrets_arn_map.oauth2_client_secret}" },
     { "name": "ACCOUNT_URL", "valueFrom": "${local.service_secrets_arn_map.account_url}" },
@@ -54,16 +51,12 @@ locals {
 
   task_environment = [
     { "name": "NODE_PORT", "value": "${local.container_port}" },
-    { "name": "API_LOCAL_URL", "valueFrom": "${var.api_local_url}"},
-    { "name": "AUTHENTICATION_MIDDLEWARE", "valueFrom": "${var.authentication_middleware}"},
-    { "name": "CACHE_SERVER", "valueFrom": "${var.cache_server}"},
+    { "name": "API_LOCAL_URL", "valueFrom": "${var.api_local_url}"},  
     { "name": "CDN_HOST", "valueFrom": "${var.cdn_host}"},
-    { "name": "CHS_API_KEY", "valueFrom": "${var.chs_api_key}"},
     { "name": "CHS_URL", "valueFrom": "${var.chs_url}"},
     { "name": "COOKIE_DOMAIN", "valueFrom": "${var.cookie_domain}"},
-    { "name": "COOKIE_EXPIRATION_IN_SECONDS", "valueFrom": "${var.expiration_in_seconds}"},
+    { "name": "COOKIE_EXPIRATION_IN_SECONDS", "valueFrom": "${var.cookie_expiration_in_seconds}"},
     { "name": "COOKIE_NAME", "valueFrom": "${var.cookie_name}"},
-    { "name": "COOKIE_SECRET", "valueFrom": "${var.cookie_secret}"},
     { "name": "COOKIE_SECURE_FLAG", "valueFrom": "${var.cookie_secret_flag}"},
     { "name": "DEFAULT_SESSION_EXPIRATION", "valueFrom": "${var.default_session_expiration}"},
     { "name": "EXTENSIONS_API_URL", "valueFrom": "${var.extensions_api_url}"},
