@@ -25,12 +25,12 @@ data "aws_iam_role" "ecs_cluster_iam_role" {
   name = "${local.name_prefix}-ecs-task-execution-role"
 }
 
-data "aws_lb" "filing_create_lb" {
+data "aws_lb" "service_lb" {
   name = "${var.environment}-chs-chgovuk"
 }
 
-data "aws_lb_listener" "filing_create_lb_listener" {
-  load_balancer_arn = data.aws_lb.filing_create_lb.arn
+data "aws_lb_listener" "service_lb_listener" {
+  load_balancer_arn = data.aws_lb.service_lb.arn
   port = 443
 }
 
