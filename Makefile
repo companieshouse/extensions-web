@@ -47,6 +47,10 @@ test-contract-consumer:
 	rm -rf pacts/
 	npm run contract-consumer
 
+.PHONY: security-check
+security-check:
+	npm audit --audit-level=high
+
 .PHONY: package
 package: build
 ifndef version
