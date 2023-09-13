@@ -39,8 +39,8 @@ const getPageRender = async (companyNumber: string, req: Request) => {
   const companyInSession: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
   const request: IExtensionRequest = sessionService.getRequest(req.chSession);
   const reasons = await apiClient.getReasons(request, token);
-  const filteredReason = await filterReasonToRemove(reasons, req.query.id);
-  await sessionService.setReasonInContextAsString(req.chSession, req.query.id);
+  const filteredReason = await filterReasonToRemove(reasons, req.query.id as string);
+  await sessionService.setReasonInContextAsString(req.chSession, req.query.id as string);
   return {
     company: companyInSession,
     extensionLength: reasons.items.length,

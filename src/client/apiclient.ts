@@ -8,9 +8,9 @@ import {formatDateForDisplay} from "./date.formatter";
 import {Response} from "express";
 import { IExtensionRequest } from "session/types";
 
-import {createApiClient} from "ch-sdk-node";
-import Resource from "ch-sdk-node/dist/services/resource";
-import {CompanyProfile} from "ch-sdk-node/dist/services/company-profile";
+import {createApiClient} from "@companieshouse/api-sdk-node";
+import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
+import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile";
 import {
   getApiData,
   getBaseAxiosRequestConfig,
@@ -263,7 +263,7 @@ export const download = async (downloadUri: string, token: string, res: Response
 };
 
 export const prefixFilename = (res: Response, contentDispositionHeader: string ): void => {
-  let header: string = res.get(contentDispositionHeader);
+  let header: string = res.get(contentDispositionHeader) as string;
   header = header.replace("filename=\"", "filename=\"CH_EXT_");
   res.setHeader(contentDispositionHeader, header);
 };

@@ -34,8 +34,9 @@ test:
 	npm run sonar-test
 
 .PHONY: test-unit
-test-unit:
-	npm run unit
+test-unit: clean
+	# 'ECS pipeline calls test-unit so need to run sonar-test here'
+	npm run sonar-test
 
 .PHONY: test-integration
 test-integration:
@@ -66,7 +67,7 @@ endif
 	rm -rf $(tmpdir)
 
 .PHONY: dist
-dist: lint test clean build package
+dist: lint test-unit clean build package
 
 .PHONY: update_submodules
 update_submodules:
