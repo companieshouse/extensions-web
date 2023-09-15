@@ -1,16 +1,6 @@
 environment = "staging"
 aws_profile = "staging-eu-west-2"
 
-
-# TODO Check not required (not there in OE Web Staging config)
-# 
-# aws_bucket = "development-eu-west-2.terraform-state.ch.gov.uk"
-# remote_state_bucket = "ch-development-terraform-state-london"
-# deploy_to = "development"
-# state_prefix = "env:/development"
-# kms_alias = "alias/development-eu-west-2/environment-services-kms"
-
-
 # scaling configs
 desired_task_count = 2 # use multi instance in staging
 
@@ -32,31 +22,10 @@ too_soon_days_before_due_date = "60"
 max_extension_period_in_months = "12"
 log_level = "debug"
 cookie_name = "__SID"
-
-# TODO CiDev setting was 1200 but set to this value (3600) in Mesos Staging config
 default_session_expiration = "3600"
 
-# TODO Needed? Not present in Mesos Staging config and variable only defined in the terraform but not used anywhere in the code that I can see
-#
-# cookie_expiration_in_seconds = "3600"
 
-
-# TODO Needed? Not present in Mesos Staging config and variable only defined in the terraform but not used anywhere in the code that I can see
-#
-# cookie_secret_flag = "0"
-
-
-# TODO Not present in Mesos Staging config (log_level isn't neither, but I think default value of 'debug' is being applied there,
-#      so making it explicit is good - that's what we did with OE Web). I just don't think human_log needs setting, if we agree? 
-#
-# human_log = "1"
-
-
-# TODO Needed? Present in Mesos Staging config, variable already defined in the terraform but not used anywhere in the code that I can see
-#
-# export AUTHENTICATION_MIDDLEWARE=on
-
-
-# TODO Needed? Present in Mesos Staging config, variable not defined in the terraform but there's one reference to this in test config
+# TODO Needed? Present in Mesos Staging config but not CiDev config, variable not defined in the terraform but there's
+#      one reference to this in test config
 #
 # export FEATURE_MISSING_AUTHENTICATION_CODE=true
