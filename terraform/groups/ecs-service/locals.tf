@@ -63,7 +63,7 @@ locals {
     { "name": "COOKIE_DOMAIN", "value": "${var.cookie_domain}"},
     { "name": "COOKIE_EXPIRATION_IN_SECONDS", "value": "${var.cookie_expiration_in_seconds}"},
     { "name": "COOKIE_NAME", "value": "${var.cookie_name}"},
-    { "name": "COOKIE_SECURE_FLAG", "value": "${var.cookie_secret_flag}"},
+    { "name": "COOKIE_SECURE_FLAG", "value": "${var.cookie_secure_flag}"},
     { "name": "DEFAULT_SESSION_EXPIRATION", "value": "${var.default_session_expiration}"},
     { "name": "FEATURE_REQUEST_COUNT", "value": "${var.feature_request_count}"},
     { "name": "HUMAN_LOG", "value": "${var.human_log}"},
