@@ -23,9 +23,3 @@ max_extension_period_in_months = "12"
 log_level = "debug"
 cookie_name = "__SID"
 default_session_expiration = "3600"
-
-
-# TODO Needed? Present in Mesos Staging config but not CiDev config, variable not defined in the terraform but there's
-#      one reference to this in test config
-#
-# export FEATURE_MISSING_AUTHENTICATION_CODE=true
