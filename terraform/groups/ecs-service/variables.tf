@@ -87,9 +87,6 @@ variable "cache_server" {
 variable "cdn_host" {
   type        = string
 }
-variable "chs_api_key" {
-  type        = string
-}
 variable "chs_url" {
   type        = string
 }
@@ -104,9 +101,6 @@ variable "cookie_name" {
   type        = string
   default     = "__SID"
 }
-variable "cookie_secret" {
-  type        = string
-}
 variable "cookie_secure_flag" {
   type        = string
   default     = "0"
@@ -115,10 +109,7 @@ variable "default_session_expiration" {
   type        = string
   default     = "3600"
 }
-variable "extensions_api_url" {
-  type        = string
-}
-variable "extensions_processor_api_url" {
+variable "extensions_web_version" {
   type        = string
 }
 variable "feature_request_count" {
