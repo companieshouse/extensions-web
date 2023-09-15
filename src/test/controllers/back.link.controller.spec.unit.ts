@@ -33,6 +33,7 @@ beforeEach(() => {
 });
 
 describe("click back link tests", () => {
+
   it("should remove last page",async ()=> {
     const res = await request(app)
       .get(pageURLs.EXTENSIONS_BACK_LINK)
