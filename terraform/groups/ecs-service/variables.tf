@@ -119,9 +119,6 @@ variable "human_log" {
   type        = string
   default     = "1"
 }
-variable "internal_api_url" {
-  type        = string
-}
 variable "log_level" { 
   type        = string
   description = "The log level for services to use: trace, debug, info or error"
