@@ -5,7 +5,7 @@ locals {
   service_name              = "extensions-web"
   container_port            = "3000" # default node port required here until prod docker container is built allowing port change via env var
   docker_repo               = "extensions-web"
-  lb_listener_rule_priority = 91
+  lb_listener_rule_priority = 95
   lb_listener_paths         = ["/extensions/*"]
   healthcheck_path          = "/extensions/healthcheck" #healthcheck path for extensions web
   healthcheck_matcher       = "200"
