@@ -2,7 +2,7 @@ environment = "live"
 aws_profile = "live-eu-west-2"
 
 # scaling configs
-desired_task_count = 2 # use multi instance in staging
+desired_task_count = 2 # use multi instance in live
 
 # service configs
 api_local_url = "https://private-api.companieshouse.gov.uk"
