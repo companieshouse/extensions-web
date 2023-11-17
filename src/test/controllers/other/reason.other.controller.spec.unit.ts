@@ -9,7 +9,6 @@ import * as reasonService from "../../../services/reason.service";
 import * as sessionService from "../../../services/session.service";
 import {createHistoryIfNone} from "../../../services/session.service";
 
-
 jest.mock("../../../services/redis.service");
 jest.mock("../../../services/reason.service");
 jest.mock("../../../services/session.service");
@@ -17,9 +16,9 @@ jest.mock("../../../client/apiclient");
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockUpdateReasonService = (<unknown>updateReason as jest.Mock<typeof updateReason>);
-const mockSetReasonInContextAsString = (<unknown>sessionService.setReasonInContextAsString  as jest.Mock<typeof sessionService.setReasonInContextAsString>);
+const mockSetReasonInContextAsString = (<unknown>sessionService.setReasonInContextAsString as jest.Mock<typeof sessionService.setReasonInContextAsString>);
 const mockGetCurrentReason = (<unknown>reasonService.getCurrentReason as jest.Mock<typeof reasonService.getCurrentReason>);
-const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone  as jest.Mock<typeof createHistoryIfNone>);
+const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
 const session = fullDummySession();
 
 const NO_REASON_INPUT: string = "You must tell us the reason";
@@ -34,7 +33,7 @@ beforeEach(() => {
   mockGetCurrentReason.mockClear();
   mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
     return {
-      page_history:[],
+      page_history: [],
     };
   });
 });

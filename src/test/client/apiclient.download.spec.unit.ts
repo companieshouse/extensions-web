@@ -18,7 +18,6 @@ const CONTENT_DISPOSITION_VALUE: string = "attachment; filename=\"test.txt\"";
 const CONTENT_TYPE_VALUE: string = "application/text";
 const CONTENT_LENGTH_VALUE: string = "55621";
 
-
 const inputBuffer: Buffer = Buffer.from("hello", "utf8");
 const readable = new Readable();
 readable.push(inputBuffer);
@@ -29,13 +28,12 @@ const downloadAxiosResponse: AxiosResponse<any> = {
   status: 200,
   statusText: "OK",
   headers: {
-    "content-disposition" : CONTENT_DISPOSITION_VALUE,
-    "content-type" : CONTENT_TYPE_VALUE,
-    "content-length" : CONTENT_LENGTH_VALUE
+    "content-disposition": CONTENT_DISPOSITION_VALUE,
+    "content-type": CONTENT_TYPE_VALUE,
+    "content-length": CONTENT_LENGTH_VALUE
   },
   config: {}
 };
-
 
 describe("apiclient download unit tests", () => {
   beforeEach(() => {
@@ -64,7 +62,6 @@ describe("apiclient download unit tests", () => {
     // check data to be piped into response is same as the one returned in mock axios response
     expect(inputBuffer.equals(dataIntoResponse));
   });
-
 
   it("Should throw an axios error back to the controller", async () => {
     const errorMessage = "errorMessage";

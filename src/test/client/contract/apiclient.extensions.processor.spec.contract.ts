@@ -66,7 +66,7 @@ describe("Extensions-processor-api consumer tests", () => {
     try {
       await provider.verify();
       done();
-    } catch(e) {
+    } catch (e) {
       done.fail(e);
     }
   }

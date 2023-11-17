@@ -90,7 +90,7 @@ describe("apiclient integration tests", () => {
   it("should be able to call processor api without failing", async () => {
     try {
       const response = await callProcessorApi(companyNumber, accessToken, requestId);
-    } catch(e) {
+    } catch (e) {
       fail(JSON.stringify(e));
     }
   });
@@ -102,7 +102,7 @@ describe("apiclient integration tests", () => {
         requestId,
         companyNumber,
         accessToken);
-    } catch(e) {
+    } catch (e) {
       fail(JSON.stringify(e));
     }
   });
@@ -110,7 +110,7 @@ describe("apiclient integration tests", () => {
   it("should receive 404 error if attachments delete endpoint not found", async () => {
     try {
       await removeAttachment(companyNumber, accessToken, requestId, reasonId, "attachment2");
-    } catch(e) {
+    } catch (e) {
       expect(e.status).toEqual(404);
     }
     expect.assertions(1);
@@ -140,7 +140,7 @@ describe("apiclient integration tests", () => {
     expect.assertions(1);
     try {
       await createExtensionRequest({} as ExtensionsCompanyProfile, companyNumber);
-    } catch(e) {
+    } catch (e) {
       expect(e.status).toEqual(-1);
     }
 

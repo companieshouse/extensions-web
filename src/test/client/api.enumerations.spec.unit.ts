@@ -8,7 +8,7 @@ jest.mock("js-yaml", () => {
           ltd: "Private limited company",
         },
         company_status: {
-          receivership : "Receiver Action",
+          receivership: "Receiver Action",
         }
       }
     })

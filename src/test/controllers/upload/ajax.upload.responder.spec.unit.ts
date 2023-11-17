@@ -19,9 +19,9 @@ const req: Request = {} as Request;
 
 // mock the response
 const res: Response = {} as Response;
-const mockRenderFunc = jest.fn().mockImplementation((view,  options?,  callback? : ((err, html) => void)) => {
+const mockRenderFunc = jest.fn().mockImplementation((view, options?, callback? : ((err, html) => void)) => {
   if (callback) {
-    callback( null,"DUMMY HTML");
+    callback( null, "DUMMY HTML");
   }
 });
 
@@ -71,7 +71,7 @@ describe("ajax upload responder tests", () => {
     expect(mockRenderFunc.mock.calls[0][0]).toContain(UPLOAD_FILE_LIST);
     expect(mockRenderFunc.mock.calls[1][0]).toContain(UPLOAD_FILE_PICKER);
     expect(mockSendFunc).toBeCalledWith({
-      divs : [
+      divs: [
         { divHtml: 'DUMMY HTML', divId: 'fileListDiv' },
         { divHtml: 'DUMMY HTML', divId: 'fileUploadDiv' }
         ]
@@ -80,7 +80,7 @@ describe("ajax upload responder tests", () => {
 
   it("should return error page redirect if exception occurs in success", async () => {
     const err = new Error("Whoops");
-    res.render = jest.fn().mockImplementationOnce((view,  options?,  callback? : ((err, html) => void)) => {
+    res.render = jest.fn().mockImplementationOnce((view, options?, callback? : ((err, html) => void)) => {
       throw err;
     });
 
@@ -117,7 +117,7 @@ describe("ajax upload responder tests", () => {
     expect(mockRenderFunc.mock.calls[1][0]).toContain(UPLOAD_FILE_PICKER);
     expect(mockRenderFunc.mock.calls[1][1].documentUploadErr).toEqual(errorData);
     expect(mockSendFunc).toBeCalledWith({
-      divs : [
+      divs: [
         { divHtml: 'DUMMY HTML', divId: 'errorSummaryDiv' },
         { divHtml: 'DUMMY HTML', divId: 'fileUploadDiv' }
       ]
@@ -126,7 +126,7 @@ describe("ajax upload responder tests", () => {
 
   it("should return error page redirect if exception occurs in handleGovUKError", async () => {
     const err = new Error("Whoops");
-    res.render = jest.fn().mockImplementationOnce((view,  options?,  callback? : ((err, html) => void)) => {
+    res.render = jest.fn().mockImplementationOnce((view, options?, callback? : ((err, html) => void)) => {
       throw err;
     });
 

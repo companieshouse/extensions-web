@@ -66,4 +66,4 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
 };
 
-export default[...validators, route];
+export default [...validators, route];

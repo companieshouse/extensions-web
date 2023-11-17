@@ -12,13 +12,11 @@ jest.mock("../../services/redis.service");
 jest.mock("../../client/apiclient");
 jest.mock( "../../services/session.service");
 
-
 const EMAIL: string = "demo@ch.gov.uk";
 const COMPANY_NUMBER: string = "00006400";
 const PAGE_TITLE: string = "Confirmation page";
 const AUTH_CODE_JOURNEY_TEXT: string = "You should receive the authentication code at the registered office within 5 working days.";
 const ERROR_PAGE: string = "Sorry, there is a problem with the service";
-
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockCallProcessorApi = (<unknown>callProcessorApi as jest.Mock<typeof callProcessorApi>);
@@ -72,24 +70,24 @@ describe("confirmation controller", () => {
     mockGetReasons.prototype.constructor.mockImplementationOnce(() => {
       return {
         items: [{
-          "id":"1234",
-          "reason":"illness",
-          "attachments":null,
-          "start_on":"1999-05-06",
-          "end_on":"1999-07-08",
-          "affected_person":"bob",
-          "reason_information":"stuff",
-          "continued_illness":"maybe"
+          "id": "1234",
+          "reason": "illness",
+          "attachments": null,
+          "start_on": "1999-05-06",
+          "end_on": "1999-07-08",
+          "affected_person": "bob",
+          "reason_information": "stuff",
+          "continued_illness": "maybe"
         },
           {
-            "id":"1234",
-            "reason":"missing company authentication code",
-            "attachments":null,
-            "start_on":"1999-05-06",
-            "end_on":"1999-07-08",
-            "affected_person":"bob",
-            "reason_information":"stuff",
-            "continued_illness":"maybe"
+            "id": "1234",
+            "reason": "missing company authentication code",
+            "attachments": null,
+            "start_on": "1999-05-06",
+            "end_on": "1999-07-08",
+            "affected_person": "bob",
+            "reason_information": "stuff",
+            "continued_illness": "maybe"
           }]
       }
     });
@@ -112,20 +110,20 @@ describe("confirmation controller", () => {
     mockGetReasons.prototype.constructor.mockImplementationOnce(() => {
       return {
         items: [{
-          "id":"1234",
-          "reason":"illness",
-          "attachments":null,
-          "start_on":"1999-05-06",
-          "end_on":"1999-07-08",
-          "affected_person":"bob",
-          "reason_information":"stuff",
-          "continued_illness":"maybe"
+          "id": "1234",
+          "reason": "illness",
+          "attachments": null,
+          "start_on": "1999-05-06",
+          "end_on": "1999-07-08",
+          "affected_person": "bob",
+          "reason_information": "stuff",
+          "continued_illness": "maybe"
         },
         {
-          "id":"1234",
-          "reason":"other",
-          "attachments":null,
-          "reason_information":"stuff"
+          "id": "1234",
+          "reason": "other",
+          "attachments": null,
+          "reason_information": "stuff"
         }]
       }
     });

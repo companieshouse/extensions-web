@@ -26,8 +26,8 @@ const addReasonAxiosResponse: AxiosResponse<any> = {
     startOn: "2018-06-14",
     endOn: "2019-01-14",
     links: {
-      "linksMap" : {
-        "self" : "/company/00006400/extensions/requests/5ccc31d61e8ff21f28c3b919/reasons/5cc84e5e1e8ff21f5863c22d"
+      "linksMap": {
+        "self": "/company/00006400/extensions/requests/5ccc31d61e8ff21f28c3b919/reasons/5cc84e5e1e8ff21f5863c22d"
       }
     }
   },

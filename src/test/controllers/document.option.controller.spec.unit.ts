@@ -10,7 +10,7 @@ jest.mock("../../services/redis.service");
 jest.mock("../../services/session.service");
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
-const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone  as jest.Mock<typeof createHistoryIfNone>);
+const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
 
 export const UPLOAD_DOCUMENTS_DECISION_NOT_MADE = "You must tell us if you want to upload documents";
 
@@ -18,7 +18,7 @@ beforeEach( () => {
   loadMockSession(mockCacheService);
   mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
     return {
-      page_history:[],
+      page_history: [],
     };
   });
 });
