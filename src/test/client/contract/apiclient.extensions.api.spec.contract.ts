@@ -40,7 +40,7 @@ describe('Pact', () => {
 
   describe("contract tests", () => {
     describe("Full extensions request", () => {
-      beforeEach(async (done) => {
+      beforeEach(async () => {
         await provider.addInteraction({
           state: "i have full request object",
           uponReceiving: "a request for a full extensions object",
@@ -75,22 +75,21 @@ describe('Pact', () => {
             },
           }
         });
-        done();
       });
 
-      it("will return the full request", async (done) => {
+      it("will return the full request", async () => {
         try {
           const response = await apiClient.getFullRequest(GIRLS_SCHOOL, TOKEN, STATIC_REQUEST_1);
 
           expect(response.id).toEqual(STATIC_REQUEST_1);
         } finally {
-          await verify(done);
+          await verify();
         }
       });
     });
 
     describe("create extension", () => {
-      beforeEach(async (done) => {
+      beforeEach(async () => {
         await provider.addInteraction({
           state: "I am expecting a post request",
           uponReceiving: "create extension request",
@@ -116,10 +115,9 @@ describe('Pact', () => {
             },
           }
         });
-        done();
       });
 
-      it("will create extension request", async (done) => {
+      it("will create extension request", async () => {
         try {
           const response = await apiClient.createExtensionRequest({
             accountingPeriodEndOn: "2019-01-01",
@@ -129,13 +127,13 @@ describe('Pact', () => {
 
           expect(response.id).toEqual("an id");
         } finally {
-          await verify(done);
+          await verify();
         }
       });
     });
 
     describe("add reason", () => {
-      beforeEach(async (done) => {
+      beforeEach(async () => {
         await provider.addInteraction({
           state: "I have extension request aaaaaaaaaaaaaaaaaaaaaa14 for company number 00006400",
           uponReceiving: "post request for create reason",
@@ -159,22 +157,21 @@ describe('Pact', () => {
             },
           }
         });
-        done();
       });
 
-      it("will add reason to a request", async (done) => {
+      it("will add reason to a request", async () => {
         try {
           const response = await apiClient.addExtensionReasonToRequest(GIRLS_SCHOOL, TOKEN, CREATE_REASON_REQUEST, "illness");
 
           expect(response.reason).toEqual("a reason");
         } finally {
-          await verify(done);
+          await verify();
         }
       });
     });
 
     describe("reason information update", () => {
-      beforeEach(async (done) => {
+      beforeEach(async () => {
         await provider.addInteraction({
           state: "I have extension request aaaaaaaaaaaaaaaaaaaaaa16 with reasonId: reason1 without reason information",
           uponReceiving: "patch request for reason update",
@@ -197,10 +194,9 @@ describe('Pact', () => {
             },
           }
         });
-        done();
       });
 
-      it("will update a reason in a request", async (done) => {
+      it("will update a reason in a request", async () => {
         try {
           const request: IExtensionRequest = {
             company_number: GIRLS_SCHOOL,
@@ -212,13 +208,13 @@ describe('Pact', () => {
 
           expect(response.reason_information).toEqual("information");
         } finally {
-          await verify(done);
+          await verify();
         }
       });
     });
 
     describe("reason status update", () => {
-      beforeEach(async (done) => {
+      beforeEach(async () => {
         await provider.addInteraction({
           state: "I have extension request aaaaaaaaaaaaaaaaaaaaaa16 with reasonId: reason1 without reason information",
           uponReceiving: "patch request for reason update",
@@ -241,10 +237,9 @@ describe('Pact', () => {
             },
           }
         });
-        done();
       });
 
-      it("will update a reason in a request", async (done) => {
+      it("will update a reason in a request", async () => {
         try {
           const request: IExtensionRequest = {
             company_number: GIRLS_SCHOOL,
@@ -256,13 +251,13 @@ describe('Pact', () => {
 
           expect(response.reason_status).toEqual("COMPLETED");
         } finally {
-          await verify(done);
+          await verify();
         }
       });
     });
 
     describe("remove reason", () => {
-      beforeEach(async (done) => {
+      beforeEach(async () => {
         await provider.addInteraction({
           state: "I have extension request aaaaaaaaaaaaaaaaaaaaaa13 with reasonId: reason1",
           uponReceiving: "a reason delete request",
@@ -277,10 +272,9 @@ describe('Pact', () => {
             status: 204,
           }
         });
-        done();
       });
 
-      it("will remove a reason from a request", async (done) => {
+      it("will remove a reason from a request", async () => {
         try {
           const request: IExtensionRequest = {
             company_number: GIRLS_SCHOOL,
@@ -289,13 +283,13 @@ describe('Pact', () => {
           }
           await apiClient.removeExtensionReasonFromRequest(request, TOKEN);
         } finally {
-          await verify(done);
+          await verify();
         }
       });
     });
 
     describe("remove attachment", () => {
-      beforeEach(async (done) => {
+      beforeEach(async () => {
         await provider.addInteraction({
           state: "I have extension request aaaaaaaaaaaaaaaaaaaaaa15 with reasonId: reason1 and attachment: attachment1",
           uponReceiving: "an attachment DELETE request",
@@ -307,20 +301,19 @@ describe('Pact', () => {
             status: 204,
           }
         });
-        done();
       });
 
-      it("will remove an attachment", async (done) => {
+      it("will remove an attachment", async () => {
         try {
           await apiClient.removeAttachment(GIRLS_SCHOOL, TOKEN, ATTACHMENT_DELETE_REQUEST, "reason1", "attachment1");
         } finally {
-          await verify(done);
+          await verify();
         }
       });
     });
 
     describe("get list of reasons", () => {
-      beforeEach(async (done) => {
+      beforeEach(async () => {
         await provider.addInteraction({
           state: "I have extension request aaaaaaaaaaaaaaaaaaaaaa12 with reasonId: reason1",
           uponReceiving: "a get reasons request",
@@ -357,10 +350,9 @@ describe('Pact', () => {
             }
           }
         });
-        done();
       });
 
-      it("will get list of reasons", async (done) => {
+      it("will get list of reasons", async () => {
         try {
           const request: IExtensionRequest = {
             company_number: GIRLS_SCHOOL,
@@ -371,18 +363,17 @@ describe('Pact', () => {
 
           expect(response.items[0].reason).toEqual("a reason");
         } finally {
-          await verify(done);
+          await verify();
         }
       });
     });
   });
 
-  const verify = async (done) => {
+  const verify = async () => {
     try {
       await provider.verify();
-      done();
     } catch(e) {
-      done.fail(e);
+      fail(e);
     }
   }
 });
