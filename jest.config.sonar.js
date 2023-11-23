@@ -10,10 +10,8 @@ module.exports = {
   testEnvironment: "node",
   verbose: true,
   testMatch: ["**/test/**/*.spec.unit.[jt]s", "**/test/**/*.spec.integration.[jt]s"],
-  globals: {
-    "ts-jest": {
-      diagnostics: false,
-    }
+  transform: {
+    "^.+\\.tsx?$": "ts-jest",
   },
   globalSetup: "./src/test/global.setup.ts",
 };
