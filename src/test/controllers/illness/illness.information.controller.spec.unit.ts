@@ -16,9 +16,9 @@ jest.mock("../../../client/apiclient");
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockUpdateReasonService = (<unknown>updateReason as jest.Mock<typeof updateReason>);
-const mockSetReasonInContextAsString = (<unknown>sessionService.setReasonInContextAsString  as jest.Mock<typeof sessionService.setReasonInContextAsString>);
+const mockSetReasonInContextAsString = (<unknown>sessionService.setReasonInContextAsString as jest.Mock<typeof sessionService.setReasonInContextAsString>);
 const mockGetCurrentReason = (<unknown>reasonService.getCurrentReason as jest.Mock<typeof reasonService.getCurrentReason>);
-const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone  as jest.Mock<typeof createHistoryIfNone>);
+const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
 const session = fullDummySession();
 
 const NO_INFORMATION_INPUT: string = "You must tell us how this affected your ability to file on time";
@@ -32,7 +32,7 @@ beforeEach(() => {
   mockGetCurrentReason.mockClear();
   mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
     return {
-      page_history:[],
+      page_history: [],
     };
   });
 });
@@ -90,7 +90,6 @@ describe("illness information validation tests", () => {
     expect(res.status).toEqual(200);
     expect(res.text).toContain(NO_INFORMATION_INPUT);
   });
-
 
   it("should receive no error message requesting more information when text input is supplied", async () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(() => session);

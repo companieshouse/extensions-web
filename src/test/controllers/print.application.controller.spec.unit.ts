@@ -32,14 +32,14 @@ beforeEach( () => {
   mockFullRequest.prototype.constructor.mockImplementation(() => {
     return {
       reasons: [{
-        "id":"1234",
-        "reason":"illness",
-        "attachments":null,
-        "start_on":"1999-05-06",
-        "end_on":"1999-07-08",
-        "affected_person":"bob",
-        "reason_information":"stuff",
-        "continued_illness":"maybe"
+        "id": "1234",
+        "reason": "illness",
+        "attachments": null,
+        "start_on": "1999-05-06",
+        "end_on": "1999-07-08",
+        "affected_person": "bob",
+        "reason_information": "stuff",
+        "continued_illness": "maybe"
       }]
     }
   });
@@ -68,7 +68,7 @@ describe("print application controller", () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
 
     const mockPresent: Date = new Date("2019-05-11");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
 
     const res = await request(app).get(EXTENSIONS_PRINT_APPLICATION)
@@ -94,7 +94,7 @@ describe("print application controller", () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
 
     const mockPresent: Date = new Date("2019-05-11");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
 
     const res = await request(app).get(EXTENSIONS_PRINT_APPLICATION)

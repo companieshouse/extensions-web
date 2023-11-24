@@ -36,7 +36,7 @@ beforeEach( () => {
         [keys.SIGNED_IN]: 1,
       },
       [keys.PAGE_HISTORY]: {
-        page_history:[],
+        page_history: [],
       }
     };
     return session;
@@ -51,7 +51,7 @@ describe("back navigation tests", () => {
       .set("Referer", pageURLs.EXTENSIONS)
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
-    expect(mockUpdateHistory).toBeCalledWith({page_history:[]},
+    expect(mockUpdateHistory).toBeCalledWith({page_history: []},
       {_cookieId: "123",
         _data: {page_history:
             {page_history: []},
@@ -68,7 +68,7 @@ describe("back navigation tests", () => {
       .set("Referer", pageURLs.EXTENSIONS_COMPANY_NUMBER)
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
-    expect(mockUpdateHistory).toBeCalledWith({page_history:[]},
+    expect(mockUpdateHistory).toBeCalledWith({page_history: []},
       {_cookieId: "123",
         _data: {page_history:
             {page_history: []},
@@ -83,7 +83,7 @@ describe("back navigation tests", () => {
       .set("Referer", pageURLs.EXTENSIONS_CONFIRM_COMPANY)
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
-    expect(mockUpdateHistory).toBeCalledWith({page_history:[]},
+    expect(mockUpdateHistory).toBeCalledWith({page_history: []},
       {_cookieId: "123",
         _data: {page_history:
             {page_history: []},
@@ -98,7 +98,7 @@ describe("back navigation tests", () => {
       .set("Referer", pageURLs.EXTENSIONS_DOCUMENT_OPTION)
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
-    expect(mockUpdateHistory).toBeCalledWith({page_history:[]},
+    expect(mockUpdateHistory).toBeCalledWith({page_history: []},
       {_cookieId: "123",
         _data: {page_history:
             {page_history: []},

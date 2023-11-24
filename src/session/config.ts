@@ -30,9 +30,9 @@ export const PIWIK_URL = getEnvironmentValue("PIWIK_URL");
 
 export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID");
 
-export const API_URL  = getEnvironmentValue("API_LOCAL_URL");
+export const API_URL = getEnvironmentValue("API_LOCAL_URL");
 
-export const API_KEY  = getEnvironmentValue("CHS_API_KEY");
+export const API_KEY = getEnvironmentValue("CHS_API_KEY");
 
 export const EXTENSIONS_API_URL = getEnvironmentValue("EXTENSIONS_API_URL");
 

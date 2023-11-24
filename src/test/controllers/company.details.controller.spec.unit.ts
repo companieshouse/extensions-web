@@ -68,7 +68,7 @@ mockGetRequest.mockReturnValue(
 
      mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
        return {
-         page_history:[],
+         page_history: [],
        };
      });
    });
@@ -77,7 +77,7 @@ mockGetRequest.mockReturnValue(
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
 
     const mockPresent: Date = new Date("2019-05-11");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
 
     const res = await request(app).get(EXTENSIONS_CONFIRM_COMPANY)
@@ -101,7 +101,7 @@ mockGetRequest.mockReturnValue(
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfileNoAccounts());
 
     const mockPresent: Date = new Date("2019-05-11");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
 
     const res = await request(app).get(EXTENSIONS_CONFIRM_COMPANY)
@@ -125,7 +125,7 @@ mockGetRequest.mockReturnValue(
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(true, true));
 
     const mockPresent: Date = new Date("2019-05-11");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
 
     const res = await request(app).get(EXTENSIONS_CONFIRM_COMPANY)
@@ -149,7 +149,7 @@ mockGetRequest.mockReturnValue(
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
 
     const mockPresent: Date = new Date("2019-05-13");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
 
     const res = await request(app).get(EXTENSIONS_CONFIRM_COMPANY)
@@ -173,7 +173,7 @@ mockGetRequest.mockReturnValue(
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
 
     const mockPresent: Date = new Date("2019-05-13");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
 
     const res = await request(app).get(EXTENSIONS_CONFIRM_COMPANY)
@@ -197,7 +197,7 @@ mockGetRequest.mockReturnValue(
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(true, true));
     mockCacheService.prototype.constructor.mockImplementationOnce(mockUtils.fullDummySession);
     const mockPresent: Date = new Date("2019-05-11");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
     const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
       .set("referer", "/")
@@ -212,7 +212,7 @@ mockGetRequest.mockReturnValue(
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
     mockCacheService.prototype.constructor.mockImplementationOnce(mockUtils.fullDummySession);
     const mockPresent: Date = new Date("2019-05-11");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
     const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
       .set("referer", "/")
@@ -226,7 +226,7 @@ mockGetRequest.mockReturnValue(
   it("should return the accounts overdue page when company accounts are not overdue but due date has passed", async () => {
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
     const mockPresent: Date = new Date("2019-05-13");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
     const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
       .set("referer", "/")
@@ -240,7 +240,7 @@ mockGetRequest.mockReturnValue(
   it("should return the accounts overdue page when company accounts are both overdue and due date has passed", async () => {
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(true, true));
     const mockPresent: Date = new Date("2019-05-13");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
     const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
       .set("referer", "/")
@@ -254,7 +254,7 @@ mockGetRequest.mockReturnValue(
   it("should not return the accounts overdue page when company accounts are not overdue and date is the same", async () => {
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
     const mockPresent: Date = new Date("2019-05-12");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
     const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
       .set("referer", "/")
@@ -295,8 +295,8 @@ mockGetRequest.mockReturnValue(
 
   it("should return extension limit reached page when filing date is after configured period after due date", async () => {
     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
-    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,1,2,30,31).toDateString();
-    dummyCompanyProfile.accountsDue = new Date(2022,1,2,1,11,10).toUTCString();
+    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021, 1, 1, 2, 30, 31).toDateString();
+    dummyCompanyProfile.accountsDue = new Date(2022, 1, 2, 1, 11, 10).toUTCString();
     mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
 
     const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
@@ -315,8 +315,8 @@ mockGetRequest.mockReturnValue(
 
   it("should return extension limit reached page when filing date is on the configured period after due date", async () => {
     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
-    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,1,16,15,3).toDateString();
-    dummyCompanyProfile.accountsDue = new Date(2022,1,1,1,30,56).toUTCString();
+    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021, 1, 1, 16, 15, 3).toDateString();
+    dummyCompanyProfile.accountsDue = new Date(2022, 1, 1, 1, 30, 56).toUTCString();
     mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
 
     const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
@@ -335,8 +335,8 @@ mockGetRequest.mockReturnValue(
 
    it("should show error screen when unable to get request from session on extension limit check", async () => {
      const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
-     dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,1,16,15,3).toDateString();
-     dummyCompanyProfile.accountsDue = new Date(2022,1,1,1,30,56).toUTCString();
+     dummyCompanyProfile.accountingPeriodEndOn = new Date(2021, 1, 1, 16, 15, 3).toDateString();
+     dummyCompanyProfile.accountsDue = new Date(2022, 1, 1, 1, 30, 56).toUTCString();
      mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
 
      mockGetRequest.mockReturnValueOnce(undefined);
@@ -356,8 +356,8 @@ mockGetRequest.mockReturnValue(
 
   it("should not return extension limit reached page when filing date is before configured period after due date", async () => {
     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
-    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021,1,2,18,16,4).toDateString();
-    dummyCompanyProfile.accountsDue = new Date(2022,1,1,5,11,34).toUTCString();
+    dummyCompanyProfile.accountingPeriodEndOn = new Date(2021, 1, 2, 18, 16, 4).toDateString();
+    dummyCompanyProfile.accountsDue = new Date(2022, 1, 1, 5, 11, 34).toUTCString();
     mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
 
     const res = await request(app).post(EXTENSIONS_CONFIRM_COMPANY)
@@ -380,6 +380,5 @@ mockGetRequest.mockReturnValue(
     expect(res.header.location).toEqual(pageURLs.EXTENSIONS_CHOOSE_REASON);
     expect(res.status).toEqual(302);
   });
-}); 
-
+});
 

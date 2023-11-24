@@ -16,7 +16,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
     } else {
       logger.info("Number of requests fine");
     }
-  }  else {
+  } else {
     logger.info("Feature flag is toggled off for request number monitor");
   }
   next();

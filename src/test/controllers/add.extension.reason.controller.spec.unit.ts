@@ -16,7 +16,7 @@ const ADD_EXTENSION_REASON_DECISION_NOT_MADE: string =
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockReasonUpdate = (<unknown>updateReason as jest.Mock<typeof updateReason>);
-const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone  as jest.Mock<typeof createHistoryIfNone>);
+const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
 const session = fullDummySession();
 
 beforeEach( () => {
@@ -25,7 +25,7 @@ beforeEach( () => {
   mockReasonUpdate.mockReset();
   mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
     return {
-      page_history:[],
+      page_history: [],
     };
   });
 });

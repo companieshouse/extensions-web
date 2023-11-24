@@ -52,7 +52,7 @@ describe("company number validation tests", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "6400"});
-    
+
     expect(response.header.location).toEqual(pageURLs.EXTENSIONS_CONFIRM_COMPANY);
     expect(response.status).toEqual(302);
     expect(mockCompanyProfile).toHaveBeenCalledWith(COMPANY_NUMBER, mockUtils.ACCESS_TOKEN);
@@ -121,7 +121,7 @@ describe("company number validation tests", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "R79"});
-      
+
     expect(mockCompanyProfile).toBeCalledWith("R0000079", mockUtils.ACCESS_TOKEN);
   });
 

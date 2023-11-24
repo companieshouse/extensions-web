@@ -112,4 +112,4 @@ const addReasonToSession = async (req: Request,
   await sessionService.setReasonInContextAsString(req.chSession, reasonId);
 };
 
-export default[...validators, route];
+export default [...validators, route];

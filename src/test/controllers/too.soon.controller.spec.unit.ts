@@ -29,7 +29,7 @@ beforeEach(() => {
 
   mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
     return {
-      page_history:[],
+      page_history: [],
     };
   });
 });

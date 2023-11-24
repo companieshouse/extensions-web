@@ -97,7 +97,7 @@ describe("Extension reason tests", () => {
       .send({removeReason: "yes"});
     expect(res.status).toEqual(302);
     expect(res.header.location).toEqual("/extensions/choose-reason");
-    
+
     expect(mockRemoveReason).toBeCalledWith(dummySession().extensionSession().extension_requests[0], "ACCESS_TOKEN");
     expect(mockReasons).toBeCalledWith(dummySession().extensionSession().extension_requests[0], "ACCESS_TOKEN");
   });

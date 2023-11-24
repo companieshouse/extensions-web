@@ -153,4 +153,4 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
 };
 
-export default  [extractFullDate, ...validators, route];
+export default [extractFullDate, ...validators, route];

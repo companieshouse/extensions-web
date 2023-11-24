@@ -26,7 +26,7 @@ export const getReasonFromFullRequest = async (req: Request): Promise<ReasonWeb 
   const request: IExtensionRequest = sessionService.getRequest(req.chSession);
   const fullRequest: ExtensionFullRequest =
     await apiClient.getFullRequest(companyNumber, token, request.extension_request_id);
-  return fullRequest.reasons.filter((reasonItem) =>  reasonItem.id === reasonInContext.id).pop();
+  return fullRequest.reasons.filter((reasonItem) => reasonItem.id === reasonInContext.id).pop();
 };
 
 export const getCurrentReasonFull = async (chSession: Session): Promise<ReasonWeb> => {

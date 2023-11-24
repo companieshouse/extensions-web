@@ -108,7 +108,7 @@ const addAttachment = async (req: Request,
     // File on end event - fired when file has finished - could be if file completed fully or ended
     // prematurely (destroyed / cancelled)
     fileStream.on("end", async () => {
-      if (!fileStream.destroyed) {  // if file ended normally
+      if (!fileStream.destroyed) { // if file ended normally
         const fileData: Buffer = Buffer.concat(chunkArray);
         logger.debug("Total bytes received for " + filename + " = " + fileData.length);
         if (fileData.length === 0) {
@@ -159,9 +159,9 @@ const prepareAndSendAttachment = async (req: Request, fileData: Buffer, filename
   if (request && token && fileData) {
     const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
     const requestId: string = request.extension_request_id;
-    await addAttachmentToReason(companyNumber, token , requestId,
+    await addAttachmentToReason(companyNumber, token, requestId,
       request.reason_in_context_string as string, fileData, filename);
   }
 };
 
-export default[route];
+export default [route];

@@ -109,7 +109,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
 };
 
 export const createExtensionRequest = async (company: ExtensionsCompanyProfile, token: string): Promise<any> => {
-  const CREATE_REQUEST_PATH =  `${EXTENSIONS_API_URL}/company/${company.companyNumber}/extensions/requests/`;
+  const CREATE_REQUEST_PATH = `${EXTENSIONS_API_URL}/company/${company.companyNumber}/extensions/requests/`;
   logger.debug("createExtensionRequest api url = " + CREATE_REQUEST_PATH);
 
   const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);

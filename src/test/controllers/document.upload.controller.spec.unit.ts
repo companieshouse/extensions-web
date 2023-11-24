@@ -19,7 +19,7 @@ const mockAddAttachment = (<unknown>addAttachmentToReason as jest.Mock<typeof ad
 const mockRequest = (<unknown>getRequest as jest.Mock<typeof getRequest>);
 const mockCompanyContext = (<unknown>getCompanyInContext as jest.Mock<typeof getCompanyInContext>);
 const mockFullRequest = (<unknown>getFullRequest as jest.Mock<typeof getFullRequest>);
-const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone  as jest.Mock<typeof createHistoryIfNone>);
+const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
 
 const GENERIC_ERROR = "Sorry, there is a problem with the service";
 const TITLE = "Sorry, there is a problem with the service - GOV.UK";
@@ -46,26 +46,26 @@ beforeEach( () => {
   mockFullRequest.prototype.constructor.mockImplementation(() => {
     return {
       reasons: [{
-        "id":"1234",
-        "reason":"illness",
+        "id": "1234",
+        "reason": "illness",
         "attachments": [
           {
-            "id" : "2ef57740-200d-4cb0-b814-c3149efcf87b",
-            "name" : "squirrel.gif",
-            "contentType" : "image/gif",
-            "size" : 2089571
+            "id": "2ef57740-200d-4cb0-b814-c3149efcf87b",
+            "name": "squirrel.gif",
+            "contentType": "image/gif",
+            "size": 2089571
           },],
-        "start_on":"1999-05-06",
-        "end_on":"1999-07-08",
-        "affected_person":"bob",
-        "reason_information":"stuff",
-        "continued_illness":"maybe"
+        "start_on": "1999-05-06",
+        "end_on": "1999-07-08",
+        "affected_person": "bob",
+        "reason_information": "stuff",
+        "continued_illness": "maybe"
       }]
     }
   });
   mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
     return {
-      page_history:[],
+      page_history: [],
     };
   });
 });
@@ -140,7 +140,7 @@ describe ("document upload url tests", () => {
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
       expect(response.status).toEqual(200);
       expect(response).not.toBeUndefined();
-  
+
       expect(response.text).toContain(INVALID_MIME_TYPE);
       expect(mockRequest).toHaveBeenCalled();
       expect(mockCompanyContext).toHaveBeenCalled();
@@ -186,14 +186,14 @@ describe ("document upload url tests", () => {
     mockFullRequest.prototype.constructor.mockImplementationOnce(() => {
       return {
         reasons: [{
-          "id":"1234",
-          "reason":"illness",
+          "id": "1234",
+          "reason": "illness",
           "attachments": [],
-          "start_on":"1999-05-06",
-          "end_on":"1999-07-08",
-          "affected_person":"bob",
-          "reason_information":"stuff",
-          "continued_illness":"maybe"
+          "start_on": "1999-05-06",
+          "end_on": "1999-07-08",
+          "affected_person": "bob",
+          "reason_information": "stuff",
+          "continued_illness": "maybe"
         }]
       }
     });
@@ -215,7 +215,7 @@ describe ("document upload url tests", () => {
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
-      .set('X-Requested-With','XMLHttpRequest')
+      .set('X-Requested-With', 'XMLHttpRequest')
       .attach('file-upload', path.join(__dirname + "/../client/files/text_large.txt"));
 
     const responseObj = JSON.parse(response.text);
@@ -246,7 +246,7 @@ describe ("document upload url tests", () => {
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
-      .set('X-Requested-With','XMLHttpRequest')
+      .set('X-Requested-With', 'XMLHttpRequest')
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
     expect(response.status).toEqual(200);
     expect(response).not.toBeUndefined();
@@ -275,7 +275,7 @@ describe ("document upload url tests", () => {
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
-      .set('X-Requested-With','XMLHttpRequest')
+      .set('X-Requested-With', 'XMLHttpRequest')
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
     expect(res.status).toEqual(500);
     expect(res.text).toEqual("{\"redirect\":\"/extensions/error\"}");
@@ -291,7 +291,7 @@ describe ("document upload url tests", () => {
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
-      .set('X-Requested-With','XMLHttpRequest')
+      .set('X-Requested-With', 'XMLHttpRequest')
       .attach('file-upload', path.join(__dirname + "/../client/files/text.txt"));
     expect(res.status).toEqual(200);
     const responseObj = JSON.parse(res.text);

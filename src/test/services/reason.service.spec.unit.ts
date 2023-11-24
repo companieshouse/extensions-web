@@ -21,7 +21,6 @@ mockGetFullRequest.prototype.constructor.mockImplementation(async (companyNumber
   return getDummyFullRequest;
 });
 
-
 beforeEach(() => {
   mockUpdateReason.mockClear();
   mockDeleteReason.mockClear();
@@ -41,7 +40,7 @@ describe("reason service tests", () => {
     const session = dummySession();
     try {
       await reasonService.updateReason(session, {illPerson: "joe"});
-    } catch(e) {
+    } catch (e) {
       expect(e).toEqual("invalid session data");
     }
 
@@ -54,7 +53,7 @@ describe("reason service tests", () => {
     session.data.extension_session.extension_requests = [];
     try {
       await reasonService.updateReason(session, {illPerson: "joe"});
-    } catch(e) {
+    } catch (e) {
       expect(e).toEqual("invalid session data");
     }
 

@@ -64,7 +64,7 @@ describe("Extensions-processor-api consumer tests", () => {
   const verify = async () => {
     try {
       await provider.verify();
-    } catch(e) {
+    } catch (e) {
       fail(e);
     }
   }

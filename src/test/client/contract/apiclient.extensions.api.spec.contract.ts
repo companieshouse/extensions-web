@@ -96,7 +96,7 @@ describe('Pact', () => {
           withRequest: {
             method: "POST",
             path: `/company/${GIRLS_SCHOOL}/extensions/requests/`,
-            headers: { 
+            headers: {
               Accept: "application/json",
               "Content-Type": "application/json"
             },
@@ -140,7 +140,7 @@ describe('Pact', () => {
           withRequest: {
             method: "POST",
             path: `/company/${GIRLS_SCHOOL}/extensions/requests/${CREATE_REASON_REQUEST}/reasons`,
-            headers: { 
+            headers: {
               Accept: "application/json",
               "Content-Type": "application/json"
             },
@@ -178,7 +178,7 @@ describe('Pact', () => {
           withRequest: {
             method: "PATCH",
             path: `/company/${GIRLS_SCHOOL}/extensions/requests/${PATCH_REASON_REQUEST}/reasons/reason1`,
-            headers: { 
+            headers: {
               Accept: "application/json",
               "Content-Type": "application/json"
             },
@@ -203,7 +203,7 @@ describe('Pact', () => {
             extension_request_id: PATCH_REASON_REQUEST,
             reason_in_context_string: "reason1"
           }
-          const response = 
+          const response =
             await apiClient.updateReason(request, TOKEN, {reason_information: "information"});
 
           expect(response.reason_information).toEqual("information");
@@ -221,7 +221,7 @@ describe('Pact', () => {
           withRequest: {
             method: "PATCH",
             path: `/company/${GIRLS_SCHOOL}/extensions/requests/${PATCH_REASON_REQUEST}/reasons/reason1`,
-            headers: { 
+            headers: {
               Accept: "application/json",
               "Content-Type": "application/json"
             },
@@ -246,7 +246,7 @@ describe('Pact', () => {
             extension_request_id: PATCH_REASON_REQUEST,
             reason_in_context_string: "reason1"
           }
-          const response = 
+          const response =
             await apiClient.updateReason(request, TOKEN, {reason_status: "COMPLETED"});
 
           expect(response.reason_status).toEqual("COMPLETED");
@@ -264,7 +264,7 @@ describe('Pact', () => {
           withRequest: {
             method: "DELETE",
             path: `/company/${GIRLS_SCHOOL}/extensions/requests/${REASON_DELETE_REQUEST}/reasons/reason1`,
-            headers: { 
+            headers: {
               Accept: "application/json",
             }
           },
@@ -320,7 +320,7 @@ describe('Pact', () => {
           withRequest: {
             method: "GET",
             path: `/company/${GIRLS_SCHOOL}/extensions/requests/${STATIC_REQUEST_2}/reasons`,
-            headers: { 
+            headers: {
               Accept: "application/json",
             }
           },
@@ -358,7 +358,7 @@ describe('Pact', () => {
             company_number: GIRLS_SCHOOL,
             extension_request_id: STATIC_REQUEST_2,
           }
-          const response = 
+          const response =
             await apiClient.getReasons(request, TOKEN);
 
           expect(response.items[0].reason).toEqual("a reason");
@@ -372,7 +372,7 @@ describe('Pact', () => {
   const verify = async () => {
     try {
       await provider.verify();
-    } catch(e) {
+    } catch (e) {
       fail(e);
     }
   }

@@ -67,7 +67,6 @@ describe("Authentication middleware", () => {
     expect(response.status).toEqual(302);
   });
 
-
   it("should NOT redirect to signin if /extensions/* called while signed in", async () => {
     const response = await request(app)
       .get("/extensions/company-number")
