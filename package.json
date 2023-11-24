@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@companieshouse/api-sdk-node": "^2.0.101",
-    "axios": "^0.21.4",
+    "axios": "^1.6.0",
     "busboy": "^1.6.0",
     "cookie-parser": "~1.4.3",
     "express": "^4.18.2",
