@@ -35,7 +35,7 @@ describe("Extensions-processor-api consumer tests", () => {
 
   describe("extensions-processor-api contract test", () => {
     describe("call processor api", () => {
-      beforeEach(async (done) => {
+      beforeEach(async () => {
         await provider.addInteraction({
           state: "i have full and OPEN request object",
           uponReceiving: "a post request to process the extension",
@@ -49,25 +49,23 @@ describe("Extensions-processor-api consumer tests", () => {
             headers: { "Content-Type": "application/json" },
           }
         });
-        done();
       });
 
-      it("will process an OPEN request", async (done) => {
+      it("will process an OPEN request", async () => {
         try {
           await apiClient.callProcessorApi(GIRLS_SCHOOL, TOKEN, FULL_REQUEST_ID);
         } finally {
-          await verify(done);
+          await verify();
         }
       });
     });
   });
 
-  const verify = async (done) => {
+  const verify = async () => {
     try {
       await provider.verify();
-      done();
     } catch (e) {
-      done.fail(e);
+      fail(e);
     }
   }
 });

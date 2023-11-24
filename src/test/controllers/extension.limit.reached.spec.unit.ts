@@ -20,7 +20,7 @@ const ERROR_MSG = "Sorry, there is a problem with the service";
 const ERROR_TITLE = "Sorry, there is a problem with the service - GOV.UK";
 const AFTER_TWELVE_MONTHS_MSG = "We cannot grant an extension to the filing deadline";
 const AFTER_TWELVE_MONTHS_TITLE = "You cannot use this service";
-const EXPECTED_MAX_EXTENSION_PERIOD_IN_MONTHS = 12;
+const EXPECTED_MAX_EXTENSION_PERIOD_IN_MONTHS = "12";
 
 beforeEach(() => {
   mockCompanyProfile.mockRestore();

@@ -114,7 +114,7 @@ describe ("document upload url tests", () => {
     expect(res.status).toEqual(404);
   });
 
-  it ("should render error message when file is too big", async (done) => {
+  it ("should render error message when file is too big", async () => {
     // See global.setup.ts for unit test file size limit
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
@@ -122,10 +122,9 @@ describe ("document upload url tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .attach('file-upload', path.join(__dirname + "/../client/files/text_large.txt"));
     expect(response.text).toContain(EXPECTED_MAX_FILE_SIZE_MESSAGE);
-    done();
    });
 
-  it ("should render error message on 415 error", async (done) => {
+  it ("should render error message on 415 error", async () => {
     mockAddAttachment.prototype.constructor.mockImplementationOnce(() => {
       throw {
         data: ["error"],
@@ -146,10 +145,9 @@ describe ("document upload url tests", () => {
       expect(mockRequest).toHaveBeenCalled();
       expect(mockCompanyContext).toHaveBeenCalled();
       expect(mockAddAttachment).toHaveBeenCalled();
-      done();
   });
 
-  it ("should error screen if apiclient throws error", async (done) => {
+  it ("should error screen if apiclient throws error", async () => {
     mockAddAttachment.prototype.constructor.mockImplementationOnce(() => {throw new Error()});
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
@@ -162,10 +160,9 @@ describe ("document upload url tests", () => {
     expect(mockRequest).toHaveBeenCalled();
     expect(mockCompanyContext).toHaveBeenCalled();
     expect(mockAddAttachment).toHaveBeenCalled();
-    done();
   });
 
-  it ("should redirect when file uploaded", async (done) => {
+  it ("should redirect when file uploaded", async () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
     const expectedBuffer = fs.readFileSync(path.join(__dirname + "/../client/files/text.txt"));
     const res = await request(app)
@@ -181,10 +178,9 @@ describe ("document upload url tests", () => {
       "1234",
       expectedBuffer,
       "text.txt");
-    done();
   });
 
-  it ("should show error message if continue pressed with no docs added", async (done) => {
+  it ("should show error message if continue pressed with no docs added", async () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
 
     mockFullRequest.prototype.constructor.mockImplementationOnce(() => {
@@ -211,10 +207,9 @@ describe ("document upload url tests", () => {
     expect(res.text).toContain("govuk-error-summary");
     expect(res.text).toContain("You must add a document or click &quot;Continue without " +
       "adding documents&quot;");
-    done();
   });
 
-  it ("AJAX - should render error message when file is too big", async (done) => {
+  it ("AJAX - should render error message when file is too big", async () => {
     // See global.setup.ts for unit test file size limit
     const response = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
@@ -234,10 +229,9 @@ describe ("document upload url tests", () => {
     expect(responseObj.divs[1].divHtml).toContain("govuk-file-upload");
     expect(responseObj.divs[1].divHtml).toContain(EXPECTED_MAX_FILE_SIZE_MESSAGE);
     expect(responseObj.divs[1].divHtml).toContain("govuk-error-message");
-    done();
   });
 
-  it ("AJAX - should render error message on 415 error", async (done) => {
+  it ("AJAX - should render error message on 415 error", async () => {
     mockAddAttachment.prototype.constructor.mockImplementationOnce(() => {
       throw {
         data: ["error"],
@@ -273,10 +267,9 @@ describe ("document upload url tests", () => {
     expect(mockRequest).toHaveBeenCalled();
     expect(mockCompanyContext).toHaveBeenCalled();
     expect(mockAddAttachment).toHaveBeenCalled();
-    done();
   });
 
-  it ("AJAX - should redirect to error screen if apiclient throws error", async (done) => {
+  it ("AJAX - should redirect to error screen if apiclient throws error", async () => {
     mockAddAttachment.prototype.constructor.mockImplementationOnce(() => {throw new Error()});
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
@@ -289,10 +282,9 @@ describe ("document upload url tests", () => {
     expect(mockRequest).toHaveBeenCalled();
     expect(mockCompanyContext).toHaveBeenCalled();
     expect(mockAddAttachment).toHaveBeenCalled();
-    done();
   });
 
-  it ("AJAX - should return divs html when file uploaded successfully", async (done) => {
+  it ("AJAX - should return divs html when file uploaded successfully", async () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
     const expectedBuffer = fs.readFileSync(path.join(__dirname + "/../client/files/text.txt"));
     const res = await request(app)
@@ -321,10 +313,9 @@ describe ("document upload url tests", () => {
       "1234",
       expectedBuffer,
       "text.txt");
-    done();
   });
 
-  it ("AJAX - should show error message if continue pressed with no docs added", async (done) => {
+  it ("AJAX - should show error message if continue pressed with no docs added", async () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
     mockFullRequest.prototype.constructor.mockImplementationOnce(() => {
       return {
@@ -363,6 +354,5 @@ describe ("document upload url tests", () => {
 
     expect(responseObj.divs[1].divHtml).toContain("govuk-file-upload");
     expect(responseObj.divs[1].divHtml).toContain(errorMessage);
-    done();
   });
 });
