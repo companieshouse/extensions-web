@@ -25,7 +25,7 @@ beforeEach(() => {
         [keys.SIGNED_IN]: 1,
       },
       [keys.PAGE_HISTORY]: {
-        page_history:["/extensions/first-page", "/extensions/page-before-that", "/extensions/previous-page"],
+        page_history: ["/extensions/first-page", "/extensions/page-before-that", "/extensions/previous-page"],
       }
     };
     return session;
@@ -34,7 +34,7 @@ beforeEach(() => {
 
 describe("click back link tests", () => {
 
-  it("should remove last page",async ()=> {
+  it("should remove last page", async ()=> {
     const res = await request(app)
       .get(pageURLs.EXTENSIONS_BACK_LINK)
       .set("referer", "/")
@@ -42,7 +42,7 @@ describe("click back link tests", () => {
 
     expect(res.status).toEqual(302);
     expect(mockUpdateHistory).toBeCalledWith(
-      {page_history:["/extensions/first-page", "/extensions/page-before-that"]},
+      {page_history: ["/extensions/first-page", "/extensions/page-before-that"]},
       {
         _cookieId: "123",
         _data: {
@@ -53,7 +53,7 @@ describe("click back link tests", () => {
       });
   });
 
-  it("should remove last two pages when referer is the same as top page on history stack",async ()=> {
+  it("should remove last two pages when referer is the same as top page on history stack", async ()=> {
     const res = await request(app)
       .get(pageURLs.EXTENSIONS_BACK_LINK)
       .set("referer", "http:/test:1234/extensions/previous-page")
@@ -61,7 +61,7 @@ describe("click back link tests", () => {
 
     expect(res.status).toEqual(302);
     expect(mockUpdateHistory).toBeCalledWith(
-      {page_history:["/extensions/first-page"]},
+      {page_history: ["/extensions/first-page"]},
       {
         _cookieId: "123",
         _data: {

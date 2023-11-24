@@ -14,9 +14,9 @@ jest.mock("../../../services/session.service");
 jest.mock("../../../client/apiclient");
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
-const mockSetReasonInContextAsString = (<unknown>sessionService.setReasonInContextAsString  as jest.Mock<typeof sessionService.setReasonInContextAsString>);
+const mockSetReasonInContextAsString = (<unknown>sessionService.setReasonInContextAsString as jest.Mock<typeof sessionService.setReasonInContextAsString>);
 const mockGetCurrentReason = (<unknown>reasonService.getCurrentReason as jest.Mock<typeof reasonService.getCurrentReason>);
-const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone  as jest.Mock<typeof createHistoryIfNone>);
+const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
 
 const REASON_ID: string = "abc-123";
 const STILL_ILL_ANSWER_NOT_PROVIDED: string =
@@ -35,7 +35,7 @@ beforeEach(() => {
   });
   mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
     return {
-      page_history:[],
+      page_history: [],
     };
   });
 });

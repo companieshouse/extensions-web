@@ -1,6 +1,5 @@
 import {removeNonPrintableChars} from "../../global/string.formatter";
 
-
 describe("String formatter tests", () => {
   it("should remove non printable chars", () => {
     const dodgyString: string = "hello.\r\nThis string is \t dodgy!";

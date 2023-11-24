@@ -20,7 +20,7 @@ export class AjaxUploadResponder implements UploadResponder {
       logger.trace("Rendered fragment " + UPLOAD_FILE_LIST);
 
       await this.renderFragment(res, UPLOAD_FILE_PICKER, {reason: thisReason})
-        .then((html: string) =>  this.processObjectOption(divsArray, html, "fileUploadDiv"));
+        .then((html: string) => this.processObjectOption(divsArray, html, "fileUploadDiv"));
       logger.trace("Rendered fragment " + UPLOAD_FILE_PICKER);
       res.send({divs: divsArray});
     } catch (e) {
@@ -41,7 +41,7 @@ export class AjaxUploadResponder implements UploadResponder {
     try {
       await this.renderFragment(res, UPLOAD_ERROR_SUMMARY, {
         errorList: [errorData],
-      }).then((html: string) =>  this.processObjectOption(divsArray, html, "errorSummaryDiv"));
+      }).then((html: string) => this.processObjectOption(divsArray, html, "errorSummaryDiv"));
       logger.trace("Rendered fragment " + UPLOAD_ERROR_SUMMARY);
       await this.renderFragment(res, UPLOAD_FILE_PICKER, {
         documentUploadErr: errorData,

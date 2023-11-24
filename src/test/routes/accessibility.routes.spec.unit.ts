@@ -18,7 +18,7 @@ describe("routes accessibility tests", () => {
   it("should add accessibility pages to routes in accessibility test mode", () => {
 
     let routes = require("../../routes/accessibility.routes");
-    
+
     for (let route of routes.default.stack) {
       assertAccessibilityRoute(templatePaths.REMOVE_REASON, route);
       assertAccessibilityRoute(templatePaths.ILLNESS_END_DATE, route);
@@ -35,7 +35,7 @@ describe("routes accessibility tests", () => {
     process.env.NODE_ENV = "production";
     try {
       require("../../routes/accessibility.routes");
-    } catch(ex) {
+    } catch (ex) {
       expect(ex.message).toEqual("Accessibility mode cannot be active in production mode. Turn off the ACCESSIBILITY_TEST_MODE flag!");
     }
     expect.assertions(1);

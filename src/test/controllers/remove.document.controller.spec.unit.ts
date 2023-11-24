@@ -24,7 +24,6 @@ const mockReasons = (<unknown>getReasons as jest.Mock<typeof getReasons>);
 const REMOVE_DOCUMENT_DECISION_NOT_MADE: string = "You must tell us if you want to remove the document";
 const QUERY_ID: string = "?documentID=attachment1";
 
-
 beforeEach( () => {
   mockCompanyProfile.mockRestore();
   mockRemoveAttachment.mockClear();

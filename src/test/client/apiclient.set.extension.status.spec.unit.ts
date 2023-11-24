@@ -22,7 +22,6 @@ const dummyAxiosBaseConfig = {
 
 const dummyAxiosResponse = {} as AxiosResponse;
 
-
 describe("apiclient setExtensionRequestStatus", () => {
 
   beforeEach(() => {

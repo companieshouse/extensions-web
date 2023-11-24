@@ -36,7 +36,7 @@ export const loadMockSession = (mockLoadSessionFunction: jest.Mock<typeof loadSe
         [keys.COMPANY_IN_CONTEXT]: COMPANY_NUMBER,
       },
       [keys.PAGE_HISTORY]: {
-        page_history:[],
+        page_history: [],
       }
     };
     return session;
@@ -143,23 +143,23 @@ export const getDummyCompanyProfileNoAccounts = (): ExtensionsCompanyProfile => 
 };
 
 export const getDummyFullRequest: ExtensionFullRequest = {
-  id : "77d8cdd9ddb57bb22e7997c5c",
-  reasons : [
+  id: "77d8cdd9ddb57bb22e7997c5c",
+  reasons: [
     {
-      id : "reason0",
-      reason : "other",
-      attachments : [
+      id: "reason0",
+      reason: "other",
+      attachments: [
         {
-          id : "88ea9206-164f-4bff-a1f9-855b055dcfb0",
-          name : "Rainbow.jpg",
+          id: "88ea9206-164f-4bff-a1f9-855b055dcfb0",
+          name: "Rainbow.jpg",
         },
         {
-          id : "2cfe5985-0907-48aa-90dc-ee480a956efb",
-          name : "squirrel.gif",
+          id: "2cfe5985-0907-48aa-90dc-ee480a956efb",
+          name: "squirrel.gif",
         },
         {
-          id : "a2ac9bc1-50b1-4930-a567-3ec83a668026",
-          name : "elephant.jpg",
+          id: "a2ac9bc1-50b1-4930-a567-3ec83a668026",
+          name: "elephant.jpg",
         },
       ],
       start_on: "2018-12-12",
@@ -167,23 +167,23 @@ export const getDummyFullRequest: ExtensionFullRequest = {
       affected_person: "bob",
       reason_information: "s",
       continued_illness: "yes",
-      reason_status : "DRAFT"
+      reason_status: "DRAFT"
     },
     {
-      id : "reason1",
-      reason : "illness",
-      attachments : [
+      id: "reason1",
+      reason: "illness",
+      attachments: [
         {
-          id : "2222-164f-4bff-a1f9-855b055dcfb0",
-          name : "Rainbow.jpg",
+          id: "2222-164f-4bff-a1f9-855b055dcfb0",
+          name: "Rainbow.jpg",
         },
         {
-          id : "33335-0907-48aa-90dc-ee480a956efb",
-          name : "squirrel.gif",
+          id: "33335-0907-48aa-90dc-ee480a956efb",
+          name: "squirrel.gif",
         },
         {
-          id : "444441-50b1-4930-a567-3ec83a668026",
-          name : "elephant.jpg",
+          id: "444441-50b1-4930-a567-3ec83a668026",
+          name: "elephant.jpg",
         },
       ],
       start_on: "2019-12-12",
@@ -191,10 +191,10 @@ export const getDummyFullRequest: ExtensionFullRequest = {
       affected_person: "dave",
       reason_information: "info",
       continued_illness: "yes",
-      reason_status : "DRAFT"
+      reason_status: "DRAFT"
     }
   ],
-  created_by : {
-    id : "djklkjdfdkl",
+  created_by: {
+    id: "djklkjdfdkl",
   },
 };

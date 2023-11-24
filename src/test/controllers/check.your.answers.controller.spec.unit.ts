@@ -23,7 +23,7 @@ const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>)
 const mockReasons = (<unknown>getReasons as jest.Mock<typeof getReasons>);
 const mockFullRequest = (<unknown>getFullRequest as jest.Mock<typeof getFullRequest>);
 const mockGetRequest = (<unknown>getRequest as jest.Mock<typeof getRequest>);
-const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone  as jest.Mock<typeof createHistoryIfNone>);
+const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
 
 beforeEach( () => {
   mockCompanyProfile.mockRestore();
@@ -36,14 +36,14 @@ beforeEach( () => {
   mockFullRequest.prototype.constructor.mockImplementation(() => {
     return {
       reasons: [{
-        "id":"1234",
-        "reason":"illness",
-        "attachments":null,
-        "start_on":"1999-05-06",
-        "end_on":"1999-07-08",
-        "affected_person":"bob",
-        "reason_information":"stuff",
-        "continued_illness":"maybe"
+        "id": "1234",
+        "reason": "illness",
+        "attachments": null,
+        "start_on": "1999-05-06",
+        "end_on": "1999-07-08",
+        "affected_person": "bob",
+        "reason_information": "stuff",
+        "continued_illness": "maybe"
       }]
     }
   });
@@ -55,7 +55,7 @@ beforeEach( () => {
   });
   mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
     return {
-      page_history:[],
+      page_history: [],
     };
   });
 });
@@ -82,7 +82,7 @@ describe("check your answers url tests", () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
 
     const mockPresent: Date = new Date("2019-05-11");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
 
     const res = await request(app).get(EXTENSIONS_CHECK_YOUR_ANSWERS)
@@ -108,7 +108,7 @@ describe("check your answers url tests", () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
 
     const mockPresent: Date = new Date("2019-05-11");
-    mockPresent.setHours(0,0,0);
+    mockPresent.setHours(0, 0, 0);
     jest.spyOn(Date, "now").mockReturnValue(mockPresent.getTime());
 
     const res = await request(app).get(EXTENSIONS_CHECK_YOUR_ANSWERS)
@@ -177,7 +177,7 @@ describe("check your answers url tests", () => {
     mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(false, true));
     mockCacheService.mockClear();
     mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
-    
+
     const res = await request(app)
       .get(EXTENSIONS_CHECK_YOUR_ANSWERS)
       .set("Referer", "/")

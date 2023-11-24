@@ -36,7 +36,7 @@ describe("cache service tests", () => {
     session.data = {extension_session: dummySession("00006400", "00006400")};
     try {
       await sessionService.addRequest(session, "54321");
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe(`Request already exists for company 00006400`);
     }
     expect.assertions(1);

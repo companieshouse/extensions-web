@@ -34,9 +34,9 @@ describe("apiclient add attachment unit tests", () => {
   it("should run add extension attachment with correct url values", async () => {
     const data = fs.readFileSync(path.join(__dirname + "/files/text.txt"));
     expect(data).not.toBeUndefined();
-    
+
     const result = await addAttachmentToReason("SC100079", "", "abc123", "xyz789", data, "testFile");
-    
+
     const args = addAttachmentMockRequest.mock.calls[0][0];
 
     expect(args.data._streams[0]).toContain("name=\"file\"");

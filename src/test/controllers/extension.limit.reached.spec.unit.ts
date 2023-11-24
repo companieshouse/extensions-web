@@ -30,12 +30,12 @@ beforeEach(() => {
 
   mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
     return {
-      page_history:[],
+      page_history: [],
     };
   });
 });
 
-describe("extension limit reached controller tests",() => {
+describe("extension limit reached controller tests", () => {
 
   it("should render the page", async() => {
     const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);

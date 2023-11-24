@@ -16,9 +16,9 @@ jest.mock("../../../client/apiclient");
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockUpdateReason = (<unknown>updateReason as jest.Mock<typeof updateReason>);
-const mockSetReasonInContextAsString = (<unknown>sessionService.setReasonInContextAsString  as jest.Mock<typeof sessionService.setReasonInContextAsString>);
+const mockSetReasonInContextAsString = (<unknown>sessionService.setReasonInContextAsString as jest.Mock<typeof sessionService.setReasonInContextAsString>);
 const mockGetCurrentReason = (<unknown>reasonService.getCurrentReason as jest.Mock<typeof reasonService.getCurrentReason>);
-const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone  as jest.Mock<typeof createHistoryIfNone>);
+const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
 
 const REASON_ID: string = "abc-123";
 const WHO_WAS_ILL_NOT_SELECTED = "You must select a person";
@@ -33,7 +33,7 @@ beforeEach( () => {
   mockGetCurrentReason.mockClear();
   mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
     return {
-      page_history:[],
+      page_history: [],
     };
   });
 });
@@ -70,7 +70,7 @@ describe("who was ill url tests", () => {
 });
 
 describe("who was ill validation tests", () => {
-  
+
   it("should receive error message instructing user to select a person when person is undefined", async () => {
     const res = await request(app)
       .post(pageURLs.EXTENSIONS_REASON_ILLNESS)
