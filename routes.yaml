@@ -1,6 +1,0 @@
-app_name: extensions-web
-group: web
-weight: 1000
-routes:
-  1: /extensions
-  2: /extensions/.*
