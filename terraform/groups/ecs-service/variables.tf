@@ -15,28 +15,6 @@ variable "aws_profile" {
   type        = string
   description = "The AWS profile to use for deployment."
 }
-variable "kms_alias" {
-  type        = string
-}
-# ------------------------------------------------------------------------------
-# Terraform
-# ------------------------------------------------------------------------------
-variable "aws_bucket" {
-  type        = string
-  description = "The bucket used to store the current terraform state files"
-}
-variable "remote_state_bucket" {
-  type        = string
-  description = "Alternative bucket used to store the remote state files from ch-service-terraform"
-}
-variable "state_prefix" {
-  type        = string
-  description = "The bucket prefix used with the remote_state_bucket files."
-}
-variable "deploy_to" {
-  type        = string
-  description = "Bucket namespace used with remote_state_bucket and state_prefix."
-}
 
 # ------------------------------------------------------------------------------
 # Docker Container
@@ -57,107 +35,91 @@ variable "desired_task_count" {
 variable "required_cpus" {
   type = number
   description = "The required cpu resource for this service. 1024 here is 1 vCPU"
-  default = 128 # defaulted low for dev environments, override for production
+  default = 256 # defaulted low for dev environments, override for production
 }
 variable "required_memory" {
   type = number
   description = "The required memory for this service"
-  default = 256 # defaulted low for node service in dev environments, override for production
+  default = 512 # defaulted low for node service in dev environments, override for production
 }
+
+variable "max_task_count" {
+  type        = number
+  description = "The maximum number of tasks for this service."
+  default     = 3
+}
+
 variable "use_fargate" {
   type        = bool
   description = "If true, sets the required capabilities for all containers in the task definition to use FARGATE, false uses EC2"
-  default     = false
+  default     = true
+}
+variable "use_capacity_provider" {
+  type        = bool
+  description = "Whether to use a capacity provider instead of setting a launch type for the service"
+  default     = true
+}
+variable "service_autoscale_enabled" {
+  type        = bool
+  description = "Whether to enable service autoscaling, including scheduled autoscaling"
+  default     = true
+}
+variable "service_autoscale_target_value_cpu" {
+  type        = number
+  description = "Target CPU percentage for the ECS Service to autoscale on"
+  default     = 50 # 100 disables autoscaling using CPU as a metric
+}
+variable "service_scaledown_schedule" {
+  type        = string
+  description = "The schedule to use when scaling down the number of tasks to zero."
+  # Typically used to stop all tasks in a service to save resource costs overnight.
+  # E.g. a value of '55 19 * * ? *' would be Mon-Sun 7:55pm.  An empty string indicates that no schedule should be created.
+
+  default     = ""
+}
+variable "service_scaleup_schedule" {
+  type        = string
+  description = "The schedule to use when scaling up the number of tasks to their normal desired level."
+  # Typically used to start all tasks in a service after it has been shutdown overnight.
+  # E.g. a value of '5 6 * * ? *' would be Mon-Sun 6:05am.  An empty string indicates that no schedule should be created.
+
+  default     = ""
+}
+
+# ----------------------------------------------------------------------
+# Cloudwatch alerts
+# ----------------------------------------------------------------------
+variable "cloudwatch_alarms_enabled" {
+  description = "Whether to create a standard set of cloudwatch alarms for the service.  Requires an SNS topic to have already been created for the stack."
+  type        = bool
+  default     = true
 }
 
 # ------------------------------------------------------------------------------
 # Service environment variable configs
 # ------------------------------------------------------------------------------
-variable "api_local_url" {
+variable "ssm_version_prefix" {
   type        = string
+  description = "String to use as a prefix to the names of the variables containing variables and secrets version."
+  default     = "SSM_VERSION_"
 }
-variable "authentication_middleware" {
-  type        = string
-  default     = "on"
+
+variable "use_set_environment_files" {
+  type        = bool
+  default     = false
+  description = "Toggle default global and shared  environment files"
 }
-variable "cache_server" {
-  type        = string
-  default     = "redis"
-}
-variable "cdn_host" {
-  type        = string
-}
-variable "chs_url" {
-  type        = string
-}
-variable "cookie_domain" {
-  type        = string
-}
-variable "cookie_expiration_in_seconds" {
-  type        = string
-  default     = "3600"
-}
-variable "cookie_name" {
-  type        = string
-  default     = "__SID"
-}
-variable "cookie_secure_flag" {
-  type        = string
-  default     = "0"
-}
-variable "default_session_expiration" {
-  type        = string
-  default     = "3600"
-}
-variable "extensions_web_version" {
-  type        = string
-}
-variable "feature_request_count" {
-  type        = string
-}
-variable "human_log" {
-  type        = string
-  default     = "1"
-}
-variable "log_level" { 
+variable "log_level" {
+  default     = "info"
   type        = string
   description = "The log level for services to use: trace, debug, info or error"
-  default     = "info"
 }
-variable "maximum_extension_requests_per_day" {
-  type        = string
-  default     = "50"
+
+variable "cookie_name" {
+  type    = string
+  default = "__SID"
 }
-variable "max_extension_period_in_months" {
+
+variable "extensions_web_version" {
   type        = string
-  default     = "12"
-}
-variable "max_file_size_bytes" {
-  type        = string
-  default     = "4194304"
-}
-variable "permission_name_download" {
-  type        = string
-}
-variable "permission_name_view" {
-  type        = string
-}
-variable "piwik_site_id" {
-  type        = string
-  default     = " 7"
-}
-variable "piwik_url" {
-  type        = string
-}
-variable "session_create" {
-  type        = string
-  default     = "off"
-}
-variable "show_service_unavailable_page" {
-  type        = string
-  default     = "off"
-}
-variable "too_soon_days_before_due_date" {
-  type        = string
-  default     = "60"
 }
