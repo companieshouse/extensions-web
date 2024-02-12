@@ -115,11 +115,6 @@ variable "log_level" {
   description = "The log level for services to use: trace, debug, info or error"
 }
 
-variable "cookie_name" {
-  type    = string
-  default = "__SID"
-}
-
 variable "extensions_web_version" {
   type        = string
 }
