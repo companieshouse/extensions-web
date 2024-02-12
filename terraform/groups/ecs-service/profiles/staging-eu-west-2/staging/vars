@@ -1,30 +1,10 @@
-aws_bucket = "staging-eu-west-2.terraform-state.ch.gov.uk"
-remote_state_bucket = "ch-service-staging-terraform-state"
 environment = "staging"
-deploy_to = "staging"
-state_prefix = "env:/staging"
 aws_profile = "staging-eu-west-2"
-kms_alias = "alias/staging-eu-west-2/environment-services-kms"
+
+# service configs
+use_set_environment_files = true
 
 # scaling configs
 desired_task_count = 2 # use multi instance in staging
-
-# service configs
-api_local_url = "https://private-api-staging.company-information.service.gov.uk"
-cdn_host = "//d6nh3dxv55e16.cloudfront.net"
-chs_url = "https://staging.company-information.service.gov.uk"
-cookie_domain = "company-information.service.gov.uk"
-piwik_site_id = "15"
-piwik_url = "https://matomo.platform.aws.chdev.org/"
-session_create = "off"
-permission_name_download = "/admin/extensions-download"
-permission_name_view = "/admin/extensions-view"
-maximum_extension_requests_per_day = "50"
-feature_request_count = "false"
-max_file_size_bytes = "4194304"
-show_service_unavailable_page = "off"
-too_soon_days_before_due_date = "60"
-max_extension_period_in_months = "12"
-log_level = "debug"
-cookie_name = "__SID"
-default_session_expiration = "3600"
+service_scaledown_schedule = "55 19 * * ? *"
+service_scaleup_schedule   = "5 6 * * ? *"
