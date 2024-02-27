@@ -59,7 +59,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     if (currentReason && currentReason.reason_status === "DRAFT") {
       await reasonService.deleteCurrentReason(req.chSession);
     }
-  
+
     switch (req.body.extensionReason) {
       case "illness":
         await updateChosenReasonKeys(req, true, false, false, false);
@@ -74,7 +74,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
         return await addReason(req, res, (request) =>
           request.body.extensionReason, templatePaths.REASON_OTHER);
     }
-  } catch(err) {
+  } catch (err) {
     logger.info("Error caught posting a chosen reason");
     return next(err);
   }

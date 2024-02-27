@@ -44,7 +44,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
       existingReason = reason.reason;
       existingInformation = reason.reason_information;
     }
-  
+
     if (existingInformation) {
       return res.render(templatePaths.REASON_OTHER, {
         otherInformation: existingInformation,

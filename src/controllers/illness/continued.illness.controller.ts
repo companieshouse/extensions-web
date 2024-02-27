@@ -24,7 +24,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
   try {
     const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
     const illnessStartDate: string = formatDateForDisplay(reason.start_on);
-  
+
     if (reason && reason.continued_illness) {
       existingInformation = reason.continued_illness;
     }

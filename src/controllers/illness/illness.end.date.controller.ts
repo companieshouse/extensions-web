@@ -168,7 +168,7 @@ export const processForm = [extractFullDate, ...validators,
 
   try {
     await reasonService.updateReason(req.chSession, {end_on: formatDateForReason(day, month, year)});
-  } catch(err) {
+  } catch (err) {
     logger.info("Error caught updating Reason with illness end date");
     return next(err);
   }

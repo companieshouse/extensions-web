@@ -41,7 +41,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
         templateName: templatePaths.ILLNESS_INFORMATION,
       });
     }
-  } catch(err) {
+  } catch (err) {
     logger.info("Error rendering illness information page");
     return next(err);
   }

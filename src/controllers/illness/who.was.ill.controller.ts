@@ -42,7 +42,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
       otherPersonValue: "",
       templateName: templatePaths.REASON_ILLNESS,
     };
-  
+
     if (reason && reason.affected_person) {
       existingWhoWasIll = reason.affected_person;
       switch (existingWhoWasIll) {
@@ -64,7 +64,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
           break;
       }
     }
-  
+
     if (existingWhoWasIll) {
       return res.render(templatePaths.REASON_ILLNESS, renderOptions);
     } else {
