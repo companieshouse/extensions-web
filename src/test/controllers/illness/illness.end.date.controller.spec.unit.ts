@@ -4,7 +4,7 @@ import * as pageURLs from "../../../model/page.urls";
 import {COOKIE_NAME} from "../../../session/config";
 import * as moment from "moment";
 import {loadSession} from "../../../services/redis.service";
-import {loadMockSession, fullDummySession} from "../../mock.utils";
+import {loadMockSession, fullDummySession, missingTokenDummySession} from "../../mock.utils";
 import * as pageUrls from "../../../model/page.urls";
 import * as reasonService from "../../../services/reason.service";
 import {ReasonWeb} from "../../../model/reason/extension.reason.web";
@@ -68,6 +68,15 @@ describe("illness end date url tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
+
+  it("should return 500 for missing session info", async () => {
+    mockGetCurrentReason.mockImplementation(() => {throw new Error("Test Error")});
+    const res = await request(app)
+      .get(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(res.status).toEqual(500);
+  });
 });
 
 describe("illness end date validation tests", () => {
@@ -99,6 +108,18 @@ describe("illness end date validation tests", () => {
     expect(res.text).toContain(DAY_MISSING);
     expect(res.text).not.toContain(MONTH_MISSING);
     expect(res.text).not.toContain(YEAR_MISSING);
+    expect(mockGetCurrentReason).toBeCalledTimes(1);
+  });
+
+  it("500 if session missing getting the current reason", async () => {
+    mockGetCurrentReason.mockImplementation(() => {throw new Error("Test Error")});
+    const res = await request(app)
+      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .set("Accept", "application/json")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({"illness-end-day": "", "illness-end-month": "02", "illness-end-year": "2016"});
+    expect(res.status).toEqual(500);
     expect(mockGetCurrentReason).toBeCalledTimes(1);
   });
 

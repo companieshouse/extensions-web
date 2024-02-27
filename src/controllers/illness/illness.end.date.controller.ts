@@ -114,7 +114,7 @@ export const processForm = [extractFullDate, ...validators,
     try {
       reasonErr = await getCurrentExtensionReason(req);
     } catch (err) {
-      logger.info("Exception thrown retrieving Reason in illness.end.data.controller processForm");
+      logger.info("Exception thrown retrieving Reason in illness.end.date.controller processForm");
       return next(err);
     }
     const illnessStartDate: string = reasonErr.start_on;
