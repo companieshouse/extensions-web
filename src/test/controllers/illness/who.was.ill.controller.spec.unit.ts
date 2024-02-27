@@ -4,10 +4,12 @@ import * as pageURLs from "../../../model/page.urls";
 import {COOKIE_NAME} from "../../../session/config";
 import {loadMockSession, fullDummySession} from "../../mock.utils";
 import {loadSession} from "../../../services/redis.service";
+import {ReasonWeb} from "../../../model/reason/extension.reason.web";
 import {updateReason} from "../../../services/reason.service";
 import * as reasonService from "../../../services/reason.service";
 import * as sessionService from "../../../services/session.service";
 import {createHistoryIfNone} from "../../../services/session.service";
+import { stringify } from "querystring";
 
 jest.mock("../../../services/redis.service");
 jest.mock("../../../services/reason.service");
@@ -23,6 +25,15 @@ const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeo
 const REASON_ID: string = "abc-123";
 const WHO_WAS_ILL_NOT_SELECTED = "You must select a person";
 const WHO_WAS_ILL_OTHER_TEXT_NOT_PROVIDED = "You must tell us the person";
+function reason(affectedPerson) {
+  return {
+    "id": "1",
+    "reason": "string",
+    "start_on": "string",
+    "end_on": "string",
+    "affected_person": affectedPerson
+  } as ReasonWeb;
+};
 
 beforeEach( () => {
   mockCacheService.mockRestore();
@@ -46,6 +57,54 @@ describe("who was ill url tests", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
+    expect(mockSetReasonInContextAsString).not.toBeCalled();
+    expect(mockGetCurrentReason).toBeCalled();
+  });
+
+  it("should find who was ill page with get existing director", async () => {
+    mockGetCurrentReason.prototype.constructor.mockImplementation(() => reason("Company director or officer"));
+    const res = await request(app)
+      .get(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(res.status).toEqual(200);
+    expect(stringify(res)).toContain("Company%20director%20or%20officer%22%20checked");
+    expect(mockSetReasonInContextAsString).not.toBeCalled();
+    expect(mockGetCurrentReason).toBeCalled();
+  });
+
+  it("should find who was ill page with get existing agen", async () => {
+    mockGetCurrentReason.prototype.constructor.mockImplementation(() => reason("Company accountant or agent"));
+    const res = await request(app)
+      .get(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(res.status).toEqual(200);
+    expect(stringify(res)).toContain("Company%20accountant%20or%20agent%22%20checked");
+    expect(mockSetReasonInContextAsString).not.toBeCalled();
+    expect(mockGetCurrentReason).toBeCalled();
+  });
+
+  it("should find who was ill page with get existing family member", async () => {
+    mockGetCurrentReason.prototype.constructor.mockImplementation(() => reason("Family member"));
+    const res = await request(app)
+      .get(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(res.status).toEqual(200);
+    expect(stringify(res)).toContain("Family%20member%22%20checked");
+    expect(mockSetReasonInContextAsString).not.toBeCalled();
+    expect(mockGetCurrentReason).toBeCalled();
+  });
+
+  it("should find who was ill page with get existing employee", async () => {
+    mockGetCurrentReason.prototype.constructor.mockImplementation(() => reason("Company employee"));
+    const res = await request(app)
+      .get(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(res.status).toEqual(200);
+    expect(stringify(res)).toContain("Company%20employee%22%20checked");
     expect(mockSetReasonInContextAsString).not.toBeCalled();
     expect(mockGetCurrentReason).toBeCalled();
   });
