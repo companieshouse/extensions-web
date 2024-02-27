@@ -126,6 +126,18 @@ describe("who was ill url tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
+
+  it("should find who was ill page with existing reason information when reason id is added for change", async () => {
+    mockGetCurrentReason.mockImplementation(() => {
+      throw new Error("invalid session data when processing reason");
+    });
+    const res = await request(app)
+      .get(pageURLs.EXTENSIONS_REASON_ILLNESS + "?reasonId=" + REASON_ID)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(res.status).toEqual(500);
+    expect(mockGetCurrentReason).toBeCalled();
+  });
 });
 
 describe("who was ill validation tests", () => {
@@ -201,5 +213,21 @@ describe("who was ill validation tests", () => {
     expect(mockUpdateReason).toHaveBeenCalledWith(fullDummySession(), {
       affected_person: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     });
+  });
+
+  it("should receive 500 when missing session data", async () => {
+    mockUpdateReason.mockImplementation(() => {
+      throw new Error("invalid session data when processing reason");
+    });
+    const res = await request(app)
+      .post(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .set("Accept", "application/json")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({
+        illPerson: "other",
+        otherPerson: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      });
+    expect(res.status).toEqual(500);
   });
 });
