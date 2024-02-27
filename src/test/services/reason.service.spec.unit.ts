@@ -41,7 +41,7 @@ describe("reason service tests", () => {
     try {
       await reasonService.updateReason(session, {illPerson: "joe"});
     } catch (e) {
-      expect(e).toEqual("invalid session data");
+      expect(e).toEqual("invalid session data when processing reason");
     }
 
     expect(mockUpdateReason).not.toBeCalled();
@@ -54,7 +54,7 @@ describe("reason service tests", () => {
     try {
       await reasonService.updateReason(session, {illPerson: "joe"});
     } catch (e) {
-      expect(e).toEqual("invalid session data");
+      expect(e).toEqual("invalid session data when processing reason");
     }
 
     expect(mockUpdateReason).not.toBeCalled();

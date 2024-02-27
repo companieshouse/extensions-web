@@ -9,6 +9,7 @@ import * as reasonService from "../../services/reason.service";
 import * as sessionService from "../../services/session.service";
 import {removeNonPrintableChars} from "../../global/string.formatter";
 import {ReasonWeb} from "../../model/reason/extension.reason.web";
+import logger from "../../logger";
 
 const validators = [
   check("accountsInformation").custom((reason, {req}) => {
@@ -24,20 +25,25 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
   if (req.query.reasonId) {
     await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId as string);
   }
-  let infoStr;
-  const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
-  if (reason) {
-    infoStr = reason.reason_information;
-  }
-  if (infoStr) {
+  try {
+    let infoStr;
+    const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
+    if (reason) {
+      infoStr = reason.reason_information;
+    }
+    if (infoStr) {
+        return res.render(templatePaths.ACCOUNTS_INFORMATION, {
+        information: infoStr,
+        templateName: templatePaths.ACCOUNTS_INFORMATION,
+      });
+    } else {
       return res.render(templatePaths.ACCOUNTS_INFORMATION, {
-      information: infoStr,
-      templateName: templatePaths.ACCOUNTS_INFORMATION,
-    });
-  } else {
-    return res.render(templatePaths.ACCOUNTS_INFORMATION, {
-      templateName: templatePaths.ACCOUNTS_INFORMATION,
-    });
+        templateName: templatePaths.ACCOUNTS_INFORMATION,
+      });
+    }
+  } catch (err) {
+    logger.info("Error caught rendering accounts information page")
+    return next(err);
   }
 };
 
@@ -56,10 +62,14 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       templateName: templatePaths.ACCOUNTS_INFORMATION,
     });
   }
-
-  await reasonService.updateReason(
-    req.chSession,
-    {reason_information: removeNonPrintableChars(req.body.accountsInformation)});
+  try {
+    await reasonService.updateReason(
+      req.chSession,
+      {reason_information: removeNonPrintableChars(req.body.accountsInformation)});
+  } catch (err) {
+    logger.info("Error caught updating reason with accounts information");
+    return next(err);
+  }
 
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
   if (changingDetails) {

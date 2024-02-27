@@ -106,6 +106,38 @@ describe("accounting issue date url tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
+
+  it("should return 500 when missing session data", async () => {
+    mockGetCurrentReason.mockImplementation(() => {
+      throw new Error("invalid session data when processing reason");
+    });
+    const res = await request(app)
+      .get(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(res.status).toEqual(500);
+    expect(mockGetCurrentReason).toBeCalledWith({
+      "_cookieId": "cookie",
+      "_data": {
+        "extension_session": {
+          "company_in_context": "00006400",
+          "extension_requests": [
+            {
+              "company_number": "00006400",
+              "extension_request_id": "request1",
+              "reason_in_context_string": "reason1"
+            }
+          ]
+        },
+        "page_history": {"page_history": ["/"]},
+        "signin_info": {
+          "access_token": {"access_token": "KGGGUYUYJHHVK1234"},
+          "signed_in": 1,
+          "user_profile": {"email": "demo@ch.gov.uk"}
+        }
+      }
+    });
+  });
 });
 
 describe("accounts date validation tests", () => {

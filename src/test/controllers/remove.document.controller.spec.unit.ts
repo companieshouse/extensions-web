@@ -2,7 +2,7 @@ import * as request from "supertest";
 import app from "../../app";
 import * as pageURLs from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
-import {fullDummySession} from "../mock.utils";
+import {fullDummySession, missingTokenDummySession} from "../mock.utils";
 import {loadSession} from "../../services/redis.service";
 import {
   getCompanyProfile,
@@ -72,6 +72,14 @@ describe("remove document url tests", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
+  });
+  it ("should return 500 if missing session data", async () => {
+    mockCacheService.prototype.constructor.mockImplementationOnce(missingTokenDummySession);
+    const res = await request(app)
+      .get(pageURLs.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(res.status).toEqual(500);
   });
 });
 

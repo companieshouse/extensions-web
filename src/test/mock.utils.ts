@@ -73,6 +73,33 @@ export const fullDummySession = () => {
   return session;
 };
 
+export const missingTokenDummySession = () => {
+  let session = Session.newWithCookieId("cookie");
+  session.data = {
+    [keys.SIGN_IN_INFO]: {
+      [keys.SIGNED_IN]: 1,
+      [keys.USER_PROFILE]: {
+        [keys.USER_ID]: "123",
+      },
+      [keys.USER_PROFILE]: {
+        email: EMAIL
+      }
+    },
+    [keys.EXTENSION_SESSION]: {
+      [keys.COMPANY_IN_CONTEXT]: "00006400",
+      [keys.EXTENSION_REQUESTS]: [{
+        [keys.COMPANY_NUMBER]: "00006400",
+        "extension_request_id": "request1",
+        "reason_in_context_string": "reason1",
+      }]
+    },
+    [keys.PAGE_HISTORY]: {
+      page_history: []
+    }
+  };
+  return session;
+};
+
 export const sessionWithChangingDetails = () => {
   let session = Session.newInstance();
   session.data = {

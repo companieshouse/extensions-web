@@ -3,7 +3,7 @@ import * as superTest from "supertest";
 import * as pageURLs from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
 import {loadSession} from "../../services/redis.service";
-import {loadMockSession} from "../mock.utils";
+import {loadMockSession, missingTokenDummySession} from "../mock.utils";
 import * as keys from "../../session/keys";
 import Session from "../../session/session";
 import {addExtensionReasonToRequest} from "../../client/apiclient";
@@ -131,6 +131,22 @@ describe("choose reason validation tests", () => {
         otherReason: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       });
     expect(mockDeleteReason).toHaveBeenCalled();
+    expect(mockGetCurrentReason).toHaveBeenCalled();
+  });
+
+  it("should call delete reason if current reason in draft mode", async () => {
+    mockGetCurrentReason.mockImplementation(() => {
+      throw new Error("invalid session data when processing reason");
+    });
+    const res = await superTest(app)
+      .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
+      .set("Accept", "application/json")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({
+        extensionReason: "other",
+      });
+    expect(res.status).toEqual(500);
     expect(mockGetCurrentReason).toHaveBeenCalled();
   });
 });
