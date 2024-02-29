@@ -51,7 +51,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
     }
   } catch (err) {
     logger.info("Error caught rendering continued illness")
-    next(err)
+    return next(err)
   }
 };
 

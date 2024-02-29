@@ -68,7 +68,7 @@ describe("who was ill url tests", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
-    expect(stringify(res)).toContain("Company%20director%20or%20officer%22%20checked");
+    expect(res.text).toContain("value=\"Company director or officer\" checked");
     expect(mockSetReasonInContextAsString).not.toBeCalled();
     expect(mockGetCurrentReason).toBeCalled();
   });
@@ -80,7 +80,7 @@ describe("who was ill url tests", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
-    expect(stringify(res)).toContain("Company%20accountant%20or%20agent%22%20checked");
+    expect(res.text).toContain("value=\"Company accountant or agent\" checked");
     expect(mockSetReasonInContextAsString).not.toBeCalled();
     expect(mockGetCurrentReason).toBeCalled();
   });
@@ -92,7 +92,7 @@ describe("who was ill url tests", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
-    expect(stringify(res)).toContain("Family%20member%22%20checked");
+    expect(res.text).toContain("value=\"Family member\" checked");
     expect(mockSetReasonInContextAsString).not.toBeCalled();
     expect(mockGetCurrentReason).toBeCalled();
   });
@@ -104,7 +104,7 @@ describe("who was ill url tests", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
-    expect(stringify(res)).toContain("Company%20employee%22%20checked");
+    expect(res.text).toContain("value=\"Company employee\" checked");
     expect(mockSetReasonInContextAsString).not.toBeCalled();
     expect(mockGetCurrentReason).toBeCalled();
   });
