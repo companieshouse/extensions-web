@@ -69,6 +69,19 @@ describe("continued illness url tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
+
+  it ("should return 500 if continued illness page with missing session", async () => {
+    mockGetCurrentReason.mockRestore();
+    mockGetCurrentReason.mockClear();
+    mockGetCurrentReason.mockImplementation(() => {
+      throw new Error("invalid session data when processing reason");
+    });
+    const res = await request(app)
+      .get(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(res.status).toEqual(500);
+  });
 });
 
 describe("continued illness validation tests", () => {
