@@ -9,13 +9,20 @@ import * as errorMessages from "../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
 import * as templatePaths from "../model/template.paths";
 import * as reasonService from "../services/reason.service";
+import { ReasonWeb } from "model/reason/extension.reason.web";
 
 const validators = [
   check("removeDocument").not().isEmpty().withMessage(errorMessages.REMOVE_DOCUMENT_DECISION_NOT_MADE),
 ];
 
 export const render = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const reason = await reasonService.getReasonFromFullRequest(req);
+  let reason: ReasonWeb | undefined;
+  try {
+    reason = await reasonService.getReasonFromFullRequest(req);
+  } catch (err) {
+    logger.info("Error caught retrieving reason from request");
+    return next(err);
+  }
   if (reason) {
     const attachment = reason.attachments.filter((attachmentItem) => attachmentItem.id === req.query.documentID).pop();
     if (attachment) {

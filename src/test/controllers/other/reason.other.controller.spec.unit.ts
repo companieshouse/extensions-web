@@ -69,6 +69,17 @@ describe("reason other url tests", () => {
   });
 });
 
+it("should return 500 if current reason throws exception", async () => {
+  mockGetCurrentReason.mockImplementation(() => {
+    throw new Error("invalid session data when processing reason");
+  });
+  const res = await request(app)
+    .get(pageURLs.EXTENSIONS_REASON_OTHER + "?reasonId=" + REASON_ID)
+    .set("Referer", "/")
+    .set("Cookie", [`${COOKIE_NAME}=123`]);
+  expect(res.status).toEqual(500);
+});
+
 describe("reason other validation tests", () => {
 
   it("should receive error message requesting more information when text input and reason input is empty", async () => {

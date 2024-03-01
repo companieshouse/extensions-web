@@ -9,6 +9,7 @@ import * as reasonService from "../../services/reason.service";
 import * as sessionService from "../../services/session.service";
 import {removeNonPrintableChars} from "../../global/string.formatter";
 import {ReasonWeb} from "../../model/reason/extension.reason.web";
+import logger from "../../logger";
 
 const validators = [
   check("illnessInformation").custom((reason, {req}) => {
@@ -24,20 +25,25 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
   if (req.query.reasonId) {
     await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId as string);
   }
-  const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
-  let existingInformation;
-  if (reason && reason.reason_information) {
-    existingInformation = reason.reason_information;
-  }
-  if (existingInformation) {
-    return res.render(templatePaths.ILLNESS_INFORMATION, {
-      information: existingInformation,
-      templateName: templatePaths.ILLNESS_INFORMATION,
-    });
-  } else {
-    return res.render(templatePaths.ILLNESS_INFORMATION, {
-      templateName: templatePaths.ILLNESS_INFORMATION,
-    });
+  try {
+    const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
+    let existingInformation;
+    if (reason && reason.reason_information) {
+      existingInformation = reason.reason_information;
+    }
+    if (existingInformation) {
+      return res.render(templatePaths.ILLNESS_INFORMATION, {
+        information: existingInformation,
+        templateName: templatePaths.ILLNESS_INFORMATION,
+      });
+    } else {
+      return res.render(templatePaths.ILLNESS_INFORMATION, {
+        templateName: templatePaths.ILLNESS_INFORMATION,
+      });
+    }
+  } catch (err) {
+    logger.info("Error rendering illness information page");
+    return next(err);
   }
 };
 
@@ -57,9 +63,15 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     });
   }
 
-  await reasonService.updateReason(
-    req.chSession,
-    {reason_information: removeNonPrintableChars(req.body.illnessInformation)});
+  try {
+    await reasonService.updateReason(
+      req.chSession,
+      {reason_information: removeNonPrintableChars(req.body.illnessInformation)}
+    );
+  } catch (err) {
+    logger.info("Error caught updating reason with illness information");
+    return next(err);
+  }
 
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
   if (changingDetails) {

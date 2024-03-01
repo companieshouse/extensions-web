@@ -11,6 +11,7 @@ import * as sessionService from "../../services/session.service";
 import * as templatePaths from "../../model/template.paths";
 import { ReasonWeb } from "model/reason/extension.reason.web";
 import {formatDateForDisplay, formatDateForReason} from "../../client/date.formatter";
+import logger from "../../logger";
 
 const ILLNESS_END_DAY_FIELD: string = "illness-end-day";
 const ILLNESS_END_MONTH_FIELD: string = "illness-end-month";
@@ -63,26 +64,31 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
   if (req.query.reasonId) {
     await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId as string);
   }
-  let dateStr;
-  const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
-  if (reason && reason.end_on) {
-    dateStr = reason.end_on;
-  }
-  const illnessStartDate: string = formatDateForDisplay(reason.start_on);
-  if (dateStr) {
-    const endDate: Date = new Date(dateStr);
-    return res.render(templatePaths.ILLNESS_END_DATE, {
-      illnessEndDay: endDate.getDate(),
-      illnessEndMonth: endDate.getMonth() + 1,
-      illnessEndYear: endDate.getFullYear(),
-      startDate: illnessStartDate,
-      templateName: templatePaths.ILLNESS_END_DATE,
-    });
-  } else {
-    return res.render(templatePaths.ILLNESS_END_DATE, {
-      startDate: illnessStartDate,
-      templateName: templatePaths.ILLNESS_END_DATE,
-    });
+  try {
+    let dateStr;
+    const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
+    if (reason && reason.end_on) {
+      dateStr = reason.end_on;
+    }
+    const illnessStartDate: string = formatDateForDisplay(reason.start_on);
+    if (dateStr) {
+      const endDate: Date = new Date(dateStr);
+      return res.render(templatePaths.ILLNESS_END_DATE, {
+        illnessEndDay: endDate.getDate(),
+        illnessEndMonth: endDate.getMonth() + 1,
+        illnessEndYear: endDate.getFullYear(),
+        startDate: illnessStartDate,
+        templateName: templatePaths.ILLNESS_END_DATE,
+      });
+    } else {
+      return res.render(templatePaths.ILLNESS_END_DATE, {
+        startDate: illnessStartDate,
+        templateName: templatePaths.ILLNESS_END_DATE,
+      });
+    }
+  } catch (err) {
+    logger.info("Error caught rendering illness end date page");
+    return next(err);
   }
 };
 
@@ -104,7 +110,13 @@ export const processForm = [extractFullDate, ...validators,
     let href: string = "";
     let isFirstError: boolean = true;
 
-    const reasonErr = await getCurrentExtensionReason(req);
+    let reasonErr: ReasonWeb;
+    try {
+      reasonErr = await getCurrentExtensionReason(req);
+    } catch (err) {
+      logger.info("Exception thrown retrieving Reason in illness.end.date.controller processForm");
+      return next(err);
+    }
     const illnessStartDate: string = reasonErr.start_on;
 
     errors.array({ onlyFirstError: true })
@@ -154,7 +166,12 @@ export const processForm = [extractFullDate, ...validators,
     });
   }
 
-  await reasonService.updateReason(req.chSession, {end_on: formatDateForReason(day, month, year)});
+  try {
+    await reasonService.updateReason(req.chSession, {end_on: formatDateForReason(day, month, year)});
+  } catch (err) {
+    logger.info("Error caught updating Reason with illness end date");
+    return next(err);
+  }
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
   if (changingDetails) {
     return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);

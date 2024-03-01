@@ -17,6 +17,7 @@ const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>)
 const mockSetReasonInContextAsString = (<unknown>sessionService.setReasonInContextAsString as jest.Mock<typeof sessionService.setReasonInContextAsString>);
 const mockGetCurrentReason = (<unknown>reasonService.getCurrentReason as jest.Mock<typeof reasonService.getCurrentReason>);
 const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
+const mockUpdateCurrentReason = (<unknown>reasonService.updateReason as jest.Mock<typeof reasonService.updateReason>);
 
 const REASON_ID: string = "abc-123";
 const STILL_ILL_ANSWER_NOT_PROVIDED: string =
@@ -38,6 +39,7 @@ beforeEach(() => {
       page_history: [],
     };
   });
+  mockUpdateCurrentReason.mockClear();
 });
 
 describe("continued illness url tests", () => {
@@ -68,6 +70,19 @@ describe("continued illness url tests", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
+  });
+
+  it ("should return 500 if continued illness page with missing session", async () => {
+    mockGetCurrentReason.mockRestore();
+    mockGetCurrentReason.mockClear();
+    mockGetCurrentReason.mockImplementation(() => {
+      throw new Error("invalid session data when processing reason");
+    });
+    const res = await request(app)
+      .get(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(res.status).toEqual(500);
   });
 });
 
@@ -126,5 +141,19 @@ describe("continued illness validation tests", () => {
     expect(mockGetCurrentReason).not.toBeCalled();
   });
 
+  it("should receive no error message when an answer of yes is provided", async () => {
+    mockCacheService.prototype.constructor.mockImplementationOnce(fullDummySession);
+    mockUpdateCurrentReason.mockImplementation(() => {
+      throw new Error("invalid session data when processing reason");
+    });
+    const res = await request(app)
+      .post(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
+      .set("Accept", "application/json")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({continuedIllness: "yes"});
+    expect(res.status).toEqual(500);
+    expect(mockGetCurrentReason).not.toBeCalled();
+  });
 });
 

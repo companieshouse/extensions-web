@@ -54,5 +54,5 @@ const processReason = async (chSession: Session, apiClientFunction, body?): Prom
     return body ? await apiClientFunction(request, token, body) :
       await apiClientFunction(request, token);
   }
-  return Promise.reject("invalid session data");
+  return Promise.reject("invalid session data when processing reason");
 };

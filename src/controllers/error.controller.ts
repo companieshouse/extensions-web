@@ -17,7 +17,8 @@ const notFoundHandler = (req: Request, res: Response, next: NextFunction) => {
  * last handler in the chain for it to work.
  */
 const errorHandler = async (err: unknown, req: Request, res: Response, next: NextFunction) => {
-  logger.error(errorMessages.ERROR_500, err);
+  logger.error(errorMessages.ERROR_500);
+  logger.error(err);
   res.status(500).render(templatePaths.ERROR);
 };
 

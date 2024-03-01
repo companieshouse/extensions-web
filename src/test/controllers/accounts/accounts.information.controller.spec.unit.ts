@@ -72,6 +72,17 @@ describe("accounts information url tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
+
+  it ("should return 500 if missing session info", async () => {
+    mockGetCurrentReason.mockImplementation(() => {
+      throw new Error("invalid session data when processing reason");
+    });
+    const res = await request(app)
+      .get(pageURLs.EXTENSIONS_ACCOUNTS_INFORMATION)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(res.status).toEqual(500);
+  });
 });
 
 describe("accounts information validation tests", () => {

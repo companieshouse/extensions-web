@@ -105,6 +105,17 @@ describe("illness start date url tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
   });
+
+  it("missing session information throws 500 error", async () => {
+    mockGetCurrentReason.mockImplementation(() => {
+      throw new Error("invalid session data when processing reason");
+    });
+    const res = await request(app)
+      .get(PageURLs.EXTENSIONS_ILLNESS_START_DATE + "?reasonId=" + REASON_ID)
+      .set("Referer", "/test")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(res.status).toEqual(500);
+  });
 });
 
 describe("illness start date validation tests", () => {

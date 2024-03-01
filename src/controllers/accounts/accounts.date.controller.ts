@@ -12,6 +12,7 @@ import {formatDateForReason} from "../../client/date.formatter";
 import * as templatePaths from "../../model/template.paths";
 import * as sessionService from "../../services/session.service";
 import {ReasonWeb} from "../../model/reason/extension.reason.web";
+import logger from "../../logger";
 
 const ACCOUNTING_ISSUE_DAY_FIELD: string = "accounts-date-day";
 const ACCOUNTING_ISSUE_MONTH_FIELD: string = "accounts-date-month";
@@ -61,7 +62,13 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
     await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId as string);
   }
   let dateStr;
-  const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
+  let reason: ReasonWeb;
+  try {
+    reason = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
+  } catch (err) {
+    logger.info("Error caught retrieving current reason for accounts date")
+    return next(err);
+  }
   if (reason) {
     dateStr = reason.start_on;
   }
@@ -144,7 +151,12 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     });
   }
 
-  await reasonService.updateReason(req.chSession, {start_on: formatDateForReason(day, month, year)});
+  try {
+    await reasonService.updateReason(req.chSession, {start_on: formatDateForReason(day, month, year)});
+  } catch (err) {
+    logger.info("Caught error updating reason with date");
+    return next(err);
+  }
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
   if (changingDetails) {
     return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);

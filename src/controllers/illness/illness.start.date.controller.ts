@@ -12,6 +12,7 @@ import * as reasonService from "../../services/reason.service";
 import {formatDateForReason} from "../../client/date.formatter";
 import * as sessionService from "../../services/session.service";
 import {ReasonWeb} from "../../model/reason/extension.reason.web";
+import logger from "../../logger";
 
 const ILLNESS_START_DAY_FIELD: string = "illness-start-day";
 const ILLNESS_START_MONTH_FIELD: string = "illness-start-month";
@@ -60,24 +61,30 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
   if (req.query.reasonId) {
     await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId as string);
   }
-  let dateStr: any;
-  const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
-  if (reason && reason.start_on) {
-    dateStr = reason.start_on;
+  try {
+    let dateStr: any;
+    const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
+    if (reason && reason.start_on) {
+      dateStr = reason.start_on;
+    }
+    if (dateStr) {
+      const startDate: Date = new Date(dateStr);
+      return res.render(templatePaths.ILLNESS_START_DATE, {
+        illnessStartDay: startDate.getDate(),
+        illnessStartMonth: startDate.getMonth() + 1,
+        illnessStartYear: startDate.getFullYear(),
+        templateName: templatePaths.ILLNESS_START_DATE,
+      });
+    } else {
+      return res.render(templatePaths.ILLNESS_START_DATE, {
+        templateName: templatePaths.ILLNESS_START_DATE,
+      });
+    }
+  } catch (err) {
+    logger.info("Exception caught when rendering illness start date page");
+    return next(err);
   }
-  if (dateStr) {
-    const startDate: Date = new Date(dateStr);
-    return res.render(templatePaths.ILLNESS_START_DATE, {
-      illnessStartDay: startDate.getDate(),
-      illnessStartMonth: startDate.getMonth() + 1,
-      illnessStartYear: startDate.getFullYear(),
-      templateName: templatePaths.ILLNESS_START_DATE,
-    });
-  } else {
-    return res.render(templatePaths.ILLNESS_START_DATE, {
-      templateName: templatePaths.ILLNESS_START_DATE,
-    });
-  }
+
 };
 
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -144,7 +151,12 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     });
   }
 
-  await reasonService.updateReason(req.chSession, {start_on: formatDateForReason(day, month, year)});
+  try {
+    await reasonService.updateReason(req.chSession, {start_on: formatDateForReason(day, month, year)});
+  } catch (err) {
+    logger.info("Error caught updating illness with start date");
+    return next(err);
+  }
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
   if (changingDetails) {
     return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);

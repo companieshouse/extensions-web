@@ -9,6 +9,7 @@ import * as reasonService from "../../services/reason.service";
 import * as sessionService from "../../services/session.service";
 import {removeNonPrintableChars} from "../../global/string.formatter";
 import {ReasonWeb} from "../../model/reason/extension.reason.web";
+import logger from "../../logger";
 
 const OTHER_REASON_FIELD: string = "otherReason";
 const OTHER_INFORMATION_FIELD: string = "otherInformation";
@@ -35,24 +36,29 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
   if (req.query.reasonId) {
     await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId as string);
   }
-  const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
-  let existingReason;
-  let existingInformation;
-  if (reason && (reason.reason_information || reason.reason)) {
-    existingReason = reason.reason;
-    existingInformation = reason.reason_information;
-  }
+  try {
+    const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
+    let existingReason;
+    let existingInformation;
+    if (reason && (reason.reason_information || reason.reason)) {
+      existingReason = reason.reason;
+      existingInformation = reason.reason_information;
+    }
 
-  if (existingInformation) {
-    return res.render(templatePaths.REASON_OTHER, {
-      otherInformation: existingInformation,
-      otherReason: existingReason,
-      templateName: templatePaths.REASON_OTHER,
-    });
-  } else {
-    return res.render(templatePaths.REASON_OTHER, {
-      templateName: templatePaths.REASON_OTHER,
-    });
+    if (existingInformation) {
+      return res.render(templatePaths.REASON_OTHER, {
+        otherInformation: existingInformation,
+        otherReason: existingReason,
+        templateName: templatePaths.REASON_OTHER,
+      });
+    } else {
+      return res.render(templatePaths.REASON_OTHER, {
+        templateName: templatePaths.REASON_OTHER,
+      });
+    }
+  } catch (err) {
+    logger.info("Error caught rendering reason other page");
+    return next(err);
   }
 };
 
@@ -97,12 +103,18 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
   const reasonInput = req.body.otherReason;
-  await reasonService.updateReason(
-    req.chSession,
-    {
-      reason: removeNonPrintableChars(reasonInput),
-      reason_information: removeNonPrintableChars(req.body.otherInformation),
-    });
+  try {
+    await reasonService.updateReason(
+      req.chSession,
+      {
+        reason: removeNonPrintableChars(reasonInput),
+        reason_information: removeNonPrintableChars(req.body.otherInformation),
+      });
+  } catch (err) {
+    logger.info("Error caught posting other reason");
+    return next(err);
+  }
+
   if (changingDetails) {
     return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
   } else {
