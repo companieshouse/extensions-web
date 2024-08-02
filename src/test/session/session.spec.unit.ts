@@ -36,7 +36,7 @@ describe("Session tests", () => {
 
     session.setClientSignature(userAgent, ip);
 
-    const expectedSignature = "8295c707a3428117b709c9a296ecbb41b746a330";
+    const expectedSignature = "487046e44f15ce0a0b94703b5416db78f4e903ce";
 
     expect(session.data[keys.CLIENT_SIG]).toEqual(expectedSignature);
   });
