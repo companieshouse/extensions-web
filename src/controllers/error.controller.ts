@@ -20,7 +20,6 @@ const notFoundHandler = (req: Request, res: Response, next: NextFunction) => {
  */
 
 const csrfErrorHandler = (err: CsrfError | Error, req: Request, res: Response, next: NextFunction) => {
-  console.log(err instanceof CsrfError);
   if (!(err instanceof CsrfError)) {
     return next(err);
   }
