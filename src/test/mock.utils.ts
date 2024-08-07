@@ -1,3 +1,7 @@
+import { NextFunction, Request, Response } from "express";
+import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
+import { SessionMiddleware } from "@companieshouse/node-session-handler";
+
 import * as keys from "../session/keys";
 import {ExtensionsCompanyProfile, ExtensionFullRequest} from "../client/apiclient";
 import {loadSession} from "../services/redis.service";
@@ -225,3 +229,13 @@ export const getDummyFullRequest: ExtensionFullRequest = {
     id: "djklkjdfdkl",
   },
 };
+
+jest.mock("@companieshouse/web-security-node");
+jest.mock("@companieshouse/node-session-handler");
+
+const mockSessionMiddleware = SessionMiddleware as jest.Mock;
+mockSessionMiddleware.mockImplementation((_opts) => (req: Request, res: Response, next: NextFunction) => next());
+mockSessionMiddleware.mockClear();
+
+export const mockCsrfProtectionMiddleware = CsrfProtectionMiddleware as jest.Mock;
+mockCsrfProtectionMiddleware.mockImplementation((_opts) => (req: Request, res: Response, next: NextFunction) => next());
