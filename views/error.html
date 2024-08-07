@@ -1,3 +1,4 @@
+{% from "web-security-node/components/csrf-error/macro.njk" import csrfError %}
 
 {% extends "layout.html" %}
 
@@ -11,12 +12,16 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">
-        Sorry, there is a problem with the service
-      </h1>
-      <p class="govuk-body">Try again later.</p>
+  {% if csrfErrors %}
+    {{ csrfError({}) }}
+  {% else %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+          Sorry, there is a problem with the service
+        </h1>
+        <p class="govuk-body">Try again later.</p>
+      </div>
     </div>
-  </div>
+  {% endif %}
 {% endblock %}

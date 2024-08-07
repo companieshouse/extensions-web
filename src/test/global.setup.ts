@@ -1,6 +1,6 @@
 export default async () => {
   process.env.DEFAULT_SESSION_EXPIRATION = "3600";
-  process.env.COOKIE_SECRET = "secret";
+  process.env.COOKIE_SECRET = "cookie_secret__cookie_secret";
   process.env.CACHE_SERVER = "cache_server";
   process.env.COOKIE_NAME = "cookie_name";
   process.env.COOKIE_DOMAIN = "cookie_domain";
