@@ -1,3 +1,11 @@
+jest.mock("redis", () => {
+  return {
+    createClient: jest.fn().mockReturnThis(),
+    on: jest.fn().mockReturnThis(),
+  }
+});
+jest.mock("../../client/apiclient");
+
 import {
   updateReason,
   removeExtensionReasonFromRequest,
@@ -10,8 +18,6 @@ import Session from "../../session/session";
 import * as keys from "../../session/keys";
 import {ReasonWeb} from "../../model/reason/extension.reason.web";
 import {getDummyFullRequest} from "../mock.utils";
-
-jest.mock("../../client/apiclient");
 
 const mockUpdateReason = (<unknown>updateReason as jest.Mock<typeof updateReason>);
 const mockDeleteReason = (<unknown>removeExtensionReasonFromRequest as jest.Mock<typeof removeExtensionReasonFromRequest>);

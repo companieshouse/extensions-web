@@ -1,8 +1,14 @@
+jest.mock("redis", () => {
+  return {
+    createClient: jest.fn().mockReturnThis(),
+    on: jest.fn().mockReturnThis(),
+  }
+});
+jest.mock("../../../services/redis.service");
+
 import app from '../../../app';
 import * as request from 'supertest';
 import {COOKIE_NAME} from "../../../session/config";
-
-jest.mock("../../../services/redis.service");
 
 const UNAVAILABLE_TEXT = "service is unavailable";
 

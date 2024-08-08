@@ -1,7 +1,13 @@
-import app from "../../app";
+jest.mock("../../services/redis.service");
+jest.mock("../../client/apiclient");
+jest.mock("../../services/session.service");
+
 import * as request from "supertest";
 import * as fs from "fs";
 import * as path from "path";
+
+import mockMiddlewares from "../mock.middleware";
+import app from "../../app";
 import * as pageURLs from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
 import {loadSession} from "../../services/redis.service";
@@ -9,10 +15,6 @@ import {addAttachmentToReason, getFullRequest} from "../../client/apiclient"
 import {loadMockSession, fullDummySession, sessionWithChangingDetails} from "../mock.utils";
 import {getRequest, getCompanyInContext, createHistoryIfNone} from "../../services/session.service";
 import * as keys from "../../session/keys";
-
-jest.mock("../../services/redis.service");
-jest.mock("../../client/apiclient");
-jest.mock("../../services/session.service");
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockAddAttachment = (<unknown>addAttachmentToReason as jest.Mock<typeof addAttachmentToReason>);
@@ -28,6 +30,8 @@ const EXPECTED_MAX_FILE_SIZE_MESSAGE = "File size must be smaller than 0 MB";
 const QUERY_ID: string = "?reasonId=reason1";
 
 beforeEach( () => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   loadMockSession(mockCacheService);
   mockAddAttachment.mockClear();
   mockAddAttachment.mockRestore();

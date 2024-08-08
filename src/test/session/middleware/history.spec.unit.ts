@@ -1,3 +1,13 @@
+jest.mock("redis", () => {
+  return {
+    createClient: jest.fn().mockReturnThis(),
+    on: jest.fn().mockReturnThis(),
+  }
+});
+jest.mock("../../../services/redis.service");
+jest.mock("../../../services/session.service");
+jest.mock("../../../client/apiclient");
+
 import app from "../../../app";
 import * as request from "supertest";
 import Session from "../../../session/session";
@@ -9,10 +19,6 @@ import {loadSession} from "../../../services/redis.service";
 import {createHistoryIfNone, getCompanyInContext, updateHistory} from "../../../services/session.service";
 import * as mockUtils from "../../mock.utils";
 import {getCompanyProfile} from "../../../client/apiclient";
-
-jest.mock("../../../services/redis.service");
-jest.mock("../../../services/session.service");
-jest.mock("../../../client/apiclient");
 
 const mockCacheService = (<unknown> loadSession as jest.Mock<typeof loadSession>);
 const mockUpdateHistory = (<unknown> updateHistory as jest.Mock<typeof updateHistory>);

@@ -2,7 +2,6 @@ import * as cookieParser from "cookie-parser";
 import * as express from "express";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
-import Redis from 'ioredis';
 
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 import { SessionMiddleware, SessionStore } from "@companieshouse/node-session-handler";
@@ -16,10 +15,11 @@ import history from "./session/middleware/history";
 import {appRouter} from "./routes/routes";
 import accessibilityRoutes from "./routes/accessibility.routes";
 import {ERROR_SUMMARY_TITLE} from "./model/error.messages";
-import {CACHE_SERVER, COOKIE_DOMAIN, COOKIE_NAME, COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION, PIWIK_SITE_ID, PIWIK_URL} from "./session/config";
+import {COOKIE_DOMAIN, COOKIE_NAME, COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION, PIWIK_SITE_ID, PIWIK_URL} from "./session/config";
 import activeFeature from "./feature.flag";
 import logger from "./logger";
 import checkServiceAvailability from "./availability/middleware/service.availability";
+import redisStore from "./session/store/redis.store";
 
 const app = express();
 
@@ -60,12 +60,12 @@ const cookieConfig = {
   cookieDomain: COOKIE_DOMAIN,
   cookieTimeToLiveInSeconds: parseInt(DEFAULT_SESSION_EXPIRATION, 10)
 };
-const sessionStore = new SessionStore(new Redis(`redis://${CACHE_SERVER}`));
+const sessionStore = new SessionStore(redisStore);
 app.use(SessionMiddleware(cookieConfig, sessionStore));
 
 const csrfProtectionMiddleware = CsrfProtectionMiddleware({
   sessionStore,
-  enabled: false,
+  enabled: true,
   sessionCookieName: COOKIE_NAME
 });
 app.use(csrfProtectionMiddleware);

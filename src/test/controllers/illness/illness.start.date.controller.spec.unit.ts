@@ -1,17 +1,19 @@
-import app from "../../../app";
+jest.mock("../../../services/redis.service");
+jest.mock("../../../services/reason.service");
+jest.mock("../../../client/apiclient");
+
 import * as request from "supertest";
+import * as moment from "moment";
+
+import mockMiddlewares from "../../mock.middleware";
+import app from "../../../app";
 import * as PageURLs from "../../../model/page.urls";
 import {COOKIE_NAME} from "../../../session/config";
-import * as moment from "moment";
 import {EXTENSIONS_CONTINUED_ILLNESS} from "../../../model/page.urls";
 import {loadSession} from "../../../services/redis.service";
 import {fullDummySession} from "../../mock.utils";
 import {updateReason} from "../../../services/reason.service";
 import * as reasonService from "../../../services/reason.service";
-
-jest.mock("../../../services/redis.service");
-jest.mock("../../../services/reason.service");
-jest.mock("../../../client/apiclient");
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockUpdateReason = (<unknown>updateReason as jest.Mock<typeof updateReason>);
@@ -31,6 +33,8 @@ const ILLNESS_START_DATE_TITLE: string = "When did the illness start";
 const REASON_ID: string = "abc-123";
 
 beforeEach( () => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   mockCacheService.prototype.constructor.mockImplementation(fullDummySession);
   mockUpdateReason.mockClear();
   mockUpdateReason.mockRestore();

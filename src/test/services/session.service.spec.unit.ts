@@ -1,9 +1,15 @@
+jest.mock("redis", () => {
+  return {
+    createClient: jest.fn().mockReturnThis(),
+    on: jest.fn().mockReturnThis(),
+  }
+});
+jest.mock("../../session/store/redis.store");
+
 import { IExtensionSession, IExtensionRequest } from "../../session/types";
 import Session from "../../session/session";
 import * as sessionService from "../../services/session.service";
 import {UPLOAD_DOCUMENTS_YES} from "../../session/keys";
-
-jest.mock("../../session/store/redis.store");
 
 describe("cache service tests", () => {
   it("should return true if request exists", async () => {
