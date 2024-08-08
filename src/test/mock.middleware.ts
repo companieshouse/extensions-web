@@ -7,6 +7,11 @@ import { NextFunction, Request, Response } from "express";
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 
 jest.mock("@companieshouse/web-security-node");
+jest.mock('ioredis', () => {
+  return {
+    default: jest.fn().mockReturnThis()
+  }
+});
 jest.mock("redis", () => {
   return {
     createClient: jest.fn().mockReturnThis(),
@@ -18,6 +23,7 @@ const mockCsrfProtectionMiddleware = CsrfProtectionMiddleware as jest.Mock;
 mockCsrfProtectionMiddleware.mockImplementation((_opts) => (req: Request, res: Response, next: NextFunction) => next());
 
 const mockMiddlewares = {
+  mockSessionMiddleware: jest.fn().mockImplementation(),
   mockCsrfProtectionMiddleware
 }
 
