@@ -1,5 +1,10 @@
-import app from "../../app";
+jest.mock("../../client/apiclient");
+jest.mock("../../services/redis.service");
+
 import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
+import app from "../../app";
 import {EXTENSIONS_PRINT_APPLICATION} from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
 import {loadMockSession, fullDummySession} from "../mock.utils";
@@ -8,9 +13,6 @@ import {getCompanyProfile, getReasons, getFullRequest} from "../../client/apicli
 import {loadSession} from "../../services/redis.service";
 import Session from "../../session/session";
 import * as mockUtils from "../mock.utils";
-
-jest.mock("../../client/apiclient");
-jest.mock("../../services/redis.service");
 
 const EMAIL: string = "demo@ch.gov.uk";
 const PAGE_TITLE: string = "Print a copy of your application";
@@ -22,6 +24,8 @@ const mockReasons = (<unknown>getReasons as jest.Mock<typeof getReasons>);
 const mockFullRequest = (<unknown>getFullRequest as jest.Mock<typeof getFullRequest>);
 
 beforeEach( () => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   mockCompanyProfile.mockRestore();
   loadMockSession(mockCacheService);
   mockReasons.prototype.constructor.mockImplementation(() => {

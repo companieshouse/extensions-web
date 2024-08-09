@@ -1,5 +1,12 @@
-import app from "../../../app";
+jest.mock("../../../services/redis.service");
+jest.mock("../../../services/reason.service");
+jest.mock("../../../services/session.service");
+jest.mock("../../../client/apiclient");
+
 import * as request from 'supertest';
+
+import mockMiddlewares from "../../mock.middleware";
+import app from "../../../app";
 import * as pageURLs from "../../../model/page.urls";
 import {COOKIE_NAME} from "../../../session/config";
 import {loadSession} from "../../../services/redis.service";
@@ -7,11 +14,6 @@ import {loadMockSession, fullDummySession, sessionWithChangingDetails} from "../
 import * as reasonService from "../../../services/reason.service";
 import * as sessionService from "../../../services/session.service";
 import {createHistoryIfNone} from "../../../services/session.service";
-
-jest.mock("../../../services/redis.service");
-jest.mock("../../../services/reason.service");
-jest.mock("../../../services/session.service");
-jest.mock("../../../client/apiclient");
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockSetReasonInContextAsString = (<unknown>sessionService.setReasonInContextAsString as jest.Mock<typeof sessionService.setReasonInContextAsString>);
@@ -24,6 +26,8 @@ const STILL_ILL_ANSWER_NOT_PROVIDED: string =
   "You must tell us if this is a continued illness";
 
 beforeEach(() => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   mockGetCurrentReason.mockClear();
   loadMockSession(mockCacheService);
   mockGetCurrentReason.prototype.constructor.mockImplementationOnce(() => {

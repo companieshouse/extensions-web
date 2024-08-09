@@ -1,5 +1,11 @@
-import app from "../../app";
+jest.mock("../../client/apiclient");
+jest.mock("../../services/redis.service");
+jest.mock("../../services/session.service");
+
 import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
+import app from "../../app";
 import {EXTENSIONS_CHECK_YOUR_ANSWERS, EXTENSIONS_CONFIRMATION} from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
 import {loadMockSession, fullDummySession, EMAIL} from "../mock.utils";
@@ -9,10 +15,6 @@ import {loadSession} from "../../services/redis.service";
 import Session from "../../session/session";
 import {createHistoryIfNone, getRequest} from "../../services/session.service";
 import * as mockUtils from "../mock.utils";
-
-jest.mock("../../client/apiclient");
-jest.mock("../../services/redis.service");
-jest.mock("../../services/session.service");
 
 const COMPANY_NUMBER: string = "00006400";
 const TITLE: string = "Check your answers before sending your application";
@@ -26,6 +28,8 @@ const mockGetRequest = (<unknown>getRequest as jest.Mock<typeof getRequest>);
 const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
 
 beforeEach( () => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   mockCompanyProfile.mockRestore();
   loadMockSession(mockCacheService);
   mockReasons.prototype.constructor.mockImplementation(() => {

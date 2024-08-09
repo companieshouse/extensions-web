@@ -1,12 +1,23 @@
+jest.mock('ioredis', () => {
+  return {
+    default: jest.fn().mockReturnThis()
+  }
+});
+jest.mock("redis", () => {
+  return {
+    createClient: jest.fn().mockReturnThis(),
+    on: jest.fn().mockReturnThis(),
+  }
+});
+jest.mock("../../services/redis.service");
+jest.mock("../../controllers/company.details.controller");
+jest.mock("../../controllers/company.number.controller");
+
 import app from '../../app';
 import * as request from 'supertest';
 import {COOKIE_NAME} from "../../session/config";
 import {loadSession} from "../../services/redis.service";
 import {loadMockSession} from "../mock.utils";
-
-jest.mock("../../services/redis.service");
-jest.mock("../../controllers/company.details.controller");
-jest.mock("../../controllers/company.number.controller");
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 

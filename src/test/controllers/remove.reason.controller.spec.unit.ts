@@ -1,5 +1,10 @@
-import app from "../../app";
+jest.mock("../../services/redis.service");
+jest.mock("../../client/apiclient");
+
 import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
+import app from "../../app";
 import * as pageURLs from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
 import * as keys from "../../session/keys";
@@ -7,9 +12,6 @@ import {getDummyCompanyProfile} from "../mock.utils";
 import { getCompanyProfile, removeExtensionReasonFromRequest, getReasons } from "../../client/apiclient";
 import Session from "../../session/session";
 import {loadSession} from "../../services/redis.service";
-
-jest.mock("../../services/redis.service");
-jest.mock("../../client/apiclient");
 
 const mockCompanyProfile: jest.Mock = (<unknown>getCompanyProfile as jest.Mock<typeof getCompanyProfile>);
 const mockRedisService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
@@ -24,6 +26,8 @@ const ERROR_SUMMARY_TITLE: string = "There is a problem";
 const QUERY_ID = "?id=1";
 
 beforeEach(() => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   mockCompanyProfile.mockRestore();
   mockRedisService.mockRestore();
   mockReasons.mockClear();

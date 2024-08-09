@@ -1,13 +1,15 @@
+jest.mock("../../services/redis.service");
+
 import {NextFunction, Request, Response} from "express";
+import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
 import * as pageURLs from "../../model/page.urls";
-import * as request from "supertest";
 import {appRouter} from "../../routes/routes";
 import {COOKIE_NAME} from "../../session/config";
 import {loadSession} from "../../services/redis.service";
 import {loadMockSession} from "../mock.utils";
-
-jest.mock("../../services/redis.service");
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 
@@ -15,6 +17,8 @@ const ERROR_404 = "Page not found";
 const ERROR_500 = "Sorry, there is a problem with the service";
 
 beforeEach(() => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   mockCacheService.mockRestore();
 
   loadMockSession(mockCacheService);

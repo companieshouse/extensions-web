@@ -1,4 +1,11 @@
+jest.mock("../../../services/redis.service");
+jest.mock("../../../services/reason.service");
+jest.mock("../../../services/session.service");
+jest.mock("../../../client/apiclient");
+
 import * as request from 'supertest';
+
+import mockMiddlewares from '../../mock.middleware';
 import app from "../../../app";
 import * as pageURLs from "../../../model/page.urls";
 import {COOKIE_NAME} from "../../../session/config";
@@ -8,11 +15,6 @@ import {updateReason} from "../../../services/reason.service";
 import * as reasonService from "../../../services/reason.service";
 import * as sessionService from "../../../services/session.service";
 import {createHistoryIfNone} from "../../../services/session.service";
-
-jest.mock("../../../services/redis.service");
-jest.mock("../../../services/reason.service");
-jest.mock("../../../services/session.service");
-jest.mock("../../../client/apiclient");
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockUpdateReasonService = (<unknown>updateReason as jest.Mock<typeof updateReason>);
@@ -25,6 +27,8 @@ const NO_INFORMATION_INPUT: string = "You must tell us how this affected your ab
 const REASON_ID: string = "abc-123";
 
 beforeEach(() => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   loadMockSession(mockCacheService);
   mockUpdateReasonService.mockClear();
   mockUpdateReasonService.mockRestore();

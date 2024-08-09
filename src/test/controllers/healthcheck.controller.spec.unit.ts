@@ -1,12 +1,16 @@
 jest.mock("../../services/redis.service");
 
 import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
 import {EXTENSIONS_HEALTHCHECK} from "../../model/page.urls";
 
 describe("HEALTHCHECK controller", () => {
 
   beforeEach(() => {
+    mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
     jest.clearAllMocks();
   });
 

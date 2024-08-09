@@ -15,16 +15,19 @@ jest.mock("../../client/apiclient", () => {
 });
 
 import {NextFunction, Request, Response} from "express";
-import {loadSession} from "../../services/redis.service";
 import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
+import {loadSession} from "../../services/redis.service";
 import {COOKIE_NAME} from "../../session/config";
 import {loadMockSession} from "../mock.utils";
-import activeFeature from "../../feature.flag";
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 
 beforeEach(() => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   mockCacheService.mockRestore();
   loadMockSession(mockCacheService);
   mockAuthenticateForDownload.mockClear();

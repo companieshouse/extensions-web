@@ -1,4 +1,9 @@
+jest.mock("../../client/apiclient");
+jest.mock("../../services/redis.service");
+
 import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
 import * as pageURLs from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
@@ -12,9 +17,6 @@ import {
 } from "../../client/apiclient";
 import {ReasonWeb} from "../../model/reason/extension.reason.web";
 
-jest.mock("../../client/apiclient");
-jest.mock("../../services/redis.service");
-
 const mockCompanyProfile: jest.Mock = (<unknown>getCompanyProfile as jest.Mock<typeof getCompanyProfile>);
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockRemoveAttachment = (<unknown>removeAttachment as jest.Mock<typeof removeAttachment>);
@@ -25,6 +27,8 @@ const REMOVE_DOCUMENT_DECISION_NOT_MADE: string = "You must tell us if you want 
 const QUERY_ID: string = "?documentID=attachment1";
 
 beforeEach( () => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   mockCompanyProfile.mockRestore();
   mockRemoveAttachment.mockClear();
   mockCacheService.mockClear();

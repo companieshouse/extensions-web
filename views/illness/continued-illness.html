@@ -21,6 +21,7 @@
         }) }}
       {% endif %}
       <form method="post">
+        {% include "includes/csrf_token.html" %}
         {% if errorList.length > 0 %}
           {% set continuedIllnessError = {
           text: continuedIllnessErr.text

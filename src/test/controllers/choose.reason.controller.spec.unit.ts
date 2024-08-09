@@ -1,5 +1,11 @@
-import app from "../../app";
+jest.mock("../../services/redis.service");
+jest.mock("../../client/apiclient");
+jest.mock("../../services/reason.service");
+
 import * as superTest from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
+import app from "../../app";
 import * as pageURLs from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
 import {loadSession} from "../../services/redis.service";
@@ -9,10 +15,6 @@ import Session from "../../session/session";
 import {addExtensionReasonToRequest} from "../../client/apiclient";
 import * as reasonService from "../../services/reason.service";
 
-jest.mock("../../services/redis.service");
-jest.mock("../../client/apiclient");
-jest.mock("../../services/reason.service");
-
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockApiClient = (<unknown>addExtensionReasonToRequest as jest.Mock<typeof addExtensionReasonToRequest>);
 const mockGetCurrentReason = (<unknown>reasonService.getCurrentReason as jest.Mock<typeof reasonService.getCurrentReason>);
@@ -21,6 +23,8 @@ const mockDeleteReason = (<unknown>reasonService.deleteCurrentReason as jest.Moc
 const EXTENSION_REASON_NOT_SELECTED = "You must select a reason";
 
 beforeEach(() => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   loadMockSession(mockCacheService);
   mockApiClient.mockClear();
   mockDeleteReason.mockClear();

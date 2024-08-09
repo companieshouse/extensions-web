@@ -1,5 +1,12 @@
-import app from "../../../app";
+jest.mock("../../../services/redis.service");
+jest.mock("../../../services/reason.service");
+jest.mock("../../../services/session.service");
+jest.mock("../../../client/apiclient");
+
 import * as request from "supertest";
+
+import mockMiddlewares from "../../mock.middleware";
+import app from "../../../app";
 import * as pageURLs from "../../../model/page.urls";
 import {COOKIE_NAME} from "../../../session/config";
 import {loadMockSession, fullDummySession} from "../../mock.utils";
@@ -9,12 +16,6 @@ import {updateReason} from "../../../services/reason.service";
 import * as reasonService from "../../../services/reason.service";
 import * as sessionService from "../../../services/session.service";
 import {createHistoryIfNone} from "../../../services/session.service";
-import { stringify } from "querystring";
-
-jest.mock("../../../services/redis.service");
-jest.mock("../../../services/reason.service");
-jest.mock("../../../services/session.service");
-jest.mock("../../../client/apiclient");
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockUpdateReason = (<unknown>updateReason as jest.Mock<typeof updateReason>);
@@ -36,6 +37,8 @@ function reason(affectedPerson) {
 };
 
 beforeEach( () => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   mockCacheService.mockRestore();
   loadMockSession(mockCacheService);
   mockUpdateReason.mockRestore();

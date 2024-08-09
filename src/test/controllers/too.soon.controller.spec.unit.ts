@@ -1,15 +1,17 @@
+jest.mock("../../client/apiclient");
+jest.mock("../../services/redis.service");
+jest.mock("../../services/session.service");
+
+import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
+import app from "../../app";
 import {ExtensionsCompanyProfile, getCompanyProfile} from "../../client/apiclient";
 import {loadSession} from "../../services/redis.service";
 import {createHistoryIfNone, getCompanyInContext} from "../../services/session.service";
 import * as mockUtils from "../mock.utils";
-import * as request from "supertest";
-import app from "../../app";
 import {COOKIE_NAME} from "../../session/config";
 import * as pageURLs from "../../model/page.urls";
-
-jest.mock("../../client/apiclient");
-jest.mock("../../services/redis.service");
-jest.mock("../../services/session.service");
 
 const mockCompanyProfile: jest.Mock = (<unknown>getCompanyProfile as jest.Mock<typeof getCompanyProfile>);
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
@@ -22,6 +24,8 @@ const TOO_SOON_MSG = "It's too soon to apply for an extension";
 const TOO_SOON_TITLE = "Accounts not due";
 
 beforeEach(() => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   mockCompanyProfile.mockRestore();
   mockCacheService.mockRestore();
   mockUtils.loadMockSession(mockCacheService);

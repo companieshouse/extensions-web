@@ -1,17 +1,19 @@
-import app from "../../../app";
-import * as request from "supertest";
-import * as pageURLs from "../../../model/page.urls";
-import {COOKIE_NAME} from "../../../session/config";
-import * as moment from "moment";
-import {loadSession} from "../../../services/redis.service";
-import {loadMockSession, fullDummySession, missingTokenDummySession} from "../../mock.utils";
-import * as pageUrls from "../../../model/page.urls";
-import * as reasonService from "../../../services/reason.service";
-import {ReasonWeb} from "../../../model/reason/extension.reason.web";
-
 jest.mock("../../../services/redis.service");
 jest.mock("../../../client/apiclient");
 jest.mock("../../../services/reason.service");
+
+import * as request from "supertest";
+import * as moment from "moment";
+
+import mockMiddlewares from "../../mock.middleware";
+import app from "../../../app";
+import * as pageURLs from "../../../model/page.urls";
+import {COOKIE_NAME} from "../../../session/config";
+import {loadSession} from "../../../services/redis.service";
+import {loadMockSession, fullDummySession} from "../../mock.utils";
+import * as pageUrls from "../../../model/page.urls";
+import * as reasonService from "../../../services/reason.service";
+import {ReasonWeb} from "../../../model/reason/extension.reason.web";
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockGetCurrentReason = (<unknown>reasonService.getCurrentReason as jest.Mock<typeof reasonService.getCurrentReason>);
@@ -30,6 +32,8 @@ const ILLNESS_END_BEFORE_START_DATE: string = "End date must not precede start d
 const REASON_ID: string = "abc-123";
 
 beforeEach( () => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   loadMockSession(mockCacheService);
   mockGetCurrentReason.mockClear();
   mockGetCurrentReason.prototype.constructor.mockImplementation((): ReasonWeb => {
