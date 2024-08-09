@@ -14,12 +14,13 @@
 {% block content %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-      <form action="" method="post">
-          {% if errorList.length > 0 %}
-          {{ govukErrorSummary({
-          titleText: "There was a problem with the date you gave us",
-          errorList: errorList
-          }) }}
+    <form action="" method="post">
+      {% include "includes/csrf_token.html" %}
+      {% if errorList.length > 0 %}
+      {{ govukErrorSummary({
+      titleText: "There was a problem with the date you gave us",
+      errorList: errorList
+      }) }}
       {% endif %}
 
       {% set inputClasses_year = "govuk-input--width-4" %}

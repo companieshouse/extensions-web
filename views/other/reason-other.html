@@ -18,6 +18,7 @@
         Anything you tell us to support your appeal will be kept confidential.
       {% endset %}
       <form method="post">
+        {% include "includes/csrf_token.html" %}
         {% if errorList.length > 0 %}
           {{ govukErrorSummary({
             titleText: ERROR_SUMMARY_TITLE,
