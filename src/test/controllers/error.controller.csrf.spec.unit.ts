@@ -39,7 +39,6 @@ const CSRF_ERROR_PAGE_TEXT = "We have not been able to save the information you 
 const CSRF_TOKEN_ERROR = "CSRF token mismatch";
 const COMPANY_NUMBER = "00006400";
 
-// test skipped, need to work on it more when activating csrfProtectionMiddleware
 describe("error csrf", () => {
   beforeEach(() => {
     mockCacheService.mockRestore();
@@ -64,10 +63,6 @@ describe("error csrf", () => {
   it("Should render the CSRF error page", async () => {
 
     mockRemoveReasonGetRoute.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => { throw new CsrfError(CSRF_TOKEN_ERROR); });
-    // mockRemoveReasonGetRoute.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-    //   const csrfError = new CsrfError(CSRF_TOKEN_ERROR);
-    //   next(csrfError);
-    // });
 
     const QUERY_ID = "?id=1";
 
