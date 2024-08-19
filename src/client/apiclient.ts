@@ -1,4 +1,4 @@
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosHeaders, AxiosRequestConfig, AxiosResponse } from "axios";
 import {lookupCompanyStatus, lookupCompanyType} from "./api.enumerations";
 import logger from "../logger";
 import { API_URL, EXTENSIONS_API_URL, EXTENSIONS_PROCESSOR_API_URL } from "../session/config";
@@ -113,7 +113,10 @@ export const createExtensionRequest = async (company: ExtensionsCompanyProfile, 
   logger.debug("createExtensionRequest api url = " + CREATE_REQUEST_PATH);
 
   const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
-  config.headers["Content-Type"] = "application/json";
+  config.headers = {
+    ...config.headers,
+    "Content-Type": "application/json"
+  };
   config.data = {
     accounting_period_end_on: company.accountingPeriodEndOn,
     accounting_period_start_on: company.accountingPeriodStartOn,
@@ -130,7 +133,10 @@ export const addExtensionReasonToRequest = async (
     `${EXTENSIONS_API_URL}/company/${companyNumber}/extensions/requests/${requestId}/reasons`;
 
   const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
-  config.headers["Content-Type"] = "application/json";
+  config.headers = {
+    ...config.headers,
+    "Content-Type": "application/json"
+  };
   config.data = {reason: extensionReason};
   config.method = HTTP_POST;
   config.url = ADD_REASON_PATH;
@@ -144,7 +150,10 @@ export const updateReason = async (request: IExtensionRequest, token: string, pa
     `requests/${request.extension_request_id}/reasons/${request.reason_in_context_string}`;
 
   const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
-  config.headers["Content-Type"] = "application/json";
+  config.headers = {
+    ...config.headers,
+    "Content-Type": "application/json"
+  };
   config.data = partialReason;
   config.method = HTTP_PATCH;
   config.url = ADD_REASON_PATH;
@@ -176,14 +185,15 @@ export const addAttachmentToReason = async ( companyNumber: string,
   const data = new FormData();
   data.append("file", attachment, {filename: fileName});
 
+  const postHeaders = {
+    post: {
+      Authorization: "Bearer " + token,
+      ...data.getHeaders(),
+    } as unknown as AxiosHeaders
+  }
   const config: AxiosRequestConfig = {
     data,
-    headers: {
-      post: {
-        ...{Authorization: "Bearer " + token},
-        ...data.getHeaders(),
-      },
-    },
+    headers: postHeaders,
     method: HTTP_POST,
     proxy: false,
     url: ADD_ATTACHMENT_PATH,
@@ -283,7 +293,10 @@ export const setExtensionRequestStatus = async (status: ExtensionRequestStatus,
                                                 companyNumber: string,
                                                 token: string) => {
   const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
-  config.headers["Content-Type"] = "application/json";
+  config.headers = {
+    ...config.headers,
+    "Content-Type": "application/json"
+  };
   config.data = {
     status,
   };

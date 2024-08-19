@@ -7,7 +7,7 @@ jest.mock("axios", () => {
   };
 });
 
-import axios, {AxiosResponse} from "axios";
+import {AxiosRequestHeaders, AxiosResponse} from "axios";
 import {download} from "../../client/apiclient";
 import * as httpMocks from "node-mocks-http";
 import {Readable} from "stream";
@@ -32,7 +32,7 @@ const downloadAxiosResponse: AxiosResponse<any> = {
     "content-type": CONTENT_TYPE_VALUE,
     "content-length": CONTENT_LENGTH_VALUE
   },
-  config: {}
+  config: { headers: {} as AxiosRequestHeaders }
 };
 
 describe("apiclient download unit tests", () => {
