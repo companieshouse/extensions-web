@@ -42,11 +42,6 @@ test-unit: clean
 test-integration:
 	npm run integration
 
-.PHONY: test-contract-consumer
-test-contract-consumer:
-	rm -rf pacts/
-	npm run contract-consumer
-
 .PHONY: security-check
 security-check:
 	npm audit --audit-level=high
