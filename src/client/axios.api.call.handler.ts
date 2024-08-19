@@ -24,11 +24,14 @@ export const makeAPICall = async (config: AxiosRequestConfig): Promise<AxiosResp
     logger.error(`API ERROR ${err}`);
     const axiosError = err as AxiosError;
     const {response, message} = axiosError;
-    throw {
+    const error = {
+      ...err,
       data: response ? (response?.data as {errors: Record<string, any>})?.errors : [],
       message,
       status: response ? response.status : -1,
-    };
+    } as AxiosError;
+
+    throw error
   }
 };
 
