@@ -46,7 +46,7 @@ mockGetRequest.mockReturnValue(
   } as IExtensionRequest
 );
 
- describe("company.details.controller tests", () => {
+describe("company.details.controller tests", () => {
   beforeEach(() => {
     mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
 

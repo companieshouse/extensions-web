@@ -17,12 +17,12 @@
     <form method="post">
       {% include "includes/csrf_token.html" %}
 
-       {% if errorList.length > 0 %}
-         {{ govukErrorSummary({
+      {% if errorList.length > 0 %}
+        {{ govukErrorSummary({
           titleText: ERROR_SUMMARY_TITLE,
           errorList: errorList
-         }) }}
-       {% endif %}
+        }) }}
+      {% endif %}
 
       {% if errorList.length > 0 %}
         {% set addExtensionReasonError = {
