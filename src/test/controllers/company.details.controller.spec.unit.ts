@@ -48,7 +48,7 @@ mockGetRequest.mockReturnValue(
 
 describe("company.details.controller tests", () => {
   beforeEach(() => {
-    mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+     mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
 
      mockLoggerError.mockClear();
      mockSetExtensionRequestStatus.mockClear();
