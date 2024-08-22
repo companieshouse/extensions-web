@@ -1,20 +1,33 @@
+jest.mock('ioredis', () => {
+  return {
+    default: jest.fn().mockReturnThis()
+  }
+});
+jest.mock("redis", () => {
+  return {
+    createClient: jest.fn().mockReturnThis(),
+    on: jest.fn().mockReturnThis(),
+  }
+});
+jest.mock("../../services/redis.service");
+jest.mock("../../client/apiclient");
+jest.mock("../../../src/controllers/remove.reason.controller");
+
+import { CsrfError } from "@companieshouse/web-security-node";
 import {NextFunction, Request, Response} from "express";
+import * as request from "supertest";
+
 import app from "../../app";
 import * as pageURLs from "../../model/page.urls";
-import * as request from "supertest";
 import {COOKIE_NAME} from "../../session/config";
 import {loadSession} from "../../services/redis.service";
-import {EMAIL, getDummyCompanyProfile} from "../mock.utils";
-import { CsrfError } from "@companieshouse/web-security-node";
+import {EMAIL, getDummyCompanyProfile, loadMockSession} from "../mock.utils";
 import * as removeReasonController from "../../controllers/remove.reason.controller";
 import { getCompanyProfile, removeExtensionReasonFromRequest, getReasons } from "../../client/apiclient";
 import Session from "../../session/session";
 import * as keys from "../../session/keys";
 
-jest.mock("../../services/redis.service");
-jest.mock("../../client/apiclient");
-jest.mock("../../../src/controllers/remove.reason.controller");
-
+const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockCompanyProfile: jest.Mock = (<unknown>getCompanyProfile as jest.Mock<typeof getCompanyProfile>);
 const mockRedisService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockReasons = (<unknown>getReasons as jest.Mock<typeof getReasons>);
@@ -26,9 +39,11 @@ const CSRF_ERROR_PAGE_TEXT = "We have not been able to save the information you 
 const CSRF_TOKEN_ERROR = "CSRF token mismatch";
 const COMPANY_NUMBER = "00006400";
 
-// test skipped, need to work on it more when activating csrfProtectionMiddleware
-describe.skip("error csrf", () => {
+describe("error csrf", () => {
   beforeEach(() => {
+    mockCacheService.mockRestore();
+    loadMockSession(mockCacheService);
+
     mockCompanyProfile.mockRestore();
     mockRedisService.mockRestore();
     mockReasons.mockClear();
@@ -40,7 +55,9 @@ describe.skip("error csrf", () => {
       }
     });
     mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true));
-    mockRemoveReasonGetRoute.mockClear();
+    mockRemoveReasonGetRoute.mockRestore();
+
+    jest.clearAllMocks();
   });
 
   it("Should render the CSRF error page", async () => {

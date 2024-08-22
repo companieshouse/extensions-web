@@ -19,7 +19,7 @@
   "dependencies": {
     "@companieshouse/api-sdk-node": "^2.0.147",
     "@companieshouse/node-session-handler": "^5.0.2",
-    "@companieshouse/web-security-node": "^4.1.1",
+    "@companieshouse/web-security-node": "^4.3.0",
     "axios": "^0.21.4",
     "busboy": "^1.6.0",
     "cookie-parser": "~1.4.6",
@@ -28,6 +28,7 @@
     "form-data": "^2.3.3",
     "govuk-frontend": "^3.11.0",
     "http-errors": "~1.6.2",
+    "ioredis": "^5.4.1",
     "js-yaml": "^3.13.1",
     "log4js": "^6.4.1",
     "moment": "^2.24.0",

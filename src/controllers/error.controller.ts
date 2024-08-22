@@ -1,8 +1,9 @@
+import { CsrfError } from "@companieshouse/web-security-node";
 import { NextFunction, Request, Response } from "express";
+
 import logger from "../logger";
 import * as errorMessages from "../model/error.messages";
 import * as templatePaths from "../model/template.paths";
-import { CsrfError } from "@companieshouse/web-security-node";
 
 /**
  * This handler catches all routes that don't match a handler i.e. 404 Not Found, because of its position

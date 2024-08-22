@@ -7,13 +7,14 @@ jest.mock("../../authentication/middleware/download", () => {
   }
 });
 
-import app from "../../app";
 import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
+import app from "../../app";
 import {COOKIE_NAME} from "../../session/config";
 import {loadSession} from "../../services/redis.service";
 import {loadMockSession} from "../mock.utils";
 import {NextFunction, Request, Response} from "express";
-import activeFeature from "../../feature.flag";
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 
@@ -21,6 +22,8 @@ const DOWNLOAD_LANDING_PAGE_URL: string = "/extensions/download/company/1234/ext
 const DOWNLOAD_FILE_URL: string = "/extensions/company/1234/extensions/requests/5678/reasons/9999/attachments/8888/download";
 
 beforeEach(() => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   loadMockSession(mockCacheService);
 });
 

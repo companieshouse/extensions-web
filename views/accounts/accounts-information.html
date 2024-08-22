@@ -21,6 +21,7 @@
       }) }}
     {% endif %}
     <form action="" method="post">
+      {% include "includes/csrf_token.html" %}
       <h1 class="govuk-heading-xl">How does this affect your ability to file on time?</h1>
         {% if inputError.flag %}
           {% set errorText = {

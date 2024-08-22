@@ -1,14 +1,16 @@
-import app from "../../app";
+jest.mock("../../services/redis.service");
+jest.mock("../../client/api.enumerations");
+jest.mock("../../client/apiclient");
+
 import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
+import app from "../../app";
 import {ExtensionsCompanyProfile, getCompanyProfile} from "../../client/apiclient";
 import {COOKIE_NAME} from "../../session/config";
 import * as pageURLs from "../../model/page.urls";
 import * as mockUtils from "../mock.utils";
 import {loadSession} from "../../services/redis.service";
-
-jest.mock("../../services/redis.service");
-jest.mock("../../client/api.enumerations");
-jest.mock("../../client/apiclient");
 
 const COMPANY_NUMBER = "00006400";
 const NO_COMPANY_NUMBER_SUPPLIED = "No company number supplied";
@@ -20,6 +22,8 @@ const mockCompanyProfile: jest.Mock = (<unknown>getCompanyProfile as jest.Mock<t
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 
 beforeEach(() => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   mockCompanyProfile.mockRestore();
   mockCacheService.mockRestore();
 

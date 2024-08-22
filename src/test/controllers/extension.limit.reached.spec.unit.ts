@@ -1,15 +1,17 @@
+jest.mock("../../client/apiclient");
+jest.mock("../../services/redis.service");
+jest.mock("../../services/session.service");
+
 import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
+import app from "../../app";
 import {ExtensionsCompanyProfile, getCompanyProfile} from "../../client/apiclient";
 import * as mockUtils from "../mock.utils";
-import app from "../../app";
 import * as pageURLs from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
 import { loadSession } from "../../services/redis.service";
 import {createHistoryIfNone, getCompanyInContext} from "../../services/session.service";
-
-jest.mock("../../client/apiclient");
-jest.mock("../../services/redis.service");
-jest.mock("../../services/session.service");
 
 const mockCompanyProfile = getCompanyProfile as jest.Mock;
 const mockCacheService = loadSession as jest.Mock;
@@ -23,6 +25,8 @@ const AFTER_TWELVE_MONTHS_TITLE = "You cannot use this service";
 const EXPECTED_MAX_EXTENSION_PERIOD_IN_MONTHS = "12";
 
 beforeEach(() => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   mockCompanyProfile.mockRestore();
   mockCacheService.mockRestore();
   mockUtils.loadMockSession(mockCacheService);

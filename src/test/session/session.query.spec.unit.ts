@@ -1,8 +1,14 @@
+jest.mock("redis", () => {
+  return {
+    createClient: jest.fn().mockReturnThis(),
+    on: jest.fn().mockReturnThis(),
+  }
+});
+jest.mock("../../services/session.service");
+
 import { Request, Response, NextFunction } from "express";
 import sessionMiddleware from "../../session/middleware/session.query";
 import * as sessionService from "../../services/session.service";
-
-jest.mock("../../services/session.service");
 
 const mockSetReasonInContext = (<unknown>sessionService.setReasonInContextAsString as jest.Mock<typeof sessionService.setReasonInContextAsString>);
 

@@ -1,15 +1,17 @@
-import app from "../../app";
+jest.mock("../../services/redis.service");
+jest.mock("../../services/reason.service");
+jest.mock("../../services/session.service");
+
 import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
+import app from "../../app";
 import * as pageURLs from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
 import {loadSession} from "../../services/redis.service";
 import {fullDummySession, loadMockSession} from "../mock.utils";
 import {updateReason} from "../../services/reason.service";
 import {createHistoryIfNone} from "../../services/session.service";
-
-jest.mock("../../services/redis.service");
-jest.mock("../../services/reason.service");
-jest.mock("../../services/session.service");
 
 const ADD_EXTENSION_REASON_DECISION_NOT_MADE: string =
   "You must tell us if there is another reason for your extension";
@@ -20,6 +22,8 @@ const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeo
 const session = fullDummySession();
 
 beforeEach( () => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   loadMockSession(mockCacheService);
   mockReasonUpdate.mockClear();
   mockReasonUpdate.mockReset();
