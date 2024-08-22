@@ -2,7 +2,7 @@ import * as cookieParser from "cookie-parser";
 import * as express from "express";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
-import Redis from 'ioredis';
+import Redis from "ioredis";
 
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 import { SessionMiddleware, SessionStore } from "@companieshouse/node-session-handler";
@@ -65,7 +65,7 @@ app.use(SessionMiddleware(cookieConfig, sessionStore));
 
 const csrfProtectionMiddleware = CsrfProtectionMiddleware({
   sessionStore,
-  enabled: false,
+  enabled: true,
   sessionCookieName: COOKIE_NAME
 });
 app.use(csrfProtectionMiddleware);

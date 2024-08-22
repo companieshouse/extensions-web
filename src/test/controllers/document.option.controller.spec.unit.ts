@@ -1,13 +1,15 @@
-import app from "../../app";
+jest.mock("../../services/redis.service");
+jest.mock("../../services/session.service");
+
 import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
+import app from "../../app";
 import * as pageURLs from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
 import {loadSession} from "../../services/redis.service";
 import {loadMockSession} from "../mock.utils";
 import {createHistoryIfNone} from "../../services/session.service";
-
-jest.mock("../../services/redis.service");
-jest.mock("../../services/session.service");
 
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeof createHistoryIfNone>);
@@ -15,6 +17,8 @@ const mockCreateHistoryIfNone = (<unknown>createHistoryIfNone as jest.Mock<typeo
 export const UPLOAD_DOCUMENTS_DECISION_NOT_MADE = "You must tell us if you want to upload documents";
 
 beforeEach( () => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   loadMockSession(mockCacheService);
   mockCreateHistoryIfNone.prototype.constructor.mockImplementation(() => {
     return {

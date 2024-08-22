@@ -1,4 +1,12 @@
+jest.mock("../../client/api.enumerations");
+jest.mock("../../client/apiclient");
+jest.mock("../../services/redis.service");
+jest.mock("../../services/session.service");
+jest.mock("../../logger");
+
 import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
 import {ExtensionsCompanyProfile, getCompanyProfile, setExtensionRequestStatus} from "../../client/apiclient";
 import app from "../../app";
 import {COOKIE_NAME } from "../../session/config";
@@ -16,12 +24,6 @@ import * as pageURLs from "../../model/page.urls";
 import {IExtensionRequest} from "../../session/types";
 import {ExtensionRequestStatus} from "../../model/extension.request.status";
 import logger from "../../logger";
-
-jest.mock("../../client/api.enumerations");
-jest.mock("../../client/apiclient");
-jest.mock("../../services/redis.service");
-jest.mock("../../services/session.service");
-jest.mock("../../logger");
 
 const GENERIC_ERROR = "Sorry, there is a problem with the service";
 const TITLE = "Sorry, there is a problem with the service - GOV.UK";
@@ -44,9 +46,10 @@ mockGetRequest.mockReturnValue(
   } as IExtensionRequest
 );
 
- describe("company.details.controller tests", () => {
+describe("company.details.controller tests", () => {
+  beforeEach(() => {
+     mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
 
-   beforeEach(() => {
      mockLoggerError.mockClear();
      mockSetExtensionRequestStatus.mockClear();
      mockGetRequest.mockClear();

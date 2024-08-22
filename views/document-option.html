@@ -22,6 +22,7 @@
       {% endif %}
 
       <form method="post">
+        {% include "includes/csrf_token.html" %}
         {% if errorList.length > 0 %}
           {% set supportingDocumentsError = {
             text: supportingDocumentsErr.text

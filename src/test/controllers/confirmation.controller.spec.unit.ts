@@ -1,16 +1,18 @@
+jest.mock("../../services/redis.service");
+jest.mock("../../client/apiclient");
+jest.mock( "../../services/session.service");
+
+import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
 import * as pageURLs from "../../model/page.urls";
-import * as request from "supertest";
 import {COOKIE_NAME} from "../../session/config";
 import * as keys from "../../session/keys";
 import Session from "../../session/session";
 import {loadSession} from "../../services/redis.service";
 import {callProcessorApi, getReasons} from "../../client/apiclient";
 import {createHistoryIfNone, getRequest, getCompanyInContext, updateExtensionSessionValue} from "../../services/session.service";
-
-jest.mock("../../services/redis.service");
-jest.mock("../../client/apiclient");
-jest.mock( "../../services/session.service");
 
 const EMAIL: string = "demo@ch.gov.uk";
 const COMPANY_NUMBER: string = "00006400";
@@ -27,6 +29,8 @@ const mockGetCompanyInContext = (<unknown>getCompanyInContext as jest.Mock<typeo
 const mockUpdateExtensionSessionValue = (<unknown>updateExtensionSessionValue as jest.Mock<typeof updateExtensionSessionValue>);
 
   beforeEach(() => {
+    mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
     mockCacheService.mockRestore();
     mockUpdateExtensionSessionValue.mockClear();
     mockGetRequest.prototype.constructor.mockImplementation(() => {

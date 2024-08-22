@@ -1,3 +1,12 @@
+jest.mock("redis", () => {
+  return {
+    createClient: jest.fn().mockReturnThis(),
+    on: jest.fn().mockReturnThis(),
+  }
+});
+jest.mock("../../../services/reason.service");
+jest.mock("../../../logger");
+
 import {Request, Response} from "express";
 import {AjaxUploadResponder} from "../../../controllers/upload/ajax.upload.responder";
 import {getCurrentReasonFull} from "../../../services/reason.service";
@@ -7,9 +16,6 @@ import * as pageURLs from "../../../model/page.urls";
 import logger from "../../../logger";
 import {ERROR_500} from "../../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../../model/govuk.error.data";
-
-jest.mock("../../../services/reason.service");
-jest.mock("../../../logger");
 
 const mockGetCurrentReasonFull = (<unknown>getCurrentReasonFull as jest.Mock<typeof getCurrentReasonFull>);
 const mockLoggerError = (<unknown>logger.error as jest.Mock<typeof logger.error>);

@@ -1,5 +1,10 @@
-import app from "../../app";
+jest.mock("../../services/redis.service");
+jest.mock("../../services/session.service");
+
 import * as request from "supertest";
+
+import mockMiddlewares from "../mock.middleware";
+import app from "../../app";
 import {loadSession} from "../../services/redis.service";
 import {updateHistory} from "../../services/session.service";
 import Session from "../../session/session";
@@ -8,13 +13,12 @@ import * as keys from "../../session/keys";
 import * as pageURLs from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
 
-jest.mock("../../services/redis.service");
-jest.mock("../../services/session.service");
-
 const mockCacheService = (<unknown> loadSession as jest.Mock<typeof loadSession>);
 const mockUpdateHistory = (<unknown>updateHistory as jest.Mock<typeof updateHistory>);
 
 beforeEach(() => {
+  mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
+
   loadMockSession(mockCacheService);
   mockCacheService.mockClear();
   mockUpdateHistory.mockClear();
