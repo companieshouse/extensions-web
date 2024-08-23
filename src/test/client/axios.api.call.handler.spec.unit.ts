@@ -7,15 +7,15 @@ jest.mock("axios", () => {
   };
 });
 
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from "axios";
 import { getApiData, getBaseAxiosRequestConfig, makeAPICall } from "../../client/axios.api.call.handler";
 
 const dummyAxiosResponse: AxiosResponse<any> = {
-  config: {},
   data: {},
-  headers: "header",
   status: 100,
   statusText: "Error",
+  headers: {},
+  config: { headers: {} as AxiosRequestHeaders }
 };
 
 describe("axios call handler", () => {

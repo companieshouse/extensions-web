@@ -7,7 +7,7 @@ jest.mock("axios", () => {
   };
 });
 
-import {AxiosResponse} from "axios";
+import {AxiosRequestHeaders, AxiosResponse} from "axios";
 import {addAttachmentToReason} from "../../client/apiclient";
 import * as fs from "fs";
 import * as path from "path";
@@ -26,8 +26,8 @@ const addAttachmentAxiosResponse: AxiosResponse<any> = {
   },
   status: 202,
   statusText: "OK",
-  headers: "header",
-  config: {}
+  headers: {},
+  config: { headers: {} as AxiosRequestHeaders }
 };
 
 describe("apiclient add attachment unit tests", () => {

@@ -12,7 +12,7 @@ beforeEach( () => {
 });
 
 // Need to import after mocks set or the real axios module will be imported before mocks
-import {AxiosResponse} from "axios";
+import {AxiosRequestHeaders, AxiosResponse} from "axios";
 import {
    removeExtensionReasonFromRequest
 } from "../../client/apiclient"
@@ -22,8 +22,8 @@ const removeReasonAxiosResponse: AxiosResponse<any> = {
   data: {},
   status: 200,
   statusText: "OK",
-  headers: "header",
-  config: {}
+  headers: {},
+  config: { headers: {} as AxiosRequestHeaders }
 };
 
 describe("apiclient remove reason unit tests", () => {
