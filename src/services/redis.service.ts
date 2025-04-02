@@ -25,7 +25,7 @@ const loadSession = async (cookieId: string): Promise<Session> => {
   return session;
 };
 
-const logSignInInfo = (chSession: Session, saveOrLoadText: String, cookieId?) => {
+const logSignInInfo = (chSession: Session, saveOrLoadText: string, cookieId?) => {
   const copyOfSignInInfo = structuredClone(chSession["_data"]?.signin_info);
 
   if (copyOfSignInInfo?.access_token?.access_token) {
