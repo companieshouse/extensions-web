@@ -87,6 +87,10 @@ describe("redis service tests", () => {
             access_token: {
                 access_token: "ABCDE",
                 refresh_token: "FGHIJ"
+            },
+            user_profile: {
+              forename: "BOB",
+              surname: "SMITH"
             }
         }
     }
@@ -97,5 +101,7 @@ describe("redis service tests", () => {
     expect(logMessage).toContain("*** HIDDEN ***");
     expect(logMessage).not.toContain("ABCDE");
     expect(logMessage).not.toContain("FGHIJ");
+    expect(logMessage).not.toContain("BOB");
+    expect(logMessage).not.toContain("SMITH");
   });
 });
