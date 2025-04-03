@@ -38,6 +38,12 @@ const logSignInInfo = (chSession: Session, saveOrLoadText: string, cookieId?) =>
     if (copyOfSignInInfo?.access_token?.refresh_token) {
       copyOfSignInInfo.access_token.refresh_token = "*** HIDDEN ***";
     }
+    if (copyOfSignInInfo?.user_profile?.forename) {
+      copyOfSignInInfo.user_profile.forename = "*** HIDDEN ***";
+    }
+    if (copyOfSignInInfo?.user_profile?.surname) {
+      copyOfSignInInfo.user_profile.surname = "*** HIDDEN ***";
+    }
     logger.info(`src/services/redis.service.ts - ${saveOrLoadText} session to/from Redis with sessionKey = ${chSession?.sessionKey()} , cookieId = ${cookieId}, signin_info = ${JSON.stringify(copyOfSignInInfo, null, 2)}`);
   }
 };
