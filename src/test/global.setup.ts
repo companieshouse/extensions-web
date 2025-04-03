@@ -24,5 +24,4 @@ export default async () => {
   process.env.SHOW_SERVICE_UNAVAILABLE_PAGE = "off";
   process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE="273";
   process.env.MAX_EXTENSION_PERIOD_IN_MONTHS="12"
-  process.env.LOG_SIGNIN_INFO="on";
 };
