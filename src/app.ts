@@ -21,6 +21,8 @@ import activeFeature from "./feature.flag";
 import logger from "./logger";
 import checkServiceAvailability from "./availability/middleware/service.availability";
 
+const EXCLUDED_PATHS = /\/extensions\/((?!healthcheck).)*/;
+
 const app = express();
 
 // view engine setup
@@ -51,7 +53,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(`${pageURLs.EXTENSIONS}`, checkServiceAvailability);
 
 app.use(cookieParser());
-app.use(sessionMiddleware);
+app.use(EXCLUDED_PATHS, sessionMiddleware);
 app.use(`${pageURLs.EXTENSIONS}/*`, authenticate);
 
 const cookieConfig = {
@@ -61,14 +63,14 @@ const cookieConfig = {
   cookieTimeToLiveInSeconds: parseInt(DEFAULT_SESSION_EXPIRATION, 10)
 };
 const sessionStore = new SessionStore(new Redis(`redis://${CACHE_SERVER}`));
-app.use(SessionMiddleware(cookieConfig, sessionStore));
+app.use(EXCLUDED_PATHS, SessionMiddleware(cookieConfig, sessionStore));
 
 const csrfProtectionMiddleware = CsrfProtectionMiddleware({
   sessionStore,
   enabled: true,
   sessionCookieName: COOKIE_NAME
 });
-app.use(csrfProtectionMiddleware);
+app.use(EXCLUDED_PATHS, csrfProtectionMiddleware);
 
 if (activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
   app.use(pageURLs.EXTENSIONS, accessibilityRoutes);
