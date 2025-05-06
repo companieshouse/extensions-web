@@ -58,3 +58,4 @@ and fonts have been added as well:
   - app/assets/fonts/extensions/light-94a07e06a1-v2.woff2
   - app/assets/fonts/extensions/light-f591b13f7d-v2.woff	
 
+
