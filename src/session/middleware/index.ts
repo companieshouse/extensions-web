@@ -22,7 +22,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   if (!cookieId && activeFeature(process.env.SESSION_CREATE)) {
     logger.info("No cookie found, creating new session");
     const session = Session.newInstance();
-    session.setClientSignature(req.get("user-agent") || "", req.ip);
+    session.setClientSignature(req.get("user-agent") || "", req.ip ?? "");
     await redisService.saveSession(session);
 
     // set the cookie for future requests
