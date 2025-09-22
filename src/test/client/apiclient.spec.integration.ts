@@ -46,6 +46,9 @@ const extensionRequest: IExtensionRequest = {
 }
 
 describe("apiclient integration tests", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   it("will return a valid json response", async () => {
     mockGetCompanyProfile.mockResolvedValueOnce(companyProfileResponse);
