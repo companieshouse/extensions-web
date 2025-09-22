@@ -49,6 +49,7 @@ describe("apiclient integration tests", () => {
 
   it("will return a valid json response", async () => {
     mockGetCompanyProfile.mockResolvedValueOnce(companyProfileResponse);
+
     const company = await getCompanyProfile(companyNumber, accessToken);
     expect(company.companyName).toEqual("THE GIRLS' DAY SCHOOL TRUST");
   });
@@ -64,45 +65,49 @@ describe("apiclient integration tests", () => {
 
   it("should return the correct response for create requests", async () => {
     mockGetCompanyProfile.mockResolvedValueOnce(companyProfileResponse);
-    mockAxiosRequest.mockResolvedValue({ data: expectedExtensionRequestResult });
+    mockAxiosRequest.mockResolvedValueOnce({ data: expectedExtensionRequestResult });
+
     const response: string = await createExtensionRequest(await getCompanyProfile(companyNumber, accessToken), companyNumber);
     expect(response).toEqual(expectedExtensionRequestResult);
   });
 
   it("should return the correct response for add reason to request", async () => {
-    mockAxiosRequest.mockResolvedValue({ data: expectedReasonResult });
+    mockAxiosRequest.mockResolvedValueOnce({ data: expectedReasonResult });
+
     const response: string = await addExtensionReasonToRequest(companyNumber, accessToken, requestId, "extensionReason");
     expect(response).toEqual(expectedReasonResult);
   });
 
   it("should not throw when remove reason from request", async () => {
-    mockAxiosRequest.mockResolvedValue({ data: {} });
+    mockAxiosRequest.mockResolvedValueOnce({ data: {} });
 
     await expect(removeExtensionReasonFromRequest(extensionRequest, accessToken))
       .resolves.not.toThrow();
   });
 
   it("should return correct response for a reason update", async () => {
-    mockAxiosRequest.mockResolvedValue({ data: expectedUpdateReasonResult });
+    mockAxiosRequest.mockResolvedValueOnce({ data: expectedUpdateReasonResult });
+
     const response: string = await updateReason(extensionRequest, accessToken, extensionReasonUpdate);
     expect(response).toEqual(expectedUpdateReasonResult);
   });
 
   it("should be able to make a delete call to the attachments endpoint", async () => {
-    mockAxiosRequest.mockResolvedValue({ data: "" });
+    mockAxiosRequest.mockResolvedValueOnce({ data: "" });
+
     const response: string = await removeAttachment(companyNumber, accessToken, requestId, reasonId, "attachment1");
     expect(response).toEqual("");
   });
 
   it("should be able to call processor api without failing", async () => {
-    mockAxiosRequest.mockResolvedValue({ data: {} });
+    mockAxiosRequest.mockResolvedValueOnce({ data: {} });
 
     await expect(callProcessorApi(companyNumber, accessToken, requestId))
       .resolves.not.toThrow();
   });
 
   it("should be able to set status without failing", async () => {
-    mockAxiosRequest.mockResolvedValue({ data: {} });
+    mockAxiosRequest.mockResolvedValueOnce({ data: {} });
     await expect(
       setExtensionRequestStatus(
         ExtensionRequestStatus.REJECTED_MAX_EXT_LENGTH_EXCEEDED,
@@ -122,7 +127,7 @@ describe("apiclient integration tests", () => {
   });
 
   it("should get a full request from the api", async () => {
-    mockAxiosRequest.mockResolvedValue({ data: fullExtensionRequest });
+    mockAxiosRequest.mockResolvedValueOnce({ data: fullExtensionRequest });
 
     const extensionRequest: ExtensionFullRequest =
       await getFullRequest(companyNumber, accessToken, requestId);
@@ -141,7 +146,7 @@ describe("apiclient integration tests", () => {
   });
 
   it("should return error if service unavailable", async () => {
-    mockAxiosRequest.mockRejectedValue(new Error("oops"));
+    mockAxiosRequest.mockRejectedValueOnce(new Error("oops"));
 
     await expect(
       createExtensionRequest({} as ExtensionsCompanyProfile, companyNumber)
