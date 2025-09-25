@@ -1,8 +1,0 @@
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-
-{
-    "etag": "",
-    "id": "5cc84e5e1e8ff21f5863c22d",
-    "reason_information": "blah"
-}
