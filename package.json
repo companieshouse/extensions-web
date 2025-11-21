@@ -18,9 +18,9 @@
     "chs-dev": "nodemon --legacy-watch"
   },
   "dependencies": {
-    "@companieshouse/api-sdk-node": "^2.0.291",
-    "@companieshouse/node-session-handler": "^5.2.5",
-    "@companieshouse/web-security-node": "^4.4.11",
+    "@companieshouse/api-sdk-node": "^2.0.316",
+    "@companieshouse/node-session-handler": "^5.2.8",
+    "@companieshouse/web-security-node": "^4.4.13",
     "axios": "^1.12.2",
     "busboy": "^1.6.0",
     "cookie-parser": "~1.4.6",
@@ -55,7 +55,7 @@
     "jest": "^29.7.0",
     "node-mocks-http": "^1.7.6",
     "nodemon": "^3.1.7",
-    "sonarqube-scanner": "^3.0.1",
+    "sonarqube-scanner": "^4.3.2",
     "supertest": "^3.4.2",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
