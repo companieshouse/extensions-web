@@ -4,6 +4,26 @@
 
 Run `make githooks` to configure your local project clone to use the hooks located in the `.githooks` directory.
 
+## How to Use
+
+The project homepage can be found here: http://chs.local/extensions
+
+### Login Credentials
+
+**Standard User** (covers most functionality)
+
+| Field | Value |
+|-------|-------|
+| **Username** | `extensions@ch.gov.uk` |
+| **Password** | `password` |
+
+**Admin User** (required for downloading attachments)
+
+| Field | Value |
+|-------|-------|
+| **Username** | `extensions_admin@ch.gov.uk` |
+| **Password** | `password` |
+
 ## Debugging in VSCode
 If running in vscode modify the `.vscode/launch.json` to attach your debugger to the process running on the chs-dev vagrant box
 ```
