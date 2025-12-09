@@ -4,7 +4,7 @@ import globals from "globals";
 import tsParser from "@typescript-eslint/parser";
 
 export default defineConfig([
-    globalIgnores(["src/**/*.md", "src/**/*.mock", "src/**/*.txt", "src/**/*.scss", ".githooks/**"]),
+    globalIgnores(["src/**/*.md", "src/**/*.mock", "src/**/*.txt", "src/**/*.scss"]),
     {
         plugins: {
             "@typescript-eslint": typescriptEslint,
