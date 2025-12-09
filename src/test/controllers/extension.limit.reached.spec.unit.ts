@@ -6,12 +6,18 @@ import * as request from "supertest";
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
-import {ExtensionsCompanyProfile, getCompanyProfile} from "../../client/apiclient";
+import {
+  ExtensionsCompanyProfile,
+  getCompanyProfile,
+} from "../../client/apiclient";
 import * as mockUtils from "../mock.utils";
 import * as pageURLs from "../../model/page.urls";
-import {COOKIE_NAME} from "../../session/config";
+import { COOKIE_NAME } from "../../session/config";
 import { loadSession } from "../../services/redis.service";
-import {createHistoryIfNone, getCompanyInContext} from "../../services/session.service";
+import {
+  createHistoryIfNone,
+  getCompanyInContext,
+} from "../../services/session.service";
 
 const mockCompanyProfile = getCompanyProfile as jest.Mock;
 const mockCacheService = loadSession as jest.Mock;
@@ -20,7 +26,8 @@ const mockCreateHistoryIfNone = createHistoryIfNone as jest.Mock;
 
 const ERROR_MSG = "Sorry, there is a problem with the service";
 const ERROR_TITLE = "Sorry, there is a problem with the service - GOV.UK";
-const AFTER_TWELVE_MONTHS_MSG = "We cannot grant an extension to the filing deadline";
+const AFTER_TWELVE_MONTHS_MSG =
+  "We cannot grant an extension to the filing deadline";
 const AFTER_TWELVE_MONTHS_TITLE = "You cannot use this service";
 const EXPECTED_MAX_EXTENSION_PERIOD_IN_MONTHS = "12";
 
@@ -40,12 +47,13 @@ beforeEach(() => {
 });
 
 describe("extension limit reached controller tests", () => {
-
-  it("should render the page", async() => {
-    const dummyCompanyProfile: ExtensionsCompanyProfile = mockUtils.getDummyCompanyProfile(false, true);
+  it("should render the page", async () => {
+    const dummyCompanyProfile: ExtensionsCompanyProfile =
+      mockUtils.getDummyCompanyProfile(false, true);
     mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
 
-    const res = await request(app).get(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED)
+    const res = await request(app)
+      .get(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -70,7 +78,9 @@ describe("extension limit reached controller tests", () => {
 
   it("should show error screen if company number not present", async () => {
     mockCacheService.mockClear();
-    mockCacheService.prototype.constructor.mockImplementationOnce(() => undefined);
+    mockCacheService.prototype.constructor.mockImplementationOnce(
+      () => undefined
+    );
 
     const res = await request(app)
       .get(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED)
@@ -78,9 +88,8 @@ describe("extension limit reached controller tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(res.status).toEqual(500);
-    expect(mockCompanyProfile).toBeCalledTimes(0);
+    expect(mockCompanyProfile).toHaveBeenCalledTimes(0);
     expect(res.text).toContain(ERROR_MSG);
     expect(res.text).toContain(ERROR_TITLE);
   });
-
 });

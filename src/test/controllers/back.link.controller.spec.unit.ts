@@ -5,16 +5,20 @@ import * as request from "supertest";
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
-import {loadSession} from "../../services/redis.service";
-import {updateHistory} from "../../services/session.service";
+import { loadSession } from "../../services/redis.service";
+import { updateHistory } from "../../services/session.service";
 import Session from "../../session/session";
-import {loadMockSession} from "../mock.utils";
+import { loadMockSession } from "../mock.utils";
 import * as keys from "../../session/keys";
 import * as pageURLs from "../../model/page.urls";
-import {COOKIE_NAME} from "../../session/config";
+import { COOKIE_NAME } from "../../session/config";
 
-const mockCacheService = (<unknown> loadSession as jest.Mock<typeof loadSession>);
-const mockUpdateHistory = (<unknown>updateHistory as jest.Mock<typeof updateHistory>);
+const mockCacheService = (<unknown>loadSession) as jest.Mock<
+  typeof loadSession
+>;
+const mockUpdateHistory = (<unknown>updateHistory) as jest.Mock<
+  typeof updateHistory
+>;
 
 beforeEach(() => {
   mockMiddlewares.mockCsrfProtectionMiddleware.mockClear();
@@ -29,50 +33,63 @@ beforeEach(() => {
         [keys.SIGNED_IN]: 1,
       },
       [keys.PAGE_HISTORY]: {
-        page_history: ["/extensions/first-page", "/extensions/page-before-that", "/extensions/previous-page"],
-      }
+        page_history: [
+          "/extensions/first-page",
+          "/extensions/page-before-that",
+          "/extensions/previous-page",
+        ],
+      },
     };
     return session;
   });
 });
 
 describe("click back link tests", () => {
-
-  it("should remove last page", async ()=> {
+  it("should remove last page", async () => {
     const res = await request(app)
       .get(pageURLs.EXTENSIONS_BACK_LINK)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(res.status).toEqual(302);
-    expect(mockUpdateHistory).toBeCalledWith(
-      {page_history: ["/extensions/first-page", "/extensions/page-before-that"]},
+    expect(mockUpdateHistory).toHaveBeenCalledWith(
+      {
+        page_history: [
+          "/extensions/first-page",
+          "/extensions/page-before-that",
+        ],
+      },
       {
         _cookieId: "123",
         _data: {
-          page_history:
-            {page_history: ["/extensions/first-page", "/extensions/page-before-that"]},
-          signin_info: {signed_in: 1}
-        }
-      });
+          page_history: {
+            page_history: [
+              "/extensions/first-page",
+              "/extensions/page-before-that",
+            ],
+          },
+          signin_info: { signed_in: 1 },
+        },
+      }
+    );
   });
 
-  it("should remove last two pages when referer is the same as top page on history stack", async ()=> {
+  it("should remove last two pages when referer is the same as top page on history stack", async () => {
     const res = await request(app)
       .get(pageURLs.EXTENSIONS_BACK_LINK)
       .set("referer", "http:/test:1234/extensions/previous-page")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(res.status).toEqual(302);
-    expect(mockUpdateHistory).toBeCalledWith(
-      {page_history: ["/extensions/first-page"]},
+    expect(mockUpdateHistory).toHaveBeenCalledWith(
+      { page_history: ["/extensions/first-page"] },
       {
         _cookieId: "123",
         _data: {
-          page_history:
-            {page_history: ["/extensions/first-page"]},
-          signin_info: {signed_in: 1}
-        }
-      });
+          page_history: { page_history: ["/extensions/first-page"] },
+          signin_info: { signed_in: 1 },
+        },
+      }
+    );
   });
 });
