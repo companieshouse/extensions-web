@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import {check, validationResult, ValidationError} from "express-validator";
+import {check, validationResult, FieldValidationError} from "express-validator";
 import * as moment from "moment";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
@@ -122,11 +122,11 @@ export const processForm = [extractFullDate, ...validators,
     const illnessStartDate: string = reasonErr.start_on;
 
     errors.array({ onlyFirstError: true })
-      .forEach((valErr: ValidationError) => {
+      .forEach((valErr: FieldValidationError) => {
         if (!href) {
-          href = valErr.param;
+          href = valErr.path;
         }
-        switch (valErr.param) {
+        switch (valErr.path) {
           case ILLNESS_END_DAY_FIELD:
             dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;

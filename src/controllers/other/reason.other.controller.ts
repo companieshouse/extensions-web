@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import {check, validationResult, ValidationError} from "express-validator";
+import {check, validationResult, FieldValidationError} from "express-validator";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
 import * as pageURLs from "../../model/page.urls";
@@ -77,10 +77,10 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
     // Get the first error only for each field
     errors.array({ onlyFirstError: true })
-      .forEach((valErr: ValidationError) => {
+      .forEach((valErr: FieldValidationError) => {
         const govUkErrorData: GovUkErrorData = createGovUkErrorData(
-          valErr.msg, "#" + valErr.param, true, "");
-        switch (valErr.param) {
+          valErr.msg, "#" + valErr.path, true, "");
+        switch (valErr.path) {
           case OTHER_REASON_FIELD:
             otherReasonErrorData = govUkErrorData;
             break;

@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import {check, validationResult, ValidationError} from "express-validator";
+import {check, validationResult, FieldValidationError} from "express-validator";
 import * as moment from "moment";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
@@ -115,11 +115,11 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
     // Get the first error only for each field
     errors.array({ onlyFirstError: true })
-      .forEach((valErr: ValidationError) => {
+      .forEach((valErr: FieldValidationError) => {
         if (!href) {
-          href = valErr.param;
+          href = valErr.path;
         }
-        switch (valErr.param) {
+        switch (valErr.path) {
           case ACCOUNTING_ISSUE_DAY_FIELD:
             dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;
