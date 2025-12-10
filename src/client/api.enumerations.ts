@@ -3,7 +3,7 @@ import * as yaml from "js-yaml";
 
 const API_CONSTANTS_PATH: string = "api-enumerations/constants.yml";
 
-const apiConstants = yaml.safeLoad(fs.readFileSync(API_CONSTANTS_PATH, "utf8"));
+const apiConstants = yaml.load(fs.readFileSync(API_CONSTANTS_PATH, "utf8"));
 
 export const lookupCompanyType = (companyTypeKey: string): string => {
   // we actually use the 'company_summary' values from the yaml file to
