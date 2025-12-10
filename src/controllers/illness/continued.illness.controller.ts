@@ -79,7 +79,7 @@ export const processForm = [...validators, async (req: Request, res: Response, n
       return next(err);
     }
   } else {
-    const answer: string = req.body.continuedIllness;
+    const answer: string = req?.body?.continuedIllness;
     try {
       await reasonService.updateReason(req.chSession, {continued_illness: answer});
     } catch (err) {

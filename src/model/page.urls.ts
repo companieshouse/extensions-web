@@ -32,7 +32,7 @@ export const EXTENSION_LIMIT_REACHED: string = SEPARATOR + templates.EXTENSION_L
 export const DOWNLOAD_SUFFIX: string = "/download";
 export const DOWNLOAD_EXTENSIONS_REQUESTS = "/extensions/requests/";
 export const DOWNLOAD_ATTACHMENT: string =
-  "/company/:companyId" + DOWNLOAD_EXTENSIONS_REQUESTS + ":requestId/*/attachments/*" + DOWNLOAD_SUFFIX;
+  "/company/:companyId" + DOWNLOAD_EXTENSIONS_REQUESTS + ":requestId/*reasons/attachments/*attachment" + DOWNLOAD_SUFFIX;
 export const BACK_LINK: string = "/back-link";
 export const ACCESSIBILITY_STATEMENT: string = SEPARATOR + templates.ACCESSIBILITY_STATEMENT;
 export const REASON_ID: string = "reasonId=";

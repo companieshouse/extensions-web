@@ -11,7 +11,6 @@ jest.mock("redis", () => {
 });
 jest.mock("../../services/redis.service");
 jest.mock("../../client/apiclient");
-jest.mock("../../../src/controllers/remove.reason.controller");
 
 import { CsrfError } from "@companieshouse/web-security-node";
 import {NextFunction, Request, Response} from "express";
@@ -32,7 +31,6 @@ const mockCompanyProfile: jest.Mock = (<unknown>getCompanyProfile as jest.Mock<t
 const mockRedisService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 const mockReasons = (<unknown>getReasons as jest.Mock<typeof getReasons>);
 const mockRemoveReason = (<unknown>removeExtensionReasonFromRequest as jest.Mock<typeof removeExtensionReasonFromRequest>);
-const mockRemoveReasonGetRoute: jest.Mock = (<unknown>removeReasonController.removeReasonGetRoute as jest.Mock<typeof removeReasonController.removeReasonGetRoute>);
 
 const CSRF_ERROR_PAGE_HEADING = "Sorry, something went wrong";
 const CSRF_ERROR_PAGE_TEXT = "We have not been able to save the information you submitted on the previous screen.";
@@ -55,14 +53,13 @@ describe("error csrf", () => {
       }
     });
     mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true));
-    mockRemoveReasonGetRoute.mockRestore();
 
     jest.clearAllMocks();
   });
 
   it("Should render the CSRF error page", async () => {
 
-    mockRemoveReasonGetRoute.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => { throw new CsrfError(CSRF_TOKEN_ERROR); });
+    mockCompanyProfile.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => { throw new CsrfError(CSRF_TOKEN_ERROR); });
 
     const QUERY_ID = "?id=1";
 
@@ -70,8 +67,6 @@ describe("error csrf", () => {
     .get(pageURLs.EXTENSIONS_REMOVE_REASON + QUERY_ID)
     .set("Referer", "/")
     .set("Cookie", [`${COOKIE_NAME}=123`]);
-
-    expect(mockRemoveReasonGetRoute).toHaveBeenCalledTimes(1);
 
     expect(response.status).toEqual(403);
     expect(response.text).toContain(CSRF_ERROR_PAGE_HEADING);

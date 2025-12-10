@@ -15,7 +15,7 @@ const preValidators = [
 ];
 
 const padCompanyNumber = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  let companyNumber: string = req.body.companyNumber;
+  let companyNumber: string = req?.body?.companyNumber;
 
   // find index of first integer
   const numStartIndex = companyNumber.search(/\d/);
@@ -64,7 +64,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     });
   }
 
-  const companyNumber: string = req.body.companyNumber;
+  const companyNumber: string = req?.body?.companyNumber;
   try {
     logger.info(`Retrieving company profile for company number ${companyNumber}`);
     const token: string = req.chSession.accessToken() as string;

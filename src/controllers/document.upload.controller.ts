@@ -38,7 +38,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const uploadResponder: UploadResponder = createUploadResponder(req.xhr);
   const currentReason: ReasonWeb = await getCurrentReasonFull(req.chSession);
-  if (req.body.continueCheck) {
+  if (req?.body?.continueCheck) {
     return await continueWithValidation(req, res, next, uploadResponder, currentReason);
   } else {
     logger.debug("Add attachment request type is " + (req.xhr ? "" : "NOT ") + "AJAX / XmlHttpRequest");
@@ -156,6 +156,9 @@ const buildError = async (req: Request,
 const prepareAndSendAttachment = async (req: Request, fileData: Buffer, filename: string) => {
   const request: IExtensionRequest = sessionService.getRequest(req.chSession);
   const token: string = req.chSession.accessToken() as string;
+
+  console.log("\n\n\n HERE: \n\n\n", req.chSession, request.company_number, token);
+  
   if (request && token && fileData) {
     const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
     const requestId: string = request.extension_request_id;

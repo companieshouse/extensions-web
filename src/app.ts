@@ -54,7 +54,7 @@ app.use(`${pageURLs.EXTENSIONS}`, checkServiceAvailability);
 
 app.use(cookieParser());
 app.use(EXCLUDED_PATHS, sessionMiddleware);
-app.use(`${pageURLs.EXTENSIONS}/*`, authenticate);
+app.use(`${pageURLs.EXTENSIONS}/*path`, authenticate);
 
 const cookieConfig = {
   cookieName: '__SID',
@@ -75,8 +75,8 @@ app.use(EXCLUDED_PATHS, csrfProtectionMiddleware);
 if (activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
   app.use(pageURLs.EXTENSIONS, accessibilityRoutes);
 } else {
-  app.use(`${pageURLs.EXTENSIONS}/*`, monitor);
-  app.use(`${pageURLs.EXTENSIONS}/*`, history);
+  app.use(`${pageURLs.EXTENSIONS}/*path`, monitor);
+  app.use(`${pageURLs.EXTENSIONS}/*path`, history);
 }
 app.use(pageURLs.EXTENSIONS, appRouter);
 app.use(...errorHandlers);

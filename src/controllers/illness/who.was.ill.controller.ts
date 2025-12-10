@@ -16,8 +16,10 @@ const validators = [
   check("illPerson").not().isEmpty().withMessage(errorMessages.WHO_WAS_ILL_NOT_SELECTED),
   check("illPerson").custom((person, {req}) => {
     errorType = "";
-    if (person === "other" &&
-      (!req.body.otherPerson || req.body.otherPerson.trim().length === 0)) {
+    if (
+      person === "other" &&
+      (!req?.body?.otherPerson || req?.body?.otherPerson.trim().length === 0)
+    ) {
       errorType = "invalid";
       throw Error(errorMessages.WHO_WAS_ILL_OTHER_NOT_SELECTED);
     }
@@ -98,13 +100,13 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
 
   try {
-    if (req.body.otherPerson) {
+    if (req?.body?.otherPerson) {
       await reasonService.updateReason(req.chSession, {
-        affected_person: req.body.otherPerson,
+        affected_person: req?.body?.otherPerson,
       });
     } else {
       await reasonService.updateReason(req.chSession, {
-        affected_person: req.body.illPerson,
+        affected_person: req?.body?.illPerson,
       });
     }
   } catch (err) {

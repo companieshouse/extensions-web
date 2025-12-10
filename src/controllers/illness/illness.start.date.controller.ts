@@ -20,16 +20,18 @@ const ILLNESS_START_YEAR_FIELD: string = "illness-start-year";
 const ILLNESS_START_FULL_DATE_FIELD: string = "fullDate";
 
 const allDateFieldsPresent = (req: Request): boolean => {
-  return req.body[ILLNESS_START_DAY_FIELD]
-    && req.body[ILLNESS_START_MONTH_FIELD]
-    && req.body[ILLNESS_START_YEAR_FIELD];
+  return (
+    req?.body?.[ILLNESS_START_DAY_FIELD] &&
+    req?.body?.[ILLNESS_START_MONTH_FIELD] &&
+    req?.body?.[ILLNESS_START_YEAR_FIELD]
+  );
 };
 
 const extractFullDate = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   // We need to treat the full date as a separate field to help with validation
-  const day: string = String(req.body[ILLNESS_START_DAY_FIELD]).padStart(2, "0");
-  const month: string = String(req.body[ILLNESS_START_MONTH_FIELD]).padStart(2, "0");
-  const year: string = String(req.body[ILLNESS_START_YEAR_FIELD]).padStart(2, "0");
+  const day: string = String(req?.body?.[ILLNESS_START_DAY_FIELD]).padStart(2, "0");
+  const month: string = String(req?.body?.[ILLNESS_START_MONTH_FIELD]).padStart(2, "0");
+  const year: string = String(req?.body?.[ILLNESS_START_YEAR_FIELD]).padStart(2, "0");
 
   // "YYYY-MM-DD"
   req.body.fullDate = `${year}-${month}-${day}`;
@@ -59,7 +61,10 @@ const validators = [
 
 export const render = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   if (req.query.reasonId) {
-    await sessionService.setReasonInContextAsString(req.chSession, req.query.reasonId as string);
+    await sessionService.setReasonInContextAsString(
+      req.chSession,
+      req.query.reasonId as string
+    );
   }
   try {
     let dateStr: any;
@@ -95,9 +100,9 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   let startDateMonthErrorFlag: boolean = false;
   let startDateYearErrorFlag: boolean = false;
 
-  const day: string = req.body[ILLNESS_START_DAY_FIELD];
-  const month: string = req.body[ILLNESS_START_MONTH_FIELD];
-  const year: string = req.body[ILLNESS_START_YEAR_FIELD];
+  const day: string = req?.body?.[ILLNESS_START_DAY_FIELD];
+  const month: string = req?.body?.[ILLNESS_START_MONTH_FIELD];
+  const year: string = req?.body?.[ILLNESS_START_YEAR_FIELD];
 
   if (!errors.isEmpty()) {
     let dateErrorMessage: string = errorMessages.BASE_DATE_ERROR_MESSAGE;
@@ -132,7 +137,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
             startDateMonthErrorFlag = true;
             startDateYearErrorFlag = true;
         }
-
       });
 
     const govUkErrorData: GovUkErrorData = createGovUkErrorData(

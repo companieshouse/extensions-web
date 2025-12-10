@@ -19,16 +19,18 @@ const ILLNESS_END_YEAR_FIELD: string = "illness-end-year";
 const ILLNESS_END_FULL_DATE_FIELD: string = "fullDate";
 
 const allDateFieldsPresent = (req: Request): boolean => {
-  return req.body[ILLNESS_END_DAY_FIELD]
-    && req.body[ILLNESS_END_MONTH_FIELD]
-    && req.body[ILLNESS_END_YEAR_FIELD];
+  return (
+    req?.body?.[ILLNESS_END_DAY_FIELD] &&
+    req?.body?.[ILLNESS_END_MONTH_FIELD] &&
+    req?.body?.[ILLNESS_END_YEAR_FIELD]
+  );
 };
 
 const extractFullDate = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   // We need to treat the full date as a separate field to help with validation
-  const day = String(req.body[ILLNESS_END_DAY_FIELD]).padStart(2, "0");
-  const month = String(req.body[ILLNESS_END_MONTH_FIELD]).padStart(2, "0");
-  const year = String(req.body[ILLNESS_END_YEAR_FIELD]).padStart(2, "0");
+  const day = String(req?.body?.[ILLNESS_END_DAY_FIELD]).padStart(2, "0");
+  const month = String(req?.body?.[ILLNESS_END_MONTH_FIELD]).padStart(2, "0");
+  const year = String(req?.body?.[ILLNESS_END_YEAR_FIELD]).padStart(2, "0");
 
   // "YYYY-MM-DD"
   req.body.fullDate = `${year}-${month}-${day}`;
@@ -101,9 +103,9 @@ export const processForm = [extractFullDate, ...validators,
   let endDateMonthErrorFlag: boolean = false;
   let endDateYearErrorFlag: boolean = false;
 
-  const day: string = req.body[ILLNESS_END_DAY_FIELD];
-  const month: string = req.body[ILLNESS_END_MONTH_FIELD];
-  const year: string = req.body[ILLNESS_END_YEAR_FIELD];
+  const day: string = req?.body?.[ILLNESS_END_DAY_FIELD];
+  const month: string = req?.body?.[ILLNESS_END_MONTH_FIELD];
+  const year: string = req?.body?.[ILLNESS_END_YEAR_FIELD];
 
   if (!errors.isEmpty()) {
     let dateErrorMessage: string = errorMessages.BASE_DATE_ERROR_MESSAGE;

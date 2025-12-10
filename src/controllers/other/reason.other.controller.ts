@@ -15,16 +15,17 @@ const OTHER_REASON_FIELD: string = "otherReason";
 const OTHER_INFORMATION_FIELD: string = "otherInformation";
 
 const validators = [
-  check(OTHER_REASON_FIELD).custom((reason, {req}) => {
-    if (!req.body.otherReason
-      || req.body.otherReason.trim().length === 0) {
+  check(OTHER_REASON_FIELD).custom((reason, { req }) => {
+    if (!req?.body?.otherReason || req?.body?.otherReason.trim().length === 0) {
       throw Error(errorMessages.NO_REASON_INPUT);
     }
     return true;
   }),
-  check(OTHER_INFORMATION_FIELD).custom((reason, {req}) => {
-    if (!req.body.otherInformation
-      || req.body.otherInformation.trim().length === 0) {
+  check(OTHER_INFORMATION_FIELD).custom((reason, { req }) => {
+    if (
+      !req?.body?.otherInformation ||
+      req?.body?.otherInformation.trim().length === 0
+    ) {
       throw Error(errorMessages.NO_INFORMATION_INPUT);
     }
     return true;
@@ -67,8 +68,8 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   const errors = validationResult(req);
   const errorListData: GovUkErrorData[] = [];
 
-  const otherReasonInput: string = req.body[OTHER_REASON_FIELD];
-  const otherInformationInput: string = req.body[OTHER_INFORMATION_FIELD];
+  const otherReasonInput: string = req?.body?.[OTHER_REASON_FIELD];
+  const otherInformationInput: string = req?.body?.[OTHER_INFORMATION_FIELD];
 
   if (!errors.isEmpty()) {
     let otherReasonErrorData: GovUkErrorData | undefined;
@@ -102,13 +103,13 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
 
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
-  const reasonInput = req.body.otherReason;
+  const reasonInput = req?.body?.otherReason;
   try {
     await reasonService.updateReason(
       req.chSession,
       {
         reason: removeNonPrintableChars(reasonInput),
-        reason_information: removeNonPrintableChars(req.body.otherInformation),
+        reason_information: removeNonPrintableChars(req?.body?.otherInformation),
       });
   } catch (err) {
     logger.info("Error caught posting other reason");

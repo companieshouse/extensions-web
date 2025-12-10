@@ -60,19 +60,19 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       await reasonService.deleteCurrentReason(req.chSession);
     }
 
-    switch (req.body.extensionReason) {
+    switch (req?.body?.extensionReason) {
       case "illness":
         await updateChosenReasonKeys(req, true, false, false, false);
         return await addReason(req, res, (request) =>
-          request.body.extensionReason, templatePaths.REASON_ILLNESS);
+          request?.body?.extensionReason, templatePaths.REASON_ILLNESS);
       case "accounting issues":
         await updateChosenReasonKeys(req, false, true, false, false);
         return await addReason(req, res, (request) =>
-          request.body.extensionReason, templatePaths.REASON_ACCOUNTING_ISSUE);
+          request?.body?.extensionReason, templatePaths.REASON_ACCOUNTING_ISSUE);
       case "other":
         await updateChosenReasonKeys(req, false, false, false, true);
         return await addReason(req, res, (request) =>
-          request.body.extensionReason, templatePaths.REASON_OTHER);
+          request?.body?.extensionReason, templatePaths.REASON_OTHER);
     }
   } catch (err) {
     logger.info("Error caught posting a chosen reason");

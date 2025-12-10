@@ -20,16 +20,25 @@ const ACCOUNTING_ISSUE_YEAR_FIELD: string = "accounts-date-year";
 const ACCOUNTING_ISSUE_FULL_DATE_FIELD: string = "fullDate";
 
 const allDateFieldsPresent = (req: Request): boolean => {
-  return req.body[ACCOUNTING_ISSUE_DAY_FIELD]
-    && req.body[ACCOUNTING_ISSUE_MONTH_FIELD]
-    && req.body[ACCOUNTING_ISSUE_YEAR_FIELD];
+  return (
+    req?.body?.[ACCOUNTING_ISSUE_DAY_FIELD] &&
+    req?.body?.[ACCOUNTING_ISSUE_MONTH_FIELD] &&
+    req?.body?.[ACCOUNTING_ISSUE_YEAR_FIELD]
+  );
 };
 
 const extractFullDate = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   // We need to treat the full date as a separate field to help with validation
-  const day: string = String(req.body[ACCOUNTING_ISSUE_DAY_FIELD]).padStart(2, "0");
-  const month: string = String(req.body[ACCOUNTING_ISSUE_MONTH_FIELD]).padStart(2, "0");
-  const year: string = String(req.body[ACCOUNTING_ISSUE_YEAR_FIELD]).padStart(2, "0");
+  const day: string = String(req?.body?.[ACCOUNTING_ISSUE_DAY_FIELD]).padStart(
+    2,
+    "0"
+  );
+  const month: string = String(
+    req?.body?.[ACCOUNTING_ISSUE_MONTH_FIELD]
+  ).padStart(2, "0");
+  const year: string = String(
+    req?.body?.[ACCOUNTING_ISSUE_YEAR_FIELD]
+  ).padStart(2, "0");
 
   // "YYYY-MM-DD"
   req.body.fullDate = `${year}-${month}-${day}`;
@@ -95,9 +104,9 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   let dateMonthErrorFlag: boolean = false;
   let dateYearErrorFlag: boolean = false;
 
-  const day: string = req.body[ACCOUNTING_ISSUE_DAY_FIELD];
-  const month: string = req.body[ACCOUNTING_ISSUE_MONTH_FIELD];
-  const year: string = req.body[ACCOUNTING_ISSUE_YEAR_FIELD];
+  const day: string = req?.body?.[ACCOUNTING_ISSUE_DAY_FIELD];
+  const month: string = req?.body?.[ACCOUNTING_ISSUE_MONTH_FIELD];
+  const year: string = req?.body?.[ACCOUNTING_ISSUE_YEAR_FIELD];
 
   if (!errors.isEmpty()) {
     let dateErrorMessage: string = errorMessages.BASE_DATE_ERROR_MESSAGE;
@@ -132,7 +141,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
             dateMonthErrorFlag = true;
             dateYearErrorFlag = true;
         }
-
       });
 
     const govUkErrorData: GovUkErrorData = createGovUkErrorData(

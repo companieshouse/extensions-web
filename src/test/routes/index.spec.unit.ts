@@ -10,8 +10,6 @@ jest.mock("redis", () => {
   }
 });
 jest.mock("../../services/redis.service");
-jest.mock("../../controllers/company.details.controller");
-jest.mock("../../controllers/company.number.controller");
 
 import app from '../../app';
 import * as request from 'supertest';
