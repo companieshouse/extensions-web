@@ -156,8 +156,6 @@ const buildError = async (req: Request,
 const prepareAndSendAttachment = async (req: Request, fileData: Buffer, filename: string) => {
   const request: IExtensionRequest = sessionService.getRequest(req.chSession);
   const token: string = req.chSession.accessToken() as string;
-
-  console.log("\n\n\n HERE: \n\n\n", req.chSession, request.company_number, token);
   
   if (request && token && fileData) {
     const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
