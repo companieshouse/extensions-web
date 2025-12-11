@@ -7,14 +7,14 @@
     "build": "tsc && cp -r views dist/",
     "devstart": "nodemon",
     "test": "npm run unit && npm run integration",
-    "unit": "jest -c src/test/jest.config.unit.js --forceExit",
+    "unit": "jest -c src/test/jest.config.unit.js",
     "integration": "jest -c src/test/jest.config.integration.js --detectOpenHandles",
     "contract-consumer": "jest -c src/test/jest.config.contract.js --detectOpenHandles",
     "sass": "node-sass src/public/stylesheets/scss -o src/public/stylesheets/css -i false",
     "lint": "eslint '{src,test}/**/*'",
     "lint:fix": "eslint '{src,test}/**/*' --fix",
     "sonarqube": "sonar-scanner",
-    "sonar-test": "jest -c jest.config.sonar.js --forceExit --coverage",
+    "sonar-test": "jest -c jest.config.sonar.js --coverage",
     "chs-dev": "nodemon --legacy-watch"
   },
   "dependencies": {

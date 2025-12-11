@@ -9,6 +9,12 @@ jest.mock("../../../services/redis.service");
 jest.mock("../../../session/session");
 jest.mock("../../../logger");
 jest.mock("../../../feature.flag");
+jest.mock("redis", () => {
+  return {
+    createClient: jest.fn().mockReturnThis(),
+    on: jest.fn().mockReturnThis(),
+  }
+});
 
 const mockReq = (cookieValue?: string) => ({
   cookies: cookieValue ? { [COOKIE_NAME]: cookieValue } : {},

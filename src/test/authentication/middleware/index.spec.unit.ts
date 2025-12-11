@@ -42,7 +42,7 @@ describe("Authentication middleware", () => {
     expect(response.status).toEqual(200);
   });
 
-  it("should redirect to start page if loading start page with trailing slash and no referer", async () => {
+  it("should render the start page if loading start page with trailing slash and no referer", async () => {
     const response = await request(app)
       .get("/extensions/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
