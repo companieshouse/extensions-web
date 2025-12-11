@@ -1,7 +1,10 @@
-import {getCompanyProfile, ExtensionsCompanyProfile} from "../../client/apiclient";
+import {
+  getCompanyProfile,
+  ExtensionsCompanyProfile,
+} from "../../client/apiclient";
 import * as mockUtils from "../mock.utils";
 import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
-import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile";
 import CompanyProfileService from "@companieshouse/api-sdk-node/dist/services/company-profile/service";
 
 //////////////////
@@ -13,7 +16,8 @@ jest.mock("@companieshouse/api-sdk-node/dist/services/company-profile/service");
 ///////////////////////
 
 describe("apiclient company profile unit tests", () => {
-  const mockGetCompanyProfile = (CompanyProfileService.prototype.getCompanyProfile as jest.Mock);
+  const mockGetCompanyProfile = CompanyProfileService.prototype
+    .getCompanyProfile as jest.Mock;
   beforeEach(() => {
     mockGetCompanyProfile.mockReset();
   });
@@ -22,7 +26,7 @@ describe("apiclient company profile unit tests", () => {
     mockGetCompanyProfile.mockResolvedValueOnce(dummySDKResponse);
     const company = await getCompanyProfile("sc100079", mockUtils.ACCESS_TOKEN);
     expect(company.incorporationDate).toEqual("26 June 1872");
-    expect(mockGetCompanyProfile).toBeCalledWith("SC100079");
+    expect(mockGetCompanyProfile).toHaveBeenCalledWith("SC100079");
   });
 
   it("returns an ExtensionsCompanyProfile object", async () => {
@@ -65,7 +69,7 @@ const dummySDKResponse: Resource<CompanyProfile> = {
       postalCode: "post code",
       premises: "premises",
       region: "region",
-    }
+    },
   },
 };
 
@@ -83,8 +87,8 @@ const expectedProfile: ExtensionsCompanyProfile = {
   address: {
     line_1: "line1",
     line_2: "line2",
-    postCode: "post code"
+    postCode: "post code",
   },
   accountsDue: "31 May 2020",
-  isAccountsOverdue: false
+  isAccountsOverdue: false,
 };

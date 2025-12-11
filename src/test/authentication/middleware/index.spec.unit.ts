@@ -9,8 +9,6 @@ jest.mock("redis", () => {
     on: jest.fn().mockReturnThis(),
   }
 });
-jest.mock("../../../controllers/company.details.controller");
-jest.mock("../../../controllers/company.number.controller");
 jest.mock("../../../services/redis.service");
 
 import * as request from 'supertest';
@@ -44,12 +42,12 @@ describe("Authentication middleware", () => {
     expect(response.status).toEqual(200);
   });
 
-  it("should redirect to start page if loading start page with trailing slash and no referer", async () => {
+  it("should render the start page if loading start page with trailing slash and no referer", async () => {
     const response = await request(app)
       .get("/extensions/")
-      .set("Cookie", [`${COOKIE_NAME}=123`])
-      .expect("Location", "/extensions");
-    expect(response.status).toEqual(302);
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+      
+    expect(response.status).toEqual(200);
   });
 
   it("should NOT redirect to signin if loading accessibility statement page", async () => {

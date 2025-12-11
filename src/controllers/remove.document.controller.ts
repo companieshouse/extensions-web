@@ -50,7 +50,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       });
     }
   } else {
-    const choice = req.body.removeDocument;
+    const choice = req?.body?.removeDocument;
     if (choice === "yes") {
       const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
       if (companyNumber) {

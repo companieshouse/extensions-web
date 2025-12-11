@@ -35,14 +35,12 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
         "#add-extension-reason", true, "blank");
       return res.render(templatePaths.ADD_EXTENSION_REASON, {
         addExtensionReasonErr: addReasonErr,
-        errorList: [
-          addReasonErr,
-        ],
+        errorList: [addReasonErr],
         templateName: templatePaths.ADD_EXTENSION_REASON,
       });
     }
   } else {
-    const decision: string = req.body.addExtensionReason;
+    const decision: string = req?.body?.addExtensionReason;
     try {
       await reasonService.updateReason(req.chSession, {reason_status: "COMPLETED"});
       if (decision === "yes") {

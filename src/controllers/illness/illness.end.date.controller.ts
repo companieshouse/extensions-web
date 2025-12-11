@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import {check, validationResult, ValidationError} from "express-validator";
+import {check, validationResult, FieldValidationError} from "express-validator";
 import * as moment from "moment";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
@@ -19,16 +19,18 @@ const ILLNESS_END_YEAR_FIELD: string = "illness-end-year";
 const ILLNESS_END_FULL_DATE_FIELD: string = "fullDate";
 
 const allDateFieldsPresent = (req: Request): boolean => {
-  return req.body[ILLNESS_END_DAY_FIELD]
-    && req.body[ILLNESS_END_MONTH_FIELD]
-    && req.body[ILLNESS_END_YEAR_FIELD];
+  return (
+    req?.body?.[ILLNESS_END_DAY_FIELD] &&
+    req?.body?.[ILLNESS_END_MONTH_FIELD] &&
+    req?.body?.[ILLNESS_END_YEAR_FIELD]
+  );
 };
 
 const extractFullDate = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   // We need to treat the full date as a separate field to help with validation
-  const day = String(req.body[ILLNESS_END_DAY_FIELD]).padStart(2, "0");
-  const month = String(req.body[ILLNESS_END_MONTH_FIELD]).padStart(2, "0");
-  const year = String(req.body[ILLNESS_END_YEAR_FIELD]).padStart(2, "0");
+  const day = String(req?.body?.[ILLNESS_END_DAY_FIELD]).padStart(2, "0");
+  const month = String(req?.body?.[ILLNESS_END_MONTH_FIELD]).padStart(2, "0");
+  const year = String(req?.body?.[ILLNESS_END_YEAR_FIELD]).padStart(2, "0");
 
   // "YYYY-MM-DD"
   req.body.fullDate = `${year}-${month}-${day}`;
@@ -101,9 +103,9 @@ export const processForm = [extractFullDate, ...validators,
   let endDateMonthErrorFlag: boolean = false;
   let endDateYearErrorFlag: boolean = false;
 
-  const day: string = req.body[ILLNESS_END_DAY_FIELD];
-  const month: string = req.body[ILLNESS_END_MONTH_FIELD];
-  const year: string = req.body[ILLNESS_END_YEAR_FIELD];
+  const day: string = req?.body?.[ILLNESS_END_DAY_FIELD];
+  const month: string = req?.body?.[ILLNESS_END_MONTH_FIELD];
+  const year: string = req?.body?.[ILLNESS_END_YEAR_FIELD];
 
   if (!errors.isEmpty()) {
     let dateErrorMessage: string = errorMessages.BASE_DATE_ERROR_MESSAGE;
@@ -120,11 +122,11 @@ export const processForm = [extractFullDate, ...validators,
     const illnessStartDate: string = reasonErr.start_on;
 
     errors.array({ onlyFirstError: true })
-      .forEach((valErr: ValidationError) => {
+      .forEach((valErr: FieldValidationError) => {
         if (!href) {
-          href = valErr.param;
+          href = valErr.path;
         }
-        switch (valErr.param) {
+        switch (valErr.path) {
           case ILLNESS_END_DAY_FIELD:
             dateErrorMessage = dateValidationUtils.updateDateErrorMessage(dateErrorMessage, valErr.msg, isFirstError);
             isFirstError = false;

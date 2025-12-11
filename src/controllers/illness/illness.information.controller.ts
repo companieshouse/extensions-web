@@ -12,9 +12,11 @@ import {ReasonWeb} from "../../model/reason/extension.reason.web";
 import logger from "../../logger";
 
 const validators = [
-  check("illnessInformation").custom((reason, {req}) => {
-    if (!req.body.illnessInformation
-      || req.body.illnessInformation .trim().length === 0) {
+  check("illnessInformation").custom((reason, { req }) => {
+    if (
+      !req?.body?.illnessInformation ||
+      req?.body?.illnessInformation.trim().length === 0
+    ) {
       throw Error(errorMessages.NO_INFORMATION_INPUT);
     }
     return true;
@@ -66,7 +68,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   try {
     await reasonService.updateReason(
       req.chSession,
-      {reason_information: removeNonPrintableChars(req.body.illnessInformation)}
+      {reason_information: removeNonPrintableChars(req?.body?.illnessInformation)}
     );
   } catch (err) {
     logger.info("Error caught updating reason with illness information");

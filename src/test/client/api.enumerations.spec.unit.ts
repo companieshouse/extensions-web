@@ -2,7 +2,7 @@ import {lookupCompanyStatus, lookupCompanyType} from "../../client/api.enumerati
 
 jest.mock("js-yaml", () => {
   return {
-    safeLoad: jest.fn(() => {
+    load: jest.fn(() => {
       return {
         company_summary: {
           ltd: "Private limited company",
@@ -45,7 +45,7 @@ describe("api enumeration tests", () => {
 
   it("should return the key if company_summary is undefined", () => {
     jest.doMock("js-yaml", () => ({
-      safeLoad: jest.fn(() => ({}))
+      load: jest.fn(() => ({}))
     }));
     // Re-require the module so it picks up the new mock
     const { lookupCompanyType } = require("../../client/api.enumerations");
@@ -54,7 +54,7 @@ describe("api enumeration tests", () => {
 
   it("should return the key if company_status is undefined", () => {
     jest.doMock("js-yaml", () => ({
-      safeLoad: jest.fn(() => ({}))
+      load: jest.fn(() => ({}))
     }));
     // Re-require the module so it picks up the new mock
     const { lookupCompanyStatus } = require("../../client/api.enumerations");
@@ -63,7 +63,7 @@ describe("api enumeration tests", () => {
 
   it("should return the key if apiConstants is undefined", () => {
     jest.doMock("js-yaml", () => ({
-      safeLoad: jest.fn(() => undefined)
+      load: jest.fn(() => undefined)
     }));
     // Re-require the module so it picks up the new mock
     const { lookupCompanyType, lookupCompanyStatus } = require("../../client/api.enumerations");

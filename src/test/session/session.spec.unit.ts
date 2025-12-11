@@ -1,3 +1,10 @@
+jest.mock("redis", () => {
+  return {
+    createClient: jest.fn().mockReturnThis(),
+    on: jest.fn().mockReturnThis(),
+  }
+});
+
 import Session from "../../session/session";
 import * as keys from "../../session/keys";
 

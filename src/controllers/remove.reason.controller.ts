@@ -79,16 +79,14 @@ const removeReasonPostRoute = async (req: Request, res: Response, next: NextFunc
     const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
     const renderValues = await getPageRender(companyNumber, req);
     const errors = {
-      errorList: [
-        extReasonErr,
-      ],
+      errorList: [extReasonErr],
       extensionReasonErr: extReasonErr,
     };
     const jsonReturn = Object.assign({}, renderValues, errors);
     return res.render(templatePaths.REMOVE_REASON, jsonReturn);
   }
 
-  if (req.body.removeReason === "yes") {
+  if (req?.body?.removeReason === "yes") {
     const request: IExtensionRequest = sessionService.getRequest(req.chSession);
     const token: string = req.chSession.accessToken() as string;
     if (request && token) {

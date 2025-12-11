@@ -1,5 +1,5 @@
-import {NextFunction, Request, Response} from "express";
-import {check, validationResult, ValidationError} from "express-validator";
+import { NextFunction, Request, Response } from "express";
+import { check, validationResult, ValidationError } from "express-validator";
 import * as errorMessages from "../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
 import * as pageURLs from "../model/page.urls";
@@ -34,15 +34,13 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       const decisionNotMadeErr: GovUkErrorData = createGovUkErrorData(errMsg,
         "#supporting-documents", true, "");
       return res.render(templatePaths.DOCUMENT_OPTION, {
-        errorList: [
-          decisionNotMadeErr,
-        ],
+        errorList: [decisionNotMadeErr],
         supportingDocumentsErr: decisionNotMadeErr,
         templateName: templatePaths.DOCUMENT_OPTION,
       });
     }
   } else {
-    const decision: string = req.body.supportingDocuments;
+    const decision: string = req?.body?.supportingDocuments;
     if (decision === "yes") {
       await sessionService.updateExtensionSessionValue(req.chSession, keys.UPLOAD_DOCUMENTS_YES, true);
       await sessionService.updateExtensionSessionValue(req.chSession, keys.UPLOAD_DOCUMENTS_NO, false);

@@ -111,7 +111,7 @@ router.get(pageURLs.DOWNLOAD_ATTACHMENT_LANDING, ...downloadAttachmentLandingRou
 router.get(pageURLs.REMOVE_DOCUMENT, renderRemoveDocument);
 router.post(pageURLs.REMOVE_DOCUMENT, removeDocumentRoute);
 
-router.get(pageURLs.ERROR, (res: Response) => {
+router.get(pageURLs.ERROR, (_req: Request ,res: Response, _next: NextFunction) => {
   res.status(500).render(templatePaths.ERROR, {templateName: templatePaths.ERROR});
 });
 
