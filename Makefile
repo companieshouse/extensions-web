@@ -46,6 +46,10 @@ test-integration:
 security-check:
 	npm audit --audit-level=high
 
+.PHONY: dependency-check
+dependency-check:
+	npm audit --audit-level=high
+
 .PHONY: package
 package: build
 ifndef version
