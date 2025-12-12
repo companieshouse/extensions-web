@@ -14,7 +14,7 @@ import logger from "../logger";
 /**
  * Get port from environment and store in Express.
  */
-const port = normalizePort(yargs.parseSync().PORT || yargs.parseSync()._[0]);
+const port = normalizePort(yargs().parseSync().PORT || yargs().parseSync()._[0]);
 app.set("port", port);
 /**
  * Create HTTP server.
