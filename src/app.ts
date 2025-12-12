@@ -48,7 +48,9 @@ app.set("view engine", "html");
 
 app.enable("trust proxy");
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ 
+  extended: false 
+}));
 
 // check if we should show the service unavailable page
 app.use(`${pageURLs.EXTENSIONS}`, checkServiceAvailability);
