@@ -1,11 +1,11 @@
 jest.mock("../../services/redis.service");
 
 import {NextFunction, Request, Response} from "express";
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import {appRouter} from "../../routes/routes";
 import {COOKIE_NAME} from "../../session/config";
 import {loadSession} from "../../services/redis.service";
@@ -32,7 +32,7 @@ describe("error controller", () => {
 
   it("should render the 404 template if a page is not found", async () => {
     const resp = await request(app)
-      .get(pageURLs.NO_FOUND)
+      .get(pageUrls.NO_FOUND)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -42,7 +42,7 @@ describe("error controller", () => {
 
   it("should render the error template for all other errors", async () => {
     const resp = await request(app)
-      .get(pageURLs.EXTENSIONS + pageURLs.ERROR)
+      .get(pageUrls.EXTENSIONS + pageUrls.ERROR)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 

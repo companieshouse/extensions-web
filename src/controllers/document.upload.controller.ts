@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import * as pageURLs from "../model/page.urls";
+import * as pageUrls from "../model/page.urls";
 import * as templatePaths from "../model/template.paths";
 import * as keys from "../session/keys";
 import {addAttachmentToReason} from "../client/apiclient";
@@ -15,7 +15,7 @@ import {
 import {MAX_FILE_SIZE_BYTES} from "../session/config";
 import {ReasonWeb} from "../model/reason/extension.reason.web";
 import {Socket} from "net";
-import * as Busboy from "busboy";
+import Busboy from "busboy";
 import {createUploadResponder, UploadResponder} from "./upload/upload.responder.factory";
 import {getCurrentReasonFull} from "../services/reason.service";
 
@@ -62,9 +62,9 @@ const continueWithValidation = async (req: Request,
 export const continueWithNoValidation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
   if (changingDetails) {
-    return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
+    return res.redirect(pageUrls.EXTENSIONS_CHECK_YOUR_ANSWERS);
   } else {
-    res.redirect(pageURLs.EXTENSIONS_ADD_EXTENSION_REASON);
+    res.redirect(pageUrls.EXTENSIONS_ADD_EXTENSION_REASON);
   }
 };
 

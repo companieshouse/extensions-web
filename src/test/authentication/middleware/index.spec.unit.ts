@@ -11,7 +11,7 @@ jest.mock("redis", () => {
 });
 jest.mock("../../../services/redis.service");
 
-import * as request from 'supertest';
+import request from 'supertest';
 import app from '../../../app';
 import {COOKIE_NAME} from "../../../session/config";
 import * as keys from "../../../session/keys"

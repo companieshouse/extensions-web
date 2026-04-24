@@ -13,10 +13,10 @@ import {
 import {PageHistory} from "../types";
 import Session from "../session";
 import logger from "../../logger";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 
 export default async (req: Request, res: Response, next: NextFunction) => {
-  if (req.originalUrl === pageURLs.EXTENSIONS_HEALTHCHECK) {
+  if (req.originalUrl === pageUrls.EXTENSIONS_HEALTHCHECK) {
     logger.debug("/healthcheck endpoint called, skipping history middleware.");
     return next();
   }

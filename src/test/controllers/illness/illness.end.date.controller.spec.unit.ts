@@ -2,16 +2,15 @@ jest.mock("../../../services/redis.service");
 jest.mock("../../../client/apiclient");
 jest.mock("../../../services/reason.service");
 
-import * as request from "supertest";
-import * as moment from "moment";
+import request from "supertest";
+import moment from "moment";
 
 import mockMiddlewares from "../../mock.middleware";
 import app from "../../../app";
-import * as pageURLs from "../../../model/page.urls";
+import * as pageUrls from "../../../model/page.urls";
 import { COOKIE_NAME } from "../../../session/config";
 import { loadSession } from "../../../services/redis.service";
 import { loadMockSession, fullDummySession } from "../../mock.utils";
-import * as pageUrls from "../../../model/page.urls";
 import * as reasonService from "../../../services/reason.service";
 import { ReasonWeb } from "../../../model/reason/extension.reason.web";
 
@@ -58,7 +57,7 @@ describe("illness end date url tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .get(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -69,7 +68,7 @@ describe("illness end date url tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_ILLNESS_END_DATE + "?reasonId=" + REASON_ID)
+      .get(pageUrls.EXTENSIONS_ILLNESS_END_DATE + "?reasonId=" + REASON_ID)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -77,7 +76,7 @@ describe("illness end date url tests", () => {
 
   it("should return 404 for end date page with put", async () => {
     const res = await request(app)
-      .put(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .put(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
@@ -88,7 +87,7 @@ describe("illness end date url tests", () => {
       throw new Error("Test Error");
     });
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .get(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(500);
@@ -101,7 +100,7 @@ describe("illness end date validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -122,7 +121,7 @@ describe("illness end date validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -143,7 +142,7 @@ describe("illness end date validation tests", () => {
       throw new Error("Test Error");
     });
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -161,7 +160,7 @@ describe("illness end date validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -182,7 +181,7 @@ describe("illness end date validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -203,7 +202,7 @@ describe("illness end date validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -224,7 +223,7 @@ describe("illness end date validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -245,7 +244,7 @@ describe("illness end date validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -266,7 +265,7 @@ describe("illness end date validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -285,7 +284,7 @@ describe("illness end date validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -307,7 +306,7 @@ describe("illness end date validation tests", () => {
       reasonWithStartDate("2015-12-12")
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -329,7 +328,7 @@ describe("illness end date validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -348,7 +347,7 @@ describe("illness end date validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -368,7 +367,7 @@ describe("illness end date validation tests", () => {
     );
     const now = moment();
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -393,7 +392,7 @@ describe("illness end date validation tests", () => {
       reasonWithStartDate("1998-12-12")
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -415,7 +414,7 @@ describe("illness end date validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ILLNESS_END_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])

@@ -1,13 +1,13 @@
 import {NextFunction, Request, Response} from "express";
 import {check, validationResult, FieldValidationError} from "express-validator";
-import * as moment from "moment";
+import moment from "moment";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
 import * as templatePaths from "../../model/template.paths";
 import {EXTENSIONS_CONTINUED_ILLNESS} from "../../model/page.urls";
 import * as dateValidationUtils from "../../global/date.validation.utils";
 import * as keys from "../../session/keys";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import * as reasonService from "../../services/reason.service";
 import {formatDateForReason} from "../../client/date.formatter";
 import * as sessionService from "../../services/session.service";
@@ -163,7 +163,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
   if (changingDetails) {
-    return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
+    return res.redirect(pageUrls.EXTENSIONS_CHECK_YOUR_ANSWERS);
   } else {
     return res.redirect(EXTENSIONS_CONTINUED_ILLNESS);
   }

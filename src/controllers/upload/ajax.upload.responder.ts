@@ -2,7 +2,7 @@ import {NextFunction, Request, Response} from "express";
 import {ReasonWeb} from "../../model/reason/extension.reason.web";
 import logger from "../../logger";
 import {ERROR_500} from "../../model/error.messages";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import {GovUkErrorData} from "../../model/govuk.error.data";
 import {UploadResponder} from "./upload.responder.factory";
 import {getCurrentReasonFull} from "../../services/reason.service";
@@ -30,7 +30,7 @@ export class AjaxUploadResponder implements UploadResponder {
 
   public handleGenericError = (res: Response, e: Error, next?: NextFunction): void => {
     logger.error(ERROR_500, e);
-    res.status(500).send({redirect: pageURLs.EXTENSIONS_ERROR});
+    res.status(500).send({redirect: pageUrls.EXTENSIONS_ERROR});
   }
 
   public handleGovUKError = async (res: Response,

@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import * as pageURLs from "../model/page.urls";
+import * as pageUrls from "../model/page.urls";
 import {IExtensionRequest} from "../session/types";
 import * as sessionService from "../services/session.service";
 import * as apiClient from "../client/apiclient";
@@ -59,14 +59,14 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
           const request: IExtensionRequest = sessionService.getRequest(req.chSession);
           await apiClient.removeAttachment(companyNumber, token, request.extension_request_id,
             request.reason_in_context_string as string, req.query.documentID as string);
-          return res.redirect(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD);
+          return res.redirect(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD);
         } catch (e) {
           logger.error(`Error removing attachment for company ${companyNumber}`, e);
           return next(e);
         }
       }
     } else {
-      return res.redirect(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD);
+      return res.redirect(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD);
     }
   }
 };

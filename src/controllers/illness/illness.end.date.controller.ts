@@ -1,11 +1,11 @@
 import {NextFunction, Request, Response} from "express";
 import {check, validationResult, FieldValidationError} from "express-validator";
-import * as moment from "moment";
+import moment from "moment";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
 import * as dateValidationUtils from "../../global/date.validation.utils";
 import * as keys from "../../session/keys";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import * as reasonService from "../../services/reason.service";
 import * as sessionService from "../../services/session.service";
 import * as templatePaths from "../../model/template.paths";
@@ -176,9 +176,9 @@ export const processForm = [extractFullDate, ...validators,
   }
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
   if (changingDetails) {
-    return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
+    return res.redirect(pageUrls.EXTENSIONS_CHECK_YOUR_ANSWERS);
   } else {
-    return res.redirect(pageURLs.EXTENSIONS_ILLNESS_INFORMATION);
+    return res.redirect(pageUrls.EXTENSIONS_ILLNESS_INFORMATION);
   }
 }];
 

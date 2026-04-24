@@ -1,11 +1,11 @@
 jest.mock("../../client/apiclient");
 jest.mock("../../services/redis.service");
 
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import { COOKIE_NAME } from "../../session/config";
 import { fullDummySession, missingTokenDummySession } from "../mock.utils";
 import { loadSession } from "../../services/redis.service";
@@ -78,7 +78,7 @@ describe("remove document url tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
+      .get(pageUrls.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -88,7 +88,7 @@ describe("remove document url tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .put(pageURLs.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
+      .put(pageUrls.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
@@ -98,7 +98,7 @@ describe("remove document url tests", () => {
       missingTokenDummySession
     );
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
+      .get(pageUrls.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(500);
@@ -111,7 +111,7 @@ describe("remove document controller tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
+      .post(pageUrls.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -132,7 +132,7 @@ describe("remove document controller tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
+      .post(pageUrls.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -153,7 +153,7 @@ describe("remove document controller tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
+      .post(pageUrls.EXTENSIONS_REMOVE_DOCUMENT + QUERY_ID)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);

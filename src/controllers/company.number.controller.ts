@@ -4,7 +4,7 @@ import {ExtensionsCompanyProfile, getCompanyProfile} from "../client/apiclient";
 import logger from "../logger";
 import * as errorMessages from "../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
-import * as pageURLs from "../model/page.urls";
+import * as pageUrls from "../model/page.urls";
 import * as templatePaths from "../model/template.paths";
 import * as sessionService from "../services/session.service";
 
@@ -76,9 +76,9 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     if (isTooSoonToApply(company)) {
       // show too soon screen
       logger.info(`Company ${companyNumber} Too soon to apply`);
-      return res.redirect(pageURLs.EXTENSIONS_TOO_SOON);
+      return res.redirect(pageUrls.EXTENSIONS_TOO_SOON);
     } else {
-      return res.redirect(pageURLs.EXTENSIONS_CONFIRM_COMPANY);
+      return res.redirect(pageUrls.EXTENSIONS_CONFIRM_COMPANY);
     }
   } catch (e) {
     logger.error(`Error fetching company profile for company number ${companyNumber}`, e);

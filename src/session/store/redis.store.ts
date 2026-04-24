@@ -1,5 +1,5 @@
-import * as msgpack from "msgpack5";
-import * as redis from "redis";
+import msgpack from "msgpack5";
+import redis from "redis";
 import {promisify} from "util";
 import logger from "../../logger";
 import * as errorMessages from "../../model/error.messages";

@@ -2,7 +2,7 @@ import {NextFunction, Request, Response} from "express";
 import * as keys from "../session/keys";
 import {PageHistory} from "../session/types";
 import * as sessionService from "../services/session.service";
-import * as pageURLs from "../model/page.urls";
+import * as pageUrls from "../model/page.urls";
 import logger from "../logger";
 
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -12,7 +12,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   const currentUrl: string | undefined = req.header("Referer");
   if (!back) {
     logger.error("Back navigation: problem obtaining back url");
-    res.redirect(pageURLs.EXTENSIONS);
+    res.redirect(pageUrls.EXTENSIONS);
   } else if (!currentUrl) {
     logger.error("Back navigation: the referer is missing in the header");
     await sessionService.updateHistory(pageHistory, req.chSession);
@@ -26,7 +26,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       res.redirect(back);
     } else {
       logger.error("Back navigation: problem obtaining back url");
-      res.redirect(pageURLs.EXTENSIONS);
+      res.redirect(pageUrls.EXTENSIONS);
     }
   }
 };

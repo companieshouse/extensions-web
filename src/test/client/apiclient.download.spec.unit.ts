@@ -1,15 +1,13 @@
 const downloadMockRequest: jest.Mock = jest.fn();
 jest.mock("axios", () => {
   return {
-    default: {
-      request: downloadMockRequest
-    }
+    request: downloadMockRequest
   };
 });
 
 import {AxiosRequestHeaders, AxiosResponse} from "axios";
 import {download} from "../../client/apiclient";
-import * as httpMocks from "node-mocks-http";
+import httpMocks from "node-mocks-http";
 import {Readable} from "stream";
 import {EventEmitter} from "events";
 

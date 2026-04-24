@@ -3,11 +3,11 @@ jest.mock("../../../services/reason.service");
 jest.mock("../../../services/session.service");
 jest.mock("../../../client/apiclient");
 
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../../mock.middleware";
 import app from "../../../app";
-import * as pageURLs from "../../../model/page.urls";
+import * as pageUrls from "../../../model/page.urls";
 import { COOKIE_NAME } from "../../../session/config";
 import { loadSession } from "../../../services/redis.service";
 import { loadMockSession, fullDummySession } from "../../mock.utils";
@@ -62,7 +62,7 @@ beforeEach(() => {
 describe("accounts information url tests", () => {
   it("should find accounts information page with get", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_ACCOUNTS_INFORMATION)
+      .get(pageUrls.EXTENSIONS_ACCOUNTS_INFORMATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -72,7 +72,7 @@ describe("accounts information url tests", () => {
 
   it("should find accounts information page with get calls api when reason id is added for change", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_ACCOUNTS_INFORMATION + "?reasonId=" + REASON_ID)
+      .get(pageUrls.EXTENSIONS_ACCOUNTS_INFORMATION + "?reasonId=" + REASON_ID)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -82,7 +82,7 @@ describe("accounts information url tests", () => {
 
   it("should return 404 if illness information page with put", async () => {
     const res = await request(app)
-      .put(pageURLs.EXTENSIONS_ACCOUNTS_INFORMATION)
+      .put(pageUrls.EXTENSIONS_ACCOUNTS_INFORMATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
@@ -93,7 +93,7 @@ describe("accounts information url tests", () => {
       throw new Error("invalid session data when processing reason");
     });
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_ACCOUNTS_INFORMATION)
+      .get(pageUrls.EXTENSIONS_ACCOUNTS_INFORMATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(500);
@@ -103,7 +103,7 @@ describe("accounts information url tests", () => {
 describe("accounts information validation tests", () => {
   it("should receive error message requesting more information when text input is empty", async () => {
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ACCOUNTS_INFORMATION)
+      .post(pageUrls.EXTENSIONS_ACCOUNTS_INFORMATION)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
@@ -113,7 +113,7 @@ describe("accounts information validation tests", () => {
 
   it("should receive error message requesting more information when text input is blank", async () => {
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ACCOUNTS_INFORMATION)
+      .post(pageUrls.EXTENSIONS_ACCOUNTS_INFORMATION)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -129,7 +129,7 @@ describe("accounts information validation tests", () => {
       () => session
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ACCOUNTS_INFORMATION)
+      .post(pageUrls.EXTENSIONS_ACCOUNTS_INFORMATION)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -137,7 +137,7 @@ describe("accounts information validation tests", () => {
         accountsInformation:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
+    expect(res.header.location).toEqual(pageUrls.EXTENSIONS_DOCUMENT_OPTION);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toHaveBeenCalledWith(session, {
@@ -151,7 +151,7 @@ describe("accounts information validation tests", () => {
       () => session
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_ACCOUNTS_INFORMATION)
+      .post(pageUrls.EXTENSIONS_ACCOUNTS_INFORMATION)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -159,7 +159,7 @@ describe("accounts information validation tests", () => {
         accountsInformation:
           "Lorem ipsum dolor sit amet, \r\nconsectetur adipiscing elit.",
       });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
+    expect(res.header.location).toEqual(pageUrls.EXTENSIONS_DOCUMENT_OPTION);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toHaveBeenCalledWith(session, {

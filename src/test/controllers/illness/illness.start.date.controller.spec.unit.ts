@@ -2,12 +2,12 @@ jest.mock("../../../services/redis.service");
 jest.mock("../../../services/reason.service");
 jest.mock("../../../client/apiclient");
 
-import * as request from "supertest";
-import * as moment from "moment";
+import request from "supertest";
+import moment from "moment";
 
 import mockMiddlewares from "../../mock.middleware";
 import app from "../../../app";
-import * as PageURLs from "../../../model/page.urls";
+import * as pageUrls from "../../../model/page.urls";
 import { COOKIE_NAME } from "../../../session/config";
 import { EXTENSIONS_CONTINUED_ILLNESS } from "../../../model/page.urls";
 import { loadSession } from "../../../services/redis.service";
@@ -50,7 +50,7 @@ beforeEach(() => {
 describe("illness start date url tests", () => {
   it("should find illness start date page with get", async () => {
     const res = await request(app)
-      .get(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .get(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Referer", "/test")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -80,7 +80,7 @@ describe("illness start date url tests", () => {
 
   it("should find illness start date page with get calls api when reason id is added for change", async () => {
     const res = await request(app)
-      .get(PageURLs.EXTENSIONS_ILLNESS_START_DATE + "?reasonId=" + REASON_ID)
+      .get(pageUrls.EXTENSIONS_ILLNESS_START_DATE + "?reasonId=" + REASON_ID)
       .set("Referer", "/test")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -110,7 +110,7 @@ describe("illness start date url tests", () => {
 
   it("should return 404 for start date page with put", async () => {
     const res = await request(app)
-      .put(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .put(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
@@ -121,7 +121,7 @@ describe("illness start date url tests", () => {
       throw new Error("invalid session data when processing reason");
     });
     const res = await request(app)
-      .get(PageURLs.EXTENSIONS_ILLNESS_START_DATE + "?reasonId=" + REASON_ID)
+      .get(pageUrls.EXTENSIONS_ILLNESS_START_DATE + "?reasonId=" + REASON_ID)
       .set("Referer", "/test")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(500);
@@ -131,7 +131,7 @@ describe("illness start date url tests", () => {
 describe("illness start date validation tests", () => {
   it("should show 1 error if start date day, month and year are missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -150,7 +150,7 @@ describe("illness start date validation tests", () => {
 
   it("should show error if start date day is missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -168,7 +168,7 @@ describe("illness start date validation tests", () => {
 
   it("should show error if start date day and month are missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -186,7 +186,7 @@ describe("illness start date validation tests", () => {
 
   it("should show error if start date day and year are missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -204,7 +204,7 @@ describe("illness start date validation tests", () => {
 
   it("should show error if start date month is missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -222,7 +222,7 @@ describe("illness start date validation tests", () => {
 
   it("should show error if start date month and year are missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -240,7 +240,7 @@ describe("illness start date validation tests", () => {
 
   it("should show error if start date year is missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -258,7 +258,7 @@ describe("illness start date validation tests", () => {
 
   it("should show error message if date is not a valid date", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -274,7 +274,7 @@ describe("illness start date validation tests", () => {
 
   it("should show error message if date is not a valid date (leap year)", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -290,7 +290,7 @@ describe("illness start date validation tests", () => {
 
   it("should not show error message if date is a valid date (leap year)", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -309,7 +309,7 @@ describe("illness start date validation tests", () => {
 
   it("should show error message if date contains invalid chars", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -325,7 +325,7 @@ describe("illness start date validation tests", () => {
 
   it("should show error message if date is in the future", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -343,7 +343,7 @@ describe("illness start date validation tests", () => {
     const now = moment();
 
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -360,7 +360,7 @@ describe("illness start date validation tests", () => {
 
   it("should not show error message if date is in the past", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -379,7 +379,7 @@ describe("illness start date validation tests", () => {
 
   it("should not show error message if date is in the past with single digit day and month", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_ILLNESS_START_DATE)
+      .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])

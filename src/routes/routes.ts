@@ -28,7 +28,7 @@ import downloadAttachmentRoute from "../controllers/download.attachment.controll
 import downloadAttachmentLandingRoute from "../controllers/download.attachment.landing.controller";
 import printApplicationRoute from "../controllers/print.application.controller";
 import {render as renderAddExtensionReason} from "../controllers/add.extension.reason.controller";
-import * as pageURLs from "../model/page.urls";
+import * as pageUrls from "../model/page.urls";
 import * as templatePaths from "../model/template.paths";
 import sessionQuery from "../session/middleware/session.query";
 import backLinkRoute from "../controllers/back.link.controller";
@@ -47,82 +47,82 @@ const renderTemplate = (template: string) => (req: Request, res: Response, next:
   return res.render(template, {templateName: template});
 };
 
-router.get(pageURLs.ROOT, renderTemplate(templatePaths.INDEX));
+router.get(pageUrls.ROOT, renderTemplate(templatePaths.INDEX));
 
-router.get(pageURLs.REMOVE_REASON, removeReasonGetRoute);
-router.get(pageURLs.CONFIRM_COMPANY, companyDetailsRoute.route);
-router.get(pageURLs.CHECK_YOUR_ANSWERS, ...checkAnswersRoute);
-router.get(pageURLs.CONTINUED_ILLNESS, sessionQuery, continuedIllnessRoute.render);
-router.get(pageURLs.ILLNESS_END_DATE, sessionQuery, illnessEndDateRoute.render);
-router.get(pageURLs.PRINT_APPLICATION, ...printApplicationRoute);
+router.get(pageUrls.REMOVE_REASON, removeReasonGetRoute);
+router.get(pageUrls.CONFIRM_COMPANY, companyDetailsRoute.route);
+router.get(pageUrls.CHECK_YOUR_ANSWERS, ...checkAnswersRoute);
+router.get(pageUrls.CONTINUED_ILLNESS, sessionQuery, continuedIllnessRoute.render);
+router.get(pageUrls.ILLNESS_END_DATE, sessionQuery, illnessEndDateRoute.render);
+router.get(pageUrls.PRINT_APPLICATION, ...printApplicationRoute);
 
-router.get(pageURLs.COMPANY_NUMBER, renderTemplate(templatePaths.COMPANY_NUMBER));
-router.post(pageURLs.COMPANY_NUMBER, ...companyNumberRoute);
+router.get(pageUrls.COMPANY_NUMBER, renderTemplate(templatePaths.COMPANY_NUMBER));
+router.post(pageUrls.COMPANY_NUMBER, ...companyNumberRoute);
 
-router.post(pageURLs.CONFIRM_COMPANY, companyDetailsRoute.confirmCompanyStartRequest);
+router.post(pageUrls.CONFIRM_COMPANY, companyDetailsRoute.confirmCompanyStartRequest);
 
-router.get(pageURLs.ACCOUNTS_OVERDUE, renderTemplate(templatePaths.ACCOUNTS_OVERDUE));
+router.get(pageUrls.ACCOUNTS_OVERDUE, renderTemplate(templatePaths.ACCOUNTS_OVERDUE));
 
-router.get(pageURLs.CHOOSE_REASON, renderChooseReason);
-router.post(pageURLs.CHOOSE_REASON, ...chooseReasonRoute);
+router.get(pageUrls.CHOOSE_REASON, renderChooseReason);
+router.post(pageUrls.CHOOSE_REASON, ...chooseReasonRoute);
 
-router.get(pageURLs.REASON_ILLNESS, sessionQuery, renderWhoWasIll);
-router.post(pageURLs.REASON_ILLNESS, ...whoWasIllRoute);
+router.get(pageUrls.REASON_ILLNESS, sessionQuery, renderWhoWasIll);
+router.post(pageUrls.REASON_ILLNESS, ...whoWasIllRoute);
 
-router.get(pageURLs.ILLNESS_START_DATE, sessionQuery, renderIllnessStartDate);
-router.post(pageURLs.ILLNESS_START_DATE, ...illnessStartDateRoute);
+router.get(pageUrls.ILLNESS_START_DATE, sessionQuery, renderIllnessStartDate);
+router.post(pageUrls.ILLNESS_START_DATE, ...illnessStartDateRoute);
 
-router.post(pageURLs.CONTINUED_ILLNESS, continuedIllnessRoute.processForm);
+router.post(pageUrls.CONTINUED_ILLNESS, continuedIllnessRoute.processForm);
 
-router.post(pageURLs.ILLNESS_END_DATE, ...illnessEndDateRoute.processForm);
+router.post(pageUrls.ILLNESS_END_DATE, ...illnessEndDateRoute.processForm);
 
-router.get(pageURLs.REASON_ACCOUNTING_ISSUE, sessionQuery, renderAccountsDate);
-router.post(pageURLs.REASON_ACCOUNTING_ISSUE, ...accountsDateRoute);
+router.get(pageUrls.REASON_ACCOUNTING_ISSUE, sessionQuery, renderAccountsDate);
+router.post(pageUrls.REASON_ACCOUNTING_ISSUE, ...accountsDateRoute);
 
-router.get(pageURLs.ACCOUNTS_INFORMATION, sessionQuery, renderAccountsInformation);
-router.post(pageURLs.ACCOUNTS_INFORMATION, ...accountsInformationRoute);
+router.get(pageUrls.ACCOUNTS_INFORMATION, sessionQuery, renderAccountsInformation);
+router.post(pageUrls.ACCOUNTS_INFORMATION, ...accountsInformationRoute);
 
-router.get(pageURLs.REASON_OTHER, sessionQuery, renderReasonOther);
-router.post(pageURLs.REASON_OTHER, ...reasonOtherRoute);
+router.get(pageUrls.REASON_OTHER, sessionQuery, renderReasonOther);
+router.post(pageUrls.REASON_OTHER, ...reasonOtherRoute);
 
-router.get(pageURLs.DOCUMENT_OPTION, renderDocumentsOption);
-router.post(pageURLs.DOCUMENT_OPTION, ...documentsOptionRoute);
+router.get(pageUrls.DOCUMENT_OPTION, renderDocumentsOption);
+router.post(pageUrls.DOCUMENT_OPTION, ...documentsOptionRoute);
 
-router.get(pageURLs.DOCUMENT_UPLOAD, renderDocumentsUpload);
-router.get(pageURLs.DOCUMENT_UPLOAD_CONTINUE_NO_DOCS, uploadContinueNoDocs);
-router.post(pageURLs.DOCUMENT_UPLOAD, ...documentsUploadRoute);
+router.get(pageUrls.DOCUMENT_UPLOAD, renderDocumentsUpload);
+router.get(pageUrls.DOCUMENT_UPLOAD_CONTINUE_NO_DOCS, uploadContinueNoDocs);
+router.post(pageUrls.DOCUMENT_UPLOAD, ...documentsUploadRoute);
 
-router.get(pageURLs.ADD_EXTENSION_REASON, renderAddExtensionReason);
-router.post(pageURLs.ADD_EXTENSION_REASON, ...addExtensionReasonRoute);
+router.get(pageUrls.ADD_EXTENSION_REASON, renderAddExtensionReason);
+router.post(pageUrls.ADD_EXTENSION_REASON, ...addExtensionReasonRoute);
 
-router.post(pageURLs.CHECK_YOUR_ANSWERS, submitCheckAnswers);
+router.post(pageUrls.CHECK_YOUR_ANSWERS, submitCheckAnswers);
 
-router.get(pageURLs.ILLNESS_INFORMATION, renderIllnessInformation);
-router.post(pageURLs.ILLNESS_INFORMATION, ...illnessInformationRoute);
+router.get(pageUrls.ILLNESS_INFORMATION, renderIllnessInformation);
+router.post(pageUrls.ILLNESS_INFORMATION, ...illnessInformationRoute);
 
-router.get(pageURLs.CONFIRMATION, ...confirmationRoute);
+router.get(pageUrls.CONFIRMATION, ...confirmationRoute);
 
-router.post(pageURLs.REMOVE_REASON, ...removeReasonPostRoute);
+router.post(pageUrls.REMOVE_REASON, ...removeReasonPostRoute);
 
-router.get(pageURLs.DOWNLOAD_ATTACHMENT, ...downloadAttachmentRoute);
+router.get(pageUrls.DOWNLOAD_ATTACHMENT, ...downloadAttachmentRoute);
 
-router.get(pageURLs.DOWNLOAD_ATTACHMENT_LANDING, ...downloadAttachmentLandingRoute);
+router.get(pageUrls.DOWNLOAD_ATTACHMENT_LANDING, ...downloadAttachmentLandingRoute);
 
-router.get(pageURLs.REMOVE_DOCUMENT, renderRemoveDocument);
-router.post(pageURLs.REMOVE_DOCUMENT, removeDocumentRoute);
+router.get(pageUrls.REMOVE_DOCUMENT, renderRemoveDocument);
+router.post(pageUrls.REMOVE_DOCUMENT, removeDocumentRoute);
 
-router.get(pageURLs.ERROR, (_req: Request ,res: Response, _next: NextFunction) => {
+router.get(pageUrls.ERROR, (_req: Request ,res: Response, _next: NextFunction) => {
   res.status(500).render(templatePaths.ERROR, {templateName: templatePaths.ERROR});
 });
 
-router.get(pageURLs.TOO_SOON, showTooSoonPage);
+router.get(pageUrls.TOO_SOON, showTooSoonPage);
 
-router.get(pageURLs.EXTENSION_LIMIT_REACHED, showExtensionLimitReachedPage);
+router.get(pageUrls.EXTENSION_LIMIT_REACHED, showExtensionLimitReachedPage);
 
-router.get(pageURLs.BACK_LINK, backLinkRoute);
+router.get(pageUrls.BACK_LINK, backLinkRoute);
 
-router.get(pageURLs.ACCESSIBILITY_STATEMENT, renderTemplate(templatePaths.ACCESSIBILITY_STATEMENT));
+router.get(pageUrls.ACCESSIBILITY_STATEMENT, renderTemplate(templatePaths.ACCESSIBILITY_STATEMENT));
 
-router.get(pageURLs.HEALTHCHECK, healthcheck.get);
+router.get(pageUrls.HEALTHCHECK, healthcheck.get);
 
 export const appRouter = router;

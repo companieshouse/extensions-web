@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { check, validationResult, ValidationError } from "express-validator";
 import * as errorMessages from "../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
-import * as pageURLs from "../model/page.urls";
+import * as pageUrls from "../model/page.urls";
 import * as templatePaths from "../model/template.paths";
 import * as keys from "../session/keys";
 import * as sessionService from "../services/session.service";
@@ -44,11 +44,11 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     if (decision === "yes") {
       await sessionService.updateExtensionSessionValue(req.chSession, keys.UPLOAD_DOCUMENTS_YES, true);
       await sessionService.updateExtensionSessionValue(req.chSession, keys.UPLOAD_DOCUMENTS_NO, false);
-      return res.redirect(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD);
+      return res.redirect(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD);
     } else {
       await sessionService.updateExtensionSessionValue(req.chSession, keys.UPLOAD_DOCUMENTS_NO, true);
       await sessionService.updateExtensionSessionValue(req.chSession, keys.UPLOAD_DOCUMENTS_YES, false);
-      return res.redirect(pageURLs.EXTENSIONS_ADD_EXTENSION_REASON);
+      return res.redirect(pageUrls.EXTENSIONS_ADD_EXTENSION_REASON);
     }
   }
 };

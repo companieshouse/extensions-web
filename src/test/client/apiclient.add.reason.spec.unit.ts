@@ -1,9 +1,7 @@
 const addReasonMockRequest: jest.Mock = jest.fn( () => { return addReasonAxiosResponse });
 jest.mock("axios", () => {
   return {
-    default: {
-      request: addReasonMockRequest
-    }
+    request: addReasonMockRequest
   };
 });
 

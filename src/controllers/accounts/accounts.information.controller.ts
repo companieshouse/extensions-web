@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import {check, validationResult, ValidationError} from "express-validator";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
@@ -75,9 +75,9 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
   if (changingDetails) {
-    return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
+    return res.redirect(pageUrls.EXTENSIONS_CHECK_YOUR_ANSWERS);
   } else {
-    return res.redirect(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
+    return res.redirect(pageUrls.EXTENSIONS_DOCUMENT_OPTION);
   }
 };
 

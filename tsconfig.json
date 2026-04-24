@@ -9,7 +9,9 @@
     "baseUrl": "./src",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "strictNullChecks": true
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "types": ["jest"]
   },
   "include": [
     "src/**/*"

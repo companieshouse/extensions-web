@@ -1,9 +1,7 @@
 const callCurrentMockRequest: jest.Mock = jest.fn(() => dummyAxiosResponse);
 jest.mock("axios", () => {
   return {
-    default: {
-      request: callCurrentMockRequest,
-    },
+    request: callCurrentMockRequest,
   };
 });
 

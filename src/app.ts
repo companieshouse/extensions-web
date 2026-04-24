@@ -1,8 +1,17 @@
-import * as cookieParser from "cookie-parser";
-import * as express from "express";
-import * as nunjucks from "nunjucks";
-import * as path from "path";
+import cookieParser from "cookie-parser";
+import express from "express";
+import nunjucks from "nunjucks";
+import path from "path";
 import Redis from "ioredis";
+// ts-jest / test env can expose different module shapes; when running under Jest
+// prefer requiring the module so the constructor is available. In production the
+// TypeScript-style import is used for clarity.
+const RedisCtor: any = (process.env.JEST_WORKER_ID !== undefined)
+  ? (() => {
+      const mod = require("ioredis");
+      return (mod && (mod as any).default) ? (mod as any).default : mod;
+    })()
+  : ((Redis as any) && (Redis as any).default ? (Redis as any).default : Redis);
 
 
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
@@ -11,7 +20,7 @@ import { SessionMiddleware, SessionStore } from "@companieshouse/node-session-ha
 import authenticate from "./authentication/middleware/index";
 import monitor from "./authentication/middleware/monitor";
 import errorHandlers from "./controllers/error.controller";
-import * as pageURLs from "./model/page.urls";
+import * as pageUrls from "./model/page.urls";
 import sessionMiddleware from "./session/middleware";
 import history from "./session/middleware/history";
 import {appRouter} from "./routes/routes";
@@ -53,11 +62,11 @@ app.use(express.urlencoded({
 }));
 
 // check if we should show the service unavailable page
-app.use(`${pageURLs.EXTENSIONS}`, checkServiceAvailability);
+app.use(`${pageUrls.EXTENSIONS}`, checkServiceAvailability);
 
 app.use(cookieParser());
 app.use(EXCLUDED_PATHS, sessionMiddleware);
-app.use(`${pageURLs.EXTENSIONS}/*path`, authenticate);
+app.use(`${pageUrls.EXTENSIONS}/*path`, authenticate);
 
 const cookieConfig = {
   cookieName: '__SID',
@@ -65,7 +74,7 @@ const cookieConfig = {
   cookieDomain: COOKIE_DOMAIN,
   cookieTimeToLiveInSeconds: parseInt(DEFAULT_SESSION_EXPIRATION, 10)
 };
-const sessionStore = new SessionStore(new Redis(`redis://${CACHE_SERVER}`));
+const sessionStore = new SessionStore(new RedisCtor(`redis://${CACHE_SERVER}`));
 app.use(EXCLUDED_PATHS, SessionMiddleware(cookieConfig, sessionStore));
 
 const csrfProtectionMiddleware = CsrfProtectionMiddleware({
@@ -76,12 +85,12 @@ const csrfProtectionMiddleware = CsrfProtectionMiddleware({
 app.use(EXCLUDED_PATHS, csrfProtectionMiddleware);
 
 if (activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
-  app.use(pageURLs.EXTENSIONS, accessibilityRoutes);
+  app.use(pageUrls.EXTENSIONS, accessibilityRoutes);
 } else {
-  app.use(`${pageURLs.EXTENSIONS}/*path`, monitor);
-  app.use(`${pageURLs.EXTENSIONS}/*path`, history);
+  app.use(`${pageUrls.EXTENSIONS}/*path`, monitor);
+  app.use(`${pageUrls.EXTENSIONS}/*path`, history);
 }
-app.use(pageURLs.EXTENSIONS, appRouter);
+app.use(pageUrls.EXTENSIONS, appRouter);
 app.use(...errorHandlers);
 
 logger.info("Extensions service started");

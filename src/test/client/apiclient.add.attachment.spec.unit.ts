@@ -1,16 +1,14 @@
 const addAttachmentMockRequest: jest.Mock = jest.fn( () => { return addAttachmentAxiosResponse });
 jest.mock("axios", () => {
   return {
-    default: {
-      request: addAttachmentMockRequest
-    }
+    request: addAttachmentMockRequest
   };
 });
 
 import {AxiosRequestHeaders, AxiosResponse} from "axios";
 import {addAttachmentToReason} from "../../client/apiclient";
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
+import path from "path";
 
 const addAttachmentAxiosResponse: AxiosResponse<any> = {
   data: {

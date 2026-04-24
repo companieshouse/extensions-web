@@ -1,9 +1,7 @@
 const removeReasonMockRequest: jest.Mock = jest.fn( () => { return removeReasonAxiosResponse });
 jest.mock("axios", () => {
   return {
-    default: {
-      request: removeReasonMockRequest
-    }
+    request: removeReasonMockRequest
   };
 });
 

@@ -15,7 +15,7 @@ jest.mock("../../client/apiclient", () => {
 });
 
 import {NextFunction, Request, Response} from "express";
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";

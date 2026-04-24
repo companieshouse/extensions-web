@@ -3,9 +3,7 @@ import {ACCOUNTS_NEXT_DUE_DATE, getDummyCompanyProfile} from "../mock.utils";
 const createExtensionMockRequest: jest.Mock = jest.fn( () => { return createExtensionAxiosResponse });
 jest.mock("axios", () => {
   return {
-    default: {
-      request: createExtensionMockRequest
-    }
+    request: createExtensionMockRequest
   };
 });
 

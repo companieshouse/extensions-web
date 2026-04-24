@@ -11,7 +11,10 @@ module.exports = {
   verbose: true,
   testMatch: ["**/test/**/*.spec.unit.[jt]s"],
   transform: {
-    "^.+\\.tsx?$": "ts-jest",
+    "^.+\\.tsx?$": ["ts-jest", { "tsconfig": "tsconfig.json" }],
+  },
+  moduleNameMapper: {
+    "^ioredis$": "<rootDir>/src/test/__mocks__/ioredis.js"
   },
   globalSetup: "./global.setup.ts"
 };

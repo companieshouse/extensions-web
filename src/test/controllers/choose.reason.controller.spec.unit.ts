@@ -2,11 +2,11 @@ jest.mock("../../services/redis.service");
 jest.mock("../../client/apiclient");
 jest.mock("../../services/reason.service");
 
-import * as superTest from "supertest";
+import superTest from "supertest";
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import { COOKIE_NAME } from "../../session/config";
 import { loadSession } from "../../services/redis.service";
 import { loadMockSession, missingTokenDummySession } from "../mock.utils";
@@ -42,7 +42,7 @@ beforeEach(() => {
 describe("choose reason url tests", () => {
   it("should find choose reason page with get", async () => {
     const res = await superTest(app)
-      .get(pageURLs.EXTENSIONS_CHOOSE_REASON)
+      .get(pageUrls.EXTENSIONS_CHOOSE_REASON)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -50,7 +50,7 @@ describe("choose reason url tests", () => {
 
   it("should return 404 if choose reason page with put", async () => {
     const res = await superTest(app)
-      .put(pageURLs.EXTENSIONS_CHOOSE_REASON)
+      .put(pageUrls.EXTENSIONS_CHOOSE_REASON)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
@@ -60,7 +60,7 @@ describe("choose reason url tests", () => {
 describe("choose reason validation tests", () => {
   it("should receive error message instructing user to select a reason when reason is undefined", async () => {
     const res = await superTest(app)
-      .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
+      .post(pageUrls.EXTENSIONS_CHOOSE_REASON)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
@@ -76,12 +76,12 @@ describe("choose reason validation tests", () => {
       reason_status: "COMPLETED",
     });
     const res = await superTest(app)
-      .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
+      .post(pageUrls.EXTENSIONS_CHOOSE_REASON)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ extensionReason: "illness" });
-    expect("/" + res.header.location).toEqual(pageURLs.REASON_ILLNESS);
+    expect("/" + res.header.location).toEqual(pageUrls.REASON_ILLNESS);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(EXTENSION_REASON_NOT_SELECTED);
     expect(mockApiClient).toHaveBeenCalledWith(
@@ -98,14 +98,14 @@ describe("choose reason validation tests", () => {
     mockCacheService.prototype.constructor.mockImplementation(dummySession);
     mockApiClient.prototype.constructor.mockReturnValueOnce({ id: "1234" });
     const res = await superTest(app)
-      .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
+      .post(pageUrls.EXTENSIONS_CHOOSE_REASON)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         extensionReason: "accounting issues",
       });
-    expect("/" + res.header.location).toEqual(pageURLs.REASON_ACCOUNTING_ISSUE);
+    expect("/" + res.header.location).toEqual(pageUrls.REASON_ACCOUNTING_ISSUE);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(EXTENSION_REASON_NOT_SELECTED);
     expect(mockApiClient).toHaveBeenCalledWith(
@@ -122,14 +122,14 @@ describe("choose reason validation tests", () => {
     mockCacheService.prototype.constructor.mockImplementation(dummySession);
     mockApiClient.prototype.constructor.mockReturnValueOnce({ id: "1234" });
     const res = await superTest(app)
-      .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
+      .post(pageUrls.EXTENSIONS_CHOOSE_REASON)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
         extensionReason: "other",
       });
-    expect("/" + res.header.location).toEqual(pageURLs.REASON_OTHER);
+    expect("/" + res.header.location).toEqual(pageUrls.REASON_OTHER);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(EXTENSION_REASON_NOT_SELECTED);
     expect(mockApiClient).toHaveBeenCalledWith(
@@ -149,7 +149,7 @@ describe("choose reason validation tests", () => {
       reason_status: "DRAFT",
     });
     const res = await superTest(app)
-      .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
+      .post(pageUrls.EXTENSIONS_CHOOSE_REASON)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -166,7 +166,7 @@ describe("choose reason validation tests", () => {
       throw new Error("invalid session data when processing reason");
     });
     const res = await superTest(app)
-      .post(pageURLs.EXTENSIONS_CHOOSE_REASON)
+      .post(pageUrls.EXTENSIONS_CHOOSE_REASON)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])

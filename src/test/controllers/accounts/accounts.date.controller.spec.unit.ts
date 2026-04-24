@@ -2,13 +2,13 @@ jest.mock("../../../services/redis.service");
 jest.mock("../../../services/reason.service");
 jest.mock("../../../client/apiclient");
 
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../../mock.middleware";
 import app from "../../../app";
-import * as PageURLs from "../../../model/page.urls";
+import * as pageUrls from "../../../model/page.urls";
 import { COOKIE_NAME } from "../../../session/config";
-import * as moment from "moment";
+import moment from "moment";
 import { EXTENSIONS_ACCOUNTS_INFORMATION } from "../../../model/page.urls";
 import { loadSession } from "../../../services/redis.service";
 import { fullDummySession } from "../../mock.utils";
@@ -50,7 +50,7 @@ beforeEach(() => {
 describe("accounting issue date url tests", () => {
   it("should find accounts date page with get", async () => {
     const res = await request(app)
-      .get(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .get(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -81,7 +81,7 @@ describe("accounting issue date url tests", () => {
   it("should find accounts date page with get calls api when reason id is added for change", async () => {
     const res = await request(app)
       .get(
-        PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE + "?reasonId=" + REASON_ID
+        pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE + "?reasonId=" + REASON_ID
       )
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
@@ -112,7 +112,7 @@ describe("accounting issue date url tests", () => {
 
   it("should return 404 for accounts date page with put", async () => {
     const res = await request(app)
-      .put(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .put(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
@@ -123,7 +123,7 @@ describe("accounting issue date url tests", () => {
       throw new Error("invalid session data when processing reason");
     });
     const res = await request(app)
-      .get(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .get(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(500);
@@ -154,7 +154,7 @@ describe("accounting issue date url tests", () => {
 describe("accounts date validation tests", () => {
   it("should show 1 error if accounting issue date day, month and year are missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -173,7 +173,7 @@ describe("accounts date validation tests", () => {
 
   it("should show error if accounting issue date day is missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -191,7 +191,7 @@ describe("accounts date validation tests", () => {
 
   it("should show error if accounting issue date day and month is missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -209,7 +209,7 @@ describe("accounts date validation tests", () => {
 
   it("should show error if accounting issue date day and year is missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -227,7 +227,7 @@ describe("accounts date validation tests", () => {
 
   it("should show error if accounting issue date month is missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -245,7 +245,7 @@ describe("accounts date validation tests", () => {
 
   it("should show error if accounting issue date month and year is missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -263,7 +263,7 @@ describe("accounts date validation tests", () => {
 
   it("should show error if accounting issue date year is missing", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -281,7 +281,7 @@ describe("accounts date validation tests", () => {
 
   it("should show error message if date is not a valid date", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -297,7 +297,7 @@ describe("accounts date validation tests", () => {
 
   it("should show error message if date is not a valid date (leap year)", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -313,7 +313,7 @@ describe("accounts date validation tests", () => {
 
   it("should not show error message if date is a valid date (leap year)", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -332,7 +332,7 @@ describe("accounts date validation tests", () => {
 
   it("should show error message if date contains invalid chars", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -348,7 +348,7 @@ describe("accounts date validation tests", () => {
 
   it("should show error message if date is in the future", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -366,7 +366,7 @@ describe("accounts date validation tests", () => {
     const now = moment();
 
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -383,7 +383,7 @@ describe("accounts date validation tests", () => {
 
   it("should not show error message if date is in the past", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -402,7 +402,7 @@ describe("accounts date validation tests", () => {
 
   it("should not show error message if date is in the past with single digit day and month", async () => {
     const res = await request(app)
-      .post(PageURLs.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
+      .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])

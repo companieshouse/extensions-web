@@ -2,7 +2,7 @@ jest.mock("../../client/apiclient");
 jest.mock("../../services/redis.service");
 jest.mock("../../services/session.service");
 
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
@@ -17,7 +17,7 @@ import {
 } from "../../services/session.service";
 import * as mockUtils from "../mock.utils";
 import { COOKIE_NAME } from "../../session/config";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 
 const mockCompanyProfile: jest.Mock = (<unknown>getCompanyProfile) as jest.Mock<
   typeof getCompanyProfile
@@ -65,7 +65,7 @@ describe("too.soon.controller tests", () => {
     mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
 
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_TOO_SOON)
+      .get(pageUrls.EXTENSIONS_TOO_SOON)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -80,7 +80,7 @@ describe("too.soon.controller tests", () => {
     mockCompanyProfile.mockRejectedValue(new Error());
 
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_TOO_SOON)
+      .get(pageUrls.EXTENSIONS_TOO_SOON)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -96,7 +96,7 @@ describe("too.soon.controller tests", () => {
     );
 
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_TOO_SOON)
+      .get(pageUrls.EXTENSIONS_TOO_SOON)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 

@@ -2,7 +2,7 @@ jest.mock("../../client/apiclient");
 jest.mock("../../services/redis.service");
 jest.mock("../../services/session.service");
 
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
@@ -11,7 +11,7 @@ import {
   getCompanyProfile,
 } from "../../client/apiclient";
 import * as mockUtils from "../mock.utils";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import { COOKIE_NAME } from "../../session/config";
 import { loadSession } from "../../services/redis.service";
 import {
@@ -53,7 +53,7 @@ describe("extension limit reached controller tests", () => {
     mockCompanyProfile.mockResolvedValue(dummyCompanyProfile);
 
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED)
+      .get(pageUrls.EXTENSIONS_EXTENSION_LIMIT_REACHED)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -67,7 +67,7 @@ describe("extension limit reached controller tests", () => {
     mockCompanyProfile.mockRejectedValue(new Error());
 
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED)
+      .get(pageUrls.EXTENSIONS_EXTENSION_LIMIT_REACHED)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -83,7 +83,7 @@ describe("extension limit reached controller tests", () => {
     );
 
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED)
+      .get(pageUrls.EXTENSIONS_EXTENSION_LIMIT_REACHED)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 

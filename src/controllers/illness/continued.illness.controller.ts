@@ -3,7 +3,7 @@ import {check, validationResult, ValidationError} from "express-validator";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
 import * as templatePaths from "../../model/template.paths";
 import * as errorMessages from "../../model/error.messages";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import * as keys from "../../session/keys";
 import * as sessionService from "../../services/session.service";
 import * as reasonService from "../../services/reason.service";
@@ -90,11 +90,11 @@ export const processForm = [...validators, async (req: Request, res: Response, n
     const changingDetails = req.chSession.data[keys.CHANGING_DETAILS];
     if (answer === "yes") {
       if (changingDetails) {
-        return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
+        return res.redirect(pageUrls.EXTENSIONS_CHECK_YOUR_ANSWERS);
       }
-      return res.redirect(pageURLs.EXTENSIONS_ILLNESS_INFORMATION);
+      return res.redirect(pageUrls.EXTENSIONS_ILLNESS_INFORMATION);
     } else {
-      return res.redirect(pageURLs.EXTENSIONS_ILLNESS_END_DATE);
+      return res.redirect(pageUrls.EXTENSIONS_ILLNESS_END_DATE);
     }
   }
 }];

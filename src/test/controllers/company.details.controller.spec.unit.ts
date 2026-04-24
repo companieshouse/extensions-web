@@ -4,7 +4,7 @@ jest.mock("../../services/redis.service");
 jest.mock("../../services/session.service");
 jest.mock("../../logger");
 
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../mock.middleware";
 import {
@@ -24,7 +24,7 @@ import {
   createHistoryIfNone,
   getRequest,
 } from "../../services/session.service";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import { IExtensionRequest } from "../../session/types";
 import { ExtensionRequestStatus } from "../../model/extension.request.status";
 import logger from "../../logger";
@@ -361,7 +361,7 @@ describe("company.details.controller tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(res.header.location).toEqual(
-      pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED
+      pageUrls.EXTENSIONS_EXTENSION_LIMIT_REACHED
     );
     expect(res.status).toEqual(302);
 
@@ -407,7 +407,7 @@ describe("company.details.controller tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(res.header.location).toEqual(
-      pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED
+      pageUrls.EXTENSIONS_EXTENSION_LIMIT_REACHED
     );
     expect(res.status).toEqual(302);
 
@@ -493,7 +493,7 @@ describe("company.details.controller tests", () => {
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_CHOOSE_REASON);
+    expect(res.header.location).toEqual(pageUrls.EXTENSIONS_CHOOSE_REASON);
     expect(res.status).toEqual(302);
   });
 
@@ -508,7 +508,7 @@ describe("company.details.controller tests", () => {
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_CHOOSE_REASON);
+    expect(res.header.location).toEqual(pageUrls.EXTENSIONS_CHOOSE_REASON);
     expect(res.status).toEqual(302);
   });
 });

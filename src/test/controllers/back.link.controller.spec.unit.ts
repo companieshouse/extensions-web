@@ -1,7 +1,7 @@
 jest.mock("../../services/redis.service");
 jest.mock("../../services/session.service");
 
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
@@ -10,7 +10,7 @@ import { updateHistory } from "../../services/session.service";
 import Session from "../../session/session";
 import { loadMockSession } from "../mock.utils";
 import * as keys from "../../session/keys";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import { COOKIE_NAME } from "../../session/config";
 
 const mockCacheService = (<unknown>loadSession) as jest.Mock<
@@ -26,7 +26,7 @@ beforeEach(() => {
   loadMockSession(mockCacheService);
   mockCacheService.mockClear();
   mockUpdateHistory.mockClear();
-  mockCacheService.prototype.constructor.mockImplementationOnce((cookieId) => {
+  mockCacheService.prototype.constructor.mockImplementationOnce((cookieId: string) => {
     const session: Session = Session.newWithCookieId(cookieId);
     session.data = {
       [keys.SIGN_IN_INFO]: {
@@ -47,7 +47,7 @@ beforeEach(() => {
 describe("click back link tests", () => {
   it("should remove last page", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_BACK_LINK)
+      .get(pageUrls.EXTENSIONS_BACK_LINK)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -76,7 +76,7 @@ describe("click back link tests", () => {
 
   it("should remove last two pages when referer is the same as top page on history stack", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_BACK_LINK)
+      .get(pageUrls.EXTENSIONS_BACK_LINK)
       .set("referer", "http:/test:1234/extensions/previous-page")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 

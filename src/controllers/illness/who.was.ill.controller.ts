@@ -4,7 +4,7 @@ import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
 import * as templatePaths from "../../model/template.paths";
 import * as keys from "../../session/keys";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import * as reasonService from "../../services/reason.service";
 import * as sessionService from "../../services/session.service";
 import {ReasonWeb} from "../../model/reason/extension.reason.web";
@@ -115,9 +115,9 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
 
   if (changingDetails) {
-    return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
+    return res.redirect(pageUrls.EXTENSIONS_CHECK_YOUR_ANSWERS);
   } else {
-    return res.redirect(pageURLs.EXTENSIONS_ILLNESS_START_DATE);
+    return res.redirect(pageUrls.EXTENSIONS_ILLNESS_START_DATE);
   }
 };
 

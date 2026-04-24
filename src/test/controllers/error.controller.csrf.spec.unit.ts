@@ -14,14 +14,14 @@ jest.mock("../../client/apiclient");
 
 import { CsrfError } from "@companieshouse/web-security-node";
 import {NextFunction, Request, Response} from "express";
-import * as request from "supertest";
+import request from "supertest";
 
 import app from "../../app";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import {COOKIE_NAME} from "../../session/config";
 import {loadSession} from "../../services/redis.service";
 import {EMAIL, getDummyCompanyProfile, loadMockSession} from "../mock.utils";
-import * as removeReasonController from "../../controllers/remove.reason.controller";
+import removeReasonController from "../../controllers/remove.reason.controller";
 import { getCompanyProfile, removeExtensionReasonFromRequest, getReasons } from "../../client/apiclient";
 import Session from "../../session/session";
 import * as keys from "../../session/keys";
@@ -64,7 +64,7 @@ describe("error csrf", () => {
     const QUERY_ID = "?id=1";
 
     const response = await request(app)
-    .get(pageURLs.EXTENSIONS_REMOVE_REASON + QUERY_ID)
+    .get(pageUrls.EXTENSIONS_REMOVE_REASON + QUERY_ID)
     .set("Referer", "/")
     .set("Cookie", [`${COOKIE_NAME}=123`]);
 

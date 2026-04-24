@@ -3,11 +3,11 @@ jest.mock("../../../services/reason.service");
 jest.mock("../../../services/session.service");
 jest.mock("../../../client/apiclient");
 
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../../mock.middleware";
 import app from "../../../app";
-import * as pageURLs from "../../../model/page.urls";
+import * as pageUrls from "../../../model/page.urls";
 import { COOKIE_NAME } from "../../../session/config";
 import { loadMockSession, fullDummySession } from "../../mock.utils";
 import { loadSession } from "../../../services/redis.service";
@@ -65,7 +65,7 @@ beforeEach(() => {
 describe("who was ill url tests", () => {
   it("should find who was ill page with get", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .get(pageUrls.EXTENSIONS_REASON_ILLNESS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -78,7 +78,7 @@ describe("who was ill url tests", () => {
       reason("Company director or officer")
     );
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .get(pageUrls.EXTENSIONS_REASON_ILLNESS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -92,7 +92,7 @@ describe("who was ill url tests", () => {
       reason("Company accountant or agent")
     );
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .get(pageUrls.EXTENSIONS_REASON_ILLNESS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -106,7 +106,7 @@ describe("who was ill url tests", () => {
       reason("Family member")
     );
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .get(pageUrls.EXTENSIONS_REASON_ILLNESS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -120,7 +120,7 @@ describe("who was ill url tests", () => {
       reason("Company employee")
     );
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .get(pageUrls.EXTENSIONS_REASON_ILLNESS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -131,7 +131,7 @@ describe("who was ill url tests", () => {
 
   it("should find who was ill page with existing reason information when reason id is added for change", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_REASON_ILLNESS + "?reasonId=" + REASON_ID)
+      .get(pageUrls.EXTENSIONS_REASON_ILLNESS + "?reasonId=" + REASON_ID)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -141,7 +141,7 @@ describe("who was ill url tests", () => {
 
   it("should return 404 if who was ill page with put", async () => {
     const res = await request(app)
-      .put(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .put(pageUrls.EXTENSIONS_REASON_ILLNESS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
@@ -152,7 +152,7 @@ describe("who was ill url tests", () => {
       throw new Error("invalid session data when processing reason");
     });
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_REASON_ILLNESS + "?reasonId=" + REASON_ID)
+      .get(pageUrls.EXTENSIONS_REASON_ILLNESS + "?reasonId=" + REASON_ID)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(500);
@@ -163,7 +163,7 @@ describe("who was ill url tests", () => {
 describe("who was ill validation tests", () => {
   it("should receive error message instructing user to select a person when person is undefined", async () => {
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .post(pageUrls.EXTENSIONS_REASON_ILLNESS)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
@@ -174,7 +174,7 @@ describe("who was ill validation tests", () => {
 
   it("should receive error message instructing user to tell the person when 'someone else' is selected with no description", async () => {
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .post(pageUrls.EXTENSIONS_REASON_ILLNESS)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -186,7 +186,7 @@ describe("who was ill validation tests", () => {
 
   it("should receive error message instructing user to tell the person when 'someone else' is selected with blank description", async () => {
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .post(pageUrls.EXTENSIONS_REASON_ILLNESS)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -204,7 +204,7 @@ describe("who was ill validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .post(pageUrls.EXTENSIONS_REASON_ILLNESS)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -222,7 +222,7 @@ describe("who was ill validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .post(pageUrls.EXTENSIONS_REASON_ILLNESS)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -244,7 +244,7 @@ describe("who was ill validation tests", () => {
       throw new Error("invalid session data when processing reason");
     });
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REASON_ILLNESS)
+      .post(pageUrls.EXTENSIONS_REASON_ILLNESS)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])

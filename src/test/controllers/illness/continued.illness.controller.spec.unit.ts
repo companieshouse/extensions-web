@@ -3,11 +3,11 @@ jest.mock("../../../services/reason.service");
 jest.mock("../../../services/session.service");
 jest.mock("../../../client/apiclient");
 
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../../mock.middleware";
 import app from "../../../app";
-import * as pageURLs from "../../../model/page.urls";
+import * as pageUrls from "../../../model/page.urls";
 import { COOKIE_NAME } from "../../../session/config";
 import { loadSession } from "../../../services/redis.service";
 import {
@@ -68,7 +68,7 @@ describe("continued illness url tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
+      .get(pageUrls.EXTENSIONS_CONTINUED_ILLNESS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -78,7 +78,7 @@ describe("continued illness url tests", () => {
 
   it("should find continued illness page with existing reason information when reason id is added for change", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_CONTINUED_ILLNESS + "?reasonId=" + REASON_ID)
+      .get(pageUrls.EXTENSIONS_CONTINUED_ILLNESS + "?reasonId=" + REASON_ID)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -88,7 +88,7 @@ describe("continued illness url tests", () => {
 
   it("should return 404 if continued illness page with put", async () => {
     const res = await request(app)
-      .put(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
+      .put(pageUrls.EXTENSIONS_CONTINUED_ILLNESS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
@@ -101,7 +101,7 @@ describe("continued illness url tests", () => {
       throw new Error("invalid session data when processing reason");
     });
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
+      .get(pageUrls.EXTENSIONS_CONTINUED_ILLNESS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(500);
@@ -114,7 +114,7 @@ describe("continued illness validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
+      .post(pageUrls.EXTENSIONS_CONTINUED_ILLNESS)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
@@ -128,13 +128,13 @@ describe("continued illness validation tests", () => {
       fullDummySession
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
+      .post(pageUrls.EXTENSIONS_CONTINUED_ILLNESS)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ continuedIllness: "yes" });
     expect(res.header.location).toEqual(
-      pageURLs.EXTENSIONS_ILLNESS_INFORMATION
+      pageUrls.EXTENSIONS_ILLNESS_INFORMATION
     );
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(STILL_ILL_ANSWER_NOT_PROVIDED);
@@ -146,12 +146,12 @@ describe("continued illness validation tests", () => {
       sessionWithChangingDetails
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
+      .post(pageUrls.EXTENSIONS_CONTINUED_ILLNESS)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ continuedIllness: "no" });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_ILLNESS_END_DATE);
+    expect(res.header.location).toEqual(pageUrls.EXTENSIONS_ILLNESS_END_DATE);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(STILL_ILL_ANSWER_NOT_PROVIDED);
     expect(mockGetCurrentReason).not.toHaveBeenCalled();
@@ -162,12 +162,12 @@ describe("continued illness validation tests", () => {
       sessionWithChangingDetails
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
+      .post(pageUrls.EXTENSIONS_CONTINUED_ILLNESS)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ continuedIllness: "yes" });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
+    expect(res.header.location).toEqual(pageUrls.EXTENSIONS_CHECK_YOUR_ANSWERS);
     expect(res.status).toEqual(302);
     expect(mockGetCurrentReason).not.toHaveBeenCalled();
   });
@@ -180,7 +180,7 @@ describe("continued illness validation tests", () => {
       throw new Error("invalid session data when processing reason");
     });
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_CONTINUED_ILLNESS)
+      .post(pageUrls.EXTENSIONS_CONTINUED_ILLNESS)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])

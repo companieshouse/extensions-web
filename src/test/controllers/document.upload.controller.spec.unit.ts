@@ -2,13 +2,13 @@ jest.mock("../../services/redis.service");
 jest.mock("../../client/apiclient");
 jest.mock("../../services/session.service");
 
-import * as request from "supertest";
-import * as fs from "fs";
-import * as path from "path";
+import request from "supertest";
+import fs from "fs";
+import path from "path";
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import { COOKIE_NAME } from "../../session/config";
 import { loadSession } from "../../services/redis.service";
 import { addAttachmentToReason, getFullRequest } from "../../client/apiclient";
@@ -101,7 +101,7 @@ beforeEach(() => {
 describe("document upload url tests", () => {
   it("should find document upload page with get", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .get(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -109,12 +109,12 @@ describe("document upload url tests", () => {
 
   it("should redirect to add extension reason page when continue with no docs is clicked ", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD_CONTINUE_NO_DOCS)
+      .get(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD_CONTINUE_NO_DOCS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(302);
     expect(res.header.location).toEqual(
-      pageURLs.EXTENSIONS_ADD_EXTENSION_REASON
+      pageUrls.EXTENSIONS_ADD_EXTENSION_REASON
     );
   });
 
@@ -123,16 +123,16 @@ describe("document upload url tests", () => {
       sessionWithChangingDetails
     );
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD_CONTINUE_NO_DOCS)
+      .get(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD_CONTINUE_NO_DOCS)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(302);
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
+    expect(res.header.location).toEqual(pageUrls.EXTENSIONS_CHECK_YOUR_ANSWERS);
   });
 
   it("should find document upload page with get when query is present", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD + QUERY_ID)
+      .get(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD + QUERY_ID)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -140,7 +140,7 @@ describe("document upload url tests", () => {
 
   it("should return 404 if document upload page with put", async () => {
     const res = await request(app)
-      .put(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .put(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
@@ -149,7 +149,7 @@ describe("document upload url tests", () => {
   it("should render error message when file is too big", async () => {
     // See global.setup.ts for unit test file size limit
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .post(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .attach(
@@ -169,7 +169,7 @@ describe("document upload url tests", () => {
     });
 
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .post(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .attach(
@@ -190,7 +190,7 @@ describe("document upload url tests", () => {
       throw new Error();
     });
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .post(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .attach(
@@ -213,7 +213,7 @@ describe("document upload url tests", () => {
       path.join(__dirname + "/../client/files/text.txt")
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .post(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .attach(
@@ -221,7 +221,7 @@ describe("document upload url tests", () => {
         path.join(__dirname + "/../client/files/text.txt")
       );
     expect(res.status).toEqual(302);
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD);
+    expect(res.header.location).toEqual(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD);
     expect(mockAddAttachment).toHaveBeenCalledWith(
       "00006400",
       "KGGGUYUYJHHVK1234",
@@ -255,7 +255,7 @@ describe("document upload url tests", () => {
     });
 
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .post(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ continueCheck: "continueCheck" });
@@ -270,7 +270,7 @@ describe("document upload url tests", () => {
   it("AJAX - should render error message when file is too big", async () => {
     // See global.setup.ts for unit test file size limit
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .post(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set("X-Requested-With", "XMLHttpRequest")
@@ -309,7 +309,7 @@ describe("document upload url tests", () => {
       "The selected file must be a JPG, JPEG, ZIP, GIF, PNG, PDF, DOCX or XLSX";
 
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .post(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set("X-Requested-With", "XMLHttpRequest")
@@ -343,7 +343,7 @@ describe("document upload url tests", () => {
       throw new Error();
     });
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .post(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set("X-Requested-With", "XMLHttpRequest")
@@ -366,7 +366,7 @@ describe("document upload url tests", () => {
       path.join(__dirname + "/../client/files/text.txt")
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .post(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set("X-Requested-With", "XMLHttpRequest")
@@ -426,7 +426,7 @@ describe("document upload url tests", () => {
       "adding documents&quot;";
 
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_DOCUMENT_UPLOAD)
+      .post(pageUrls.EXTENSIONS_DOCUMENT_UPLOAD)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .set("X-Requested-With", "XMLHttpRequest")

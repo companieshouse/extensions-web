@@ -3,11 +3,11 @@ jest.mock("../../../services/reason.service");
 jest.mock("../../../services/session.service");
 jest.mock("../../../client/apiclient");
 
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../../mock.middleware";
 import app from "../../../app";
-import * as pageURLs from "../../../model/page.urls";
+import * as pageUrls from "../../../model/page.urls";
 import { COOKIE_NAME } from "../../../session/config";
 import { loadSession } from "../../../services/redis.service";
 import { loadMockSession, fullDummySession } from "../../mock.utils";
@@ -56,7 +56,7 @@ beforeEach(() => {
 describe("reason other url tests", () => {
   it("should find reason other page with get", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_REASON_OTHER)
+      .get(pageUrls.EXTENSIONS_REASON_OTHER)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -66,7 +66,7 @@ describe("reason other url tests", () => {
 
   it("should find accounts information page with existing reason information when reason id is added for change", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_REASON_OTHER + "?reasonId=" + REASON_ID)
+      .get(pageUrls.EXTENSIONS_REASON_OTHER + "?reasonId=" + REASON_ID)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -76,7 +76,7 @@ describe("reason other url tests", () => {
 
   it("should return 404 if reason other page with put", async () => {
     const res = await request(app)
-      .put(pageURLs.EXTENSIONS_REASON_OTHER)
+      .put(pageUrls.EXTENSIONS_REASON_OTHER)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
@@ -88,7 +88,7 @@ it("should return 500 if current reason throws exception", async () => {
     throw new Error("invalid session data when processing reason");
   });
   const res = await request(app)
-    .get(pageURLs.EXTENSIONS_REASON_OTHER + "?reasonId=" + REASON_ID)
+    .get(pageUrls.EXTENSIONS_REASON_OTHER + "?reasonId=" + REASON_ID)
     .set("Referer", "/")
     .set("Cookie", [`${COOKIE_NAME}=123`]);
   expect(res.status).toEqual(500);
@@ -97,7 +97,7 @@ it("should return 500 if current reason throws exception", async () => {
 describe("reason other validation tests", () => {
   it("should receive error message requesting more information when text input and reason input is empty", async () => {
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REASON_OTHER)
+      .post(pageUrls.EXTENSIONS_REASON_OTHER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
@@ -109,7 +109,7 @@ describe("reason other validation tests", () => {
 
   it("should receive error message requesting more information when reason and text input is blank", async () => {
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REASON_OTHER)
+      .post(pageUrls.EXTENSIONS_REASON_OTHER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -128,7 +128,7 @@ describe("reason other validation tests", () => {
       () => session
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REASON_OTHER)
+      .post(pageUrls.EXTENSIONS_REASON_OTHER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -146,7 +146,7 @@ describe("reason other validation tests", () => {
       () => session
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REASON_OTHER)
+      .post(pageUrls.EXTENSIONS_REASON_OTHER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -165,7 +165,7 @@ describe("reason other validation tests", () => {
       () => session
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REASON_OTHER)
+      .post(pageUrls.EXTENSIONS_REASON_OTHER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -174,7 +174,7 @@ describe("reason other validation tests", () => {
         otherInformation:
           "Lorem ipsum dolor sit amet, \r\nconsectetur adipiscing elit.",
       });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
+    expect(res.header.location).toEqual(pageUrls.EXTENSIONS_DOCUMENT_OPTION);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toHaveBeenCalledWith(session, {
@@ -189,7 +189,7 @@ describe("reason other validation tests", () => {
       () => session
     );
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REASON_OTHER)
+      .post(pageUrls.EXTENSIONS_REASON_OTHER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -198,7 +198,7 @@ describe("reason other validation tests", () => {
         otherInformation:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       });
-    expect(res.header.location).toEqual(pageURLs.EXTENSIONS_DOCUMENT_OPTION);
+    expect(res.header.location).toEqual(pageUrls.EXTENSIONS_DOCUMENT_OPTION);
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(NO_INFORMATION_INPUT);
     expect(mockUpdateReasonService).toHaveBeenCalledWith(session, {

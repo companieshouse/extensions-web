@@ -10,7 +10,7 @@ import logger from "../logger";
 import * as sessionService from "../services/session.service";
 import * as errorMessages from "../model/error.messages";
 import * as templatePaths from "../model/template.paths";
-import * as pageURLs from "../model/page.urls";
+import * as pageUrls from "../model/page.urls";
 import * as keys from "../session/keys";
 import {buildCompanySummaryListRows} from "../global/summary.list.rows.builder";
 import {ExtensionRequestStatus} from "../model/extension.request.status";
@@ -86,10 +86,10 @@ export const confirmCompanyStartRequest = async (req: Request, res: Response, ne
       //   - need the extension request to exist before updating its status
       if (!isExtensionDueDateWithinLimit(company)) {
         await setExtensionStatusToRejected(chSession, companyNumber, token);
-        return res.redirect(pageURLs.EXTENSIONS_EXTENSION_LIMIT_REACHED);
+        return res.redirect(pageUrls.EXTENSIONS_EXTENSION_LIMIT_REACHED);
       }
 
-      return res.redirect(pageURLs.EXTENSIONS_CHOOSE_REASON);
+      return res.redirect(pageUrls.EXTENSIONS_CHOOSE_REASON);
     } else {
       return next(new Error("User access token is missing from session"));
     }

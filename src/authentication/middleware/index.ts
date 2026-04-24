@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import activeFeature from "../../feature.flag";
 import logger from "../../logger";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 
 export default (req: Request, res: Response, next: NextFunction) => {
-  if (req.originalUrl === pageURLs.EXTENSIONS_HEALTHCHECK) {
+  if (req.originalUrl === pageUrls.EXTENSIONS_HEALTHCHECK) {
     logger.debug("/healthcheck endpoint called, skipping authentication.");
     return next();
   }
@@ -18,12 +18,12 @@ export default (req: Request, res: Response, next: NextFunction) => {
     logger.debug("Check if user has referer");
     if (referringPageURL === undefined && !isDownloadUrl(req.originalUrl)) {
       logger.debug("User has no referer - redirecting to index");
-      return res.redirect(pageURLs.EXTENSIONS);
+      return res.redirect(pageUrls.EXTENSIONS);
     }
   }
 
   logger.debug("Check if user is signed in");
-  if (!req.originalUrl.endsWith(pageURLs.ACCESSIBILITY_STATEMENT)) {
+  if (!req.originalUrl.endsWith(pageUrls.ACCESSIBILITY_STATEMENT)) {
     if (!req.chSession.isSignedIn()) {
 
       logger.debug("User not signed in - redirecting to login screen");
@@ -37,7 +37,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
 };
 
 function getReturnToUrl(originalUrl: string, referringPageURL: string) {
-  let returnToUrl: string = pageURLs.EXTENSIONS;
+  let returnToUrl: string = pageUrls.EXTENSIONS;
   if (!activeFeature(process.env.ACCESSIBILITY_TEST_MODE)) {
     if (isDownloadUrl(originalUrl)) {
       // User has come here from clicking a download link
@@ -48,9 +48,9 @@ function getReturnToUrl(originalUrl: string, referringPageURL: string) {
       ALLOWED_DOWNLOAD_URL[originalUrl] = originalUrl;
 
       returnToUrl = ALLOWED_DOWNLOAD_URL[originalUrl];
-    } else if (referringPageURL.endsWith(pageURLs.EXTENSIONS)) {
+    } else if (referringPageURL.endsWith(pageUrls.EXTENSIONS)) {
       // User has come here from the start page - company number page is next, immediately after sign-in
-      returnToUrl = pageURLs.EXTENSIONS_COMPANY_NUMBER;
+      returnToUrl = pageUrls.EXTENSIONS_COMPANY_NUMBER;
     }
   }
 
@@ -58,7 +58,7 @@ function getReturnToUrl(originalUrl: string, referringPageURL: string) {
 }
 
 function isDownloadUrl(url: string) {
-  return url.startsWith(pageURLs.EXTENSIONS + pageURLs.DOWNLOAD_PREFIX)
-    && url.includes(pageURLs.DOWNLOAD_EXTENSIONS_REQUESTS)
-    && url.endsWith(pageURLs.DOWNLOAD_SUFFIX);
+  return url.startsWith(pageUrls.EXTENSIONS + pageUrls.DOWNLOAD_PREFIX)
+    && url.includes(pageUrls.DOWNLOAD_EXTENSIONS_REQUESTS)
+    && url.endsWith(pageUrls.DOWNLOAD_SUFFIX);
 }

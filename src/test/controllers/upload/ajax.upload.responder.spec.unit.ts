@@ -16,7 +16,7 @@ import {
   UPLOAD_FILE_LIST,
   UPLOAD_FILE_PICKER,
 } from "../../../model/template.paths";
-import * as pageURLs from "../../../model/page.urls";
+import * as pageUrls from "../../../model/page.urls";
 import logger from "../../../logger";
 import { ERROR_500 } from "../../../model/error.messages";
 import {
@@ -115,7 +115,7 @@ describe("ajax upload responder tests", () => {
     expect(mockLoggerError).toHaveBeenCalledWith(ERROR_500, err);
     expect(mockStatusFunc).toHaveBeenCalledWith(500);
     expect(mockSendFunc).toHaveBeenCalledWith({
-      redirect: pageURLs.EXTENSIONS_ERROR,
+      redirect: pageUrls.EXTENSIONS_ERROR,
     });
   });
 
@@ -128,7 +128,7 @@ describe("ajax upload responder tests", () => {
     expect(mockLoggerError).toHaveBeenCalledWith(ERROR_500, err);
     expect(mockStatusFunc).toHaveBeenCalledWith(500);
     expect(mockSendFunc).toHaveBeenCalledWith({
-      redirect: pageURLs.EXTENSIONS_ERROR,
+      redirect: pageUrls.EXTENSIONS_ERROR,
     });
   });
 
@@ -182,7 +182,7 @@ describe("ajax upload responder tests", () => {
     expect(mockLoggerError).toHaveBeenCalledWith(ERROR_500, err);
     expect(mockStatusFunc).toHaveBeenCalledWith(500);
     expect(mockSendFunc).toHaveBeenCalledWith({
-      redirect: pageURLs.EXTENSIONS_ERROR,
+      redirect: pageUrls.EXTENSIONS_ERROR,
     });
   });
 });

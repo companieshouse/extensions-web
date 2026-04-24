@@ -2,7 +2,7 @@ import { AxiosHeaders, AxiosRequestConfig, AxiosResponse } from "axios";
 import {lookupCompanyStatus, lookupCompanyType} from "./api.enumerations";
 import logger from "../logger";
 import { API_URL, EXTENSIONS_API_URL, EXTENSIONS_PROCESSOR_API_URL } from "../session/config";
-import * as FormData from "form-data";
+import  FormData from "form-data";
 import { ReasonWeb } from "model/reason/extension.reason.web";
 import {formatDateForDisplay} from "./date.formatter";
 import {Response} from "express";

@@ -2,7 +2,7 @@ jest.mock("../../services/redis.service");
 jest.mock("../../client/api.enumerations");
 jest.mock("../../client/apiclient");
 
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
@@ -11,7 +11,7 @@ import {
   getCompanyProfile,
 } from "../../client/apiclient";
 import { COOKIE_NAME } from "../../session/config";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import * as mockUtils from "../mock.utils";
 import { loadSession } from "../../services/redis.service";
 
@@ -44,14 +44,14 @@ describe("company number validation tests", () => {
     );
 
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ companyNumber: COMPANY_NUMBER });
 
     expect(response.header.location).toEqual(
-      pageURLs.EXTENSIONS_CONFIRM_COMPANY
+      pageUrls.EXTENSIONS_CONFIRM_COMPANY
     );
     expect(response.status).toEqual(302);
     expect(mockCompanyProfile).toHaveBeenCalledWith(
@@ -66,14 +66,14 @@ describe("company number validation tests", () => {
     );
 
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ companyNumber: "6400" });
 
     expect(response.header.location).toEqual(
-      pageURLs.EXTENSIONS_CONFIRM_COMPANY
+      pageUrls.EXTENSIONS_CONFIRM_COMPANY
     );
     expect(response.status).toEqual(302);
     expect(mockCompanyProfile).toHaveBeenCalledWith(
@@ -88,14 +88,14 @@ describe("company number validation tests", () => {
     );
 
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ companyNumber: " 00 00 6400  " });
 
     expect(response.header.location).toEqual(
-      pageURLs.EXTENSIONS_CONFIRM_COMPANY
+      pageUrls.EXTENSIONS_CONFIRM_COMPANY
     );
     expect(response.status).toEqual(302);
     expect(mockCompanyProfile).toHaveBeenCalledWith(
@@ -110,14 +110,14 @@ describe("company number validation tests", () => {
     );
 
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ companyNumber: "SC100079" });
 
     expect(response.header.location).toEqual(
-      pageURLs.EXTENSIONS_CONFIRM_COMPANY
+      pageUrls.EXTENSIONS_CONFIRM_COMPANY
     );
     expect(response.status).toEqual(302);
     expect(mockCompanyProfile).toHaveBeenCalledWith(
@@ -132,14 +132,14 @@ describe("company number validation tests", () => {
     );
 
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ companyNumber: "SC79" });
 
     expect(response.header.location).toEqual(
-      pageURLs.EXTENSIONS_CONFIRM_COMPANY
+      pageUrls.EXTENSIONS_CONFIRM_COMPANY
     );
     expect(response.status).toEqual(302);
     expect(mockCompanyProfile).toHaveBeenCalledWith(
@@ -150,7 +150,7 @@ describe("company number validation tests", () => {
 
   it("should pass validation using a company number with 1 leading letter", async () => {
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -164,7 +164,7 @@ describe("company number validation tests", () => {
 
   it("should pass validation using a company number with 1 leading letter (padded)", async () => {
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -178,7 +178,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when no company number is supplied (empty string)", async () => {
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -194,7 +194,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when no company number is supplied (spaces)", async () => {
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -209,7 +209,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when company number is invalid (characters)", async () => {
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -230,7 +230,7 @@ describe("company number validation tests", () => {
       };
     });
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -246,7 +246,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when company number is too long", async () => {
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -275,13 +275,13 @@ describe("Too Soon To Apply tests", () => {
     mockCompanyProfile.mockResolvedValue(companyProfileTooEarly);
 
     const response = await request(app)
-      .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+      .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ companyNumber: "6400" });
 
-    expect(response.header.location).toEqual(pageURLs.EXTENSIONS_TOO_SOON);
+    expect(response.header.location).toEqual(pageUrls.EXTENSIONS_TOO_SOON);
     expect(response.status).toEqual(302);
     expect(mockCompanyProfile).toHaveBeenCalledWith(
       COMPANY_NUMBER,
@@ -307,14 +307,14 @@ describe("Too Soon To Apply tests", () => {
       mockCompanyProfile.mockResolvedValue(companyProfileTooEarly);
 
       const response = await request(app)
-        .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+        .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
         .set("Accept", "application/json")
         .set("Referer", "/")
         .set("Cookie", [`${COOKIE_NAME}=123`])
         .send({ companyNumber: "6400" });
 
       expect(response.header.location).toEqual(
-        pageURLs.EXTENSIONS_CONFIRM_COMPANY
+        pageUrls.EXTENSIONS_CONFIRM_COMPANY
       );
       expect(response.status).toEqual(302);
       expect(mockCompanyProfile).toHaveBeenCalledWith(
@@ -342,7 +342,7 @@ describe("Too Soon To Apply tests", () => {
       mockCompanyProfile.mockResolvedValue(companyProfileTooEarly);
 
       const response = await request(app)
-        .post(pageURLs.EXTENSIONS_COMPANY_NUMBER)
+        .post(pageUrls.EXTENSIONS_COMPANY_NUMBER)
         .set("Accept", "application/json")
         .set("Cookie", [`${COOKIE_NAME}=123`])
         .set("Referer", "/")
@@ -350,7 +350,7 @@ describe("Too Soon To Apply tests", () => {
 
       expect(response.status).toEqual(302);
       expect(response.header.location).toEqual(
-        pageURLs.EXTENSIONS_CONFIRM_COMPANY
+        pageUrls.EXTENSIONS_CONFIRM_COMPANY
       );
       expect(mockCompanyProfile).toHaveBeenCalledWith(
         COMPANY_NUMBER,

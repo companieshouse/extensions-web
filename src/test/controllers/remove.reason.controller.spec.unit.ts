@@ -1,11 +1,11 @@
 jest.mock("../../services/redis.service");
 jest.mock("../../client/apiclient");
 
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import { COOKIE_NAME } from "../../session/config";
 import * as keys from "../../session/keys";
 import { getDummyCompanyProfile } from "../mock.utils";
@@ -55,7 +55,7 @@ beforeEach(() => {
 describe("remove reason url tests", () => {
   it("should find remove reason page with get", async () => {
     const res = await request(app)
-      .get(pageURLs.EXTENSIONS_REMOVE_REASON + QUERY_ID)
+      .get(pageUrls.EXTENSIONS_REMOVE_REASON + QUERY_ID)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);
@@ -63,7 +63,7 @@ describe("remove reason url tests", () => {
 
   it("should return 404 if remove reason page with put", async () => {
     const res = await request(app)
-      .put(pageURLs.EXTENSIONS_REMOVE_REASON + QUERY_ID)
+      .put(pageUrls.EXTENSIONS_REMOVE_REASON + QUERY_ID)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(404);
@@ -73,7 +73,7 @@ describe("remove reason url tests", () => {
 describe("Extension reason tests", () => {
   it("should remove a reason if yes is clicked", async () => {
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REMOVE_REASON)
+      .post(pageUrls.EXTENSIONS_REMOVE_REASON)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ removeReason: "yes" });
@@ -92,7 +92,7 @@ describe("Extension reason tests", () => {
 
   it("should not remove any extension reason if no clicked", async () => {
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REMOVE_REASON)
+      .post(pageUrls.EXTENSIONS_REMOVE_REASON)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ removeReason: "no" });
@@ -110,7 +110,7 @@ describe("Extension reason tests", () => {
       };
     });
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REMOVE_REASON)
+      .post(pageUrls.EXTENSIONS_REMOVE_REASON)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({ removeReason: "yes" });
@@ -129,7 +129,7 @@ describe("Extension reason tests", () => {
 
   it("should render remove-reason page with an error message if yes/no confirmation not selected", async () => {
     const res = await request(app)
-      .post(pageURLs.EXTENSIONS_REMOVE_REASON)
+      .post(pageUrls.EXTENSIONS_REMOVE_REASON)
       .set("referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(res.status).toEqual(200);

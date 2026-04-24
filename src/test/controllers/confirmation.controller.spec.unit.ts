@@ -2,11 +2,11 @@ jest.mock("../../services/redis.service");
 jest.mock("../../client/apiclient");
 jest.mock("../../services/session.service");
 
-import * as request from "supertest";
+import request from "supertest";
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
-import * as pageURLs from "../../model/page.urls";
+import * as pageUrls from "../../model/page.urls";
 import { COOKIE_NAME } from "../../session/config";
 import * as keys from "../../session/keys";
 import Session from "../../session/session";
@@ -77,7 +77,7 @@ describe("confirmation controller", () => {
     );
 
     const resp = await request(app)
-      .get(pageURLs.EXTENSIONS_CONFIRMATION)
+      .get(pageUrls.EXTENSIONS_CONFIRMATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -121,7 +121,7 @@ describe("confirmation controller", () => {
     });
 
     const resp = await request(app)
-      .get(pageURLs.EXTENSIONS_CONFIRMATION)
+      .get(pageUrls.EXTENSIONS_CONFIRMATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -161,7 +161,7 @@ describe("confirmation controller", () => {
     });
 
     const resp = await request(app)
-      .get(pageURLs.EXTENSIONS_CONFIRMATION)
+      .get(pageUrls.EXTENSIONS_CONFIRMATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -178,7 +178,7 @@ describe("confirmation controller", () => {
       dummySession(COMPANY_NUMBER, null)
     );
     const resp = await request(app)
-      .get(pageURLs.EXTENSIONS_CONFIRMATION)
+      .get(pageUrls.EXTENSIONS_CONFIRMATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -199,7 +199,7 @@ describe("confirmation controller", () => {
     );
 
     const resp = await request(app)
-      .get(pageURLs.EXTENSIONS_CONFIRMATION)
+      .get(pageUrls.EXTENSIONS_CONFIRMATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -215,7 +215,7 @@ describe("confirmation controller", () => {
     const session: Session = dummySessionWithToken(COMPANY_NUMBER, EMAIL);
     mockCacheService.prototype.constructor.mockResolvedValueOnce(session);
     const resp = await request(app)
-      .get(pageURLs.EXTENSIONS_CONFIRMATION)
+      .get(pageUrls.EXTENSIONS_CONFIRMATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -235,7 +235,7 @@ describe("confirmation controller", () => {
       Promise.reject("error")
     );
     const resp = await request(app)
-      .get(pageURLs.EXTENSIONS_CONFIRMATION)
+      .get(pageUrls.EXTENSIONS_CONFIRMATION)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -254,7 +254,7 @@ describe("confirmation controller", () => {
   });
 });
 
-const dummySession = (companyNumber, email) => {
+const dummySession = (companyNumber: string | null, email: string | null): Session => {
   let session: Session = Session.newInstance();
   session.data = {
     [keys.SIGN_IN_INFO]: {
@@ -285,7 +285,7 @@ const dummySession = (companyNumber, email) => {
   return session;
 };
 
-const dummySessionWithToken = (companyNumber, email) => {
+const dummySessionWithToken = (companyNumber: string | null, email: string | null): Session => {
   let session: Session = Session.newInstance();
   session.data = {
     [keys.SIGN_IN_INFO]: {

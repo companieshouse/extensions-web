@@ -1,4 +1,4 @@
-import * as crypto from "crypto";
+import crypto from "crypto";
 import { COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION } from "./config";
 import * as keys from "./keys";
 import { unmarshalSignInInfo } from "./store/util";

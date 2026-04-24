@@ -3,7 +3,7 @@ import * as errorMessages from "../model/error.messages";
 import {NextFunction, Request, Response} from "express";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
 import * as templatePaths from "../model/template.paths";
-import * as pageURLs from "../model/page.urls";
+import * as pageUrls from "../model/page.urls";
 import * as reasonService from "../services/reason.service";
 import * as keys from "../session/keys";
 import * as sessionService from "../services/session.service";
@@ -52,11 +52,11 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
         await sessionService.updateExtensionSessionValue(req.chSession, keys.OTHER_CHOSEN, false);
         await sessionService.updateExtensionSessionValue(req.chSession, keys.UPLOAD_DOCUMENTS_YES, false);
         await sessionService.updateExtensionSessionValue(req.chSession, keys.UPLOAD_DOCUMENTS_NO, false);
-        return res.redirect(pageURLs.EXTENSIONS_CHOOSE_REASON);
+        return res.redirect(pageUrls.EXTENSIONS_CHOOSE_REASON);
       } else {
         await sessionService.updateExtensionSessionValue(req.chSession, keys.ADD_ANOTHER_REASON_NO, true);
         await sessionService.updateExtensionSessionValue(req.chSession, keys.ADD_ANOTHER_REASON_YES, false);
-        return res.redirect(pageURLs.EXTENSIONS_CHECK_YOUR_ANSWERS);
+        return res.redirect(pageUrls.EXTENSIONS_CHECK_YOUR_ANSWERS);
       }
     } catch (err) {
       return next(err);

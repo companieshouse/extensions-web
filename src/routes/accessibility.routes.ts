@@ -7,7 +7,7 @@ import illnessEndDateAccessibility from "../controllers/accessibility/illness.en
 import printAppAccessibility from "../controllers/accessibility/print.application.accessibility";
 import continuedIllnessAccessibility from "../controllers/accessibility/continued.illness.accessibility";
 import whoWasIllAccessibility from "../controllers/accessibility/who.was.ill.accessibility";
-import * as pageURLs from "../model/page.urls";
+import * as pageUrls from "../model/page.urls";
 
 const router: Router = Router();
 
@@ -18,12 +18,12 @@ if (process.env.NODE_ENV === "production") {
   throw new Error(accessibilityErrorMessage);
 }
 
-router.get(pageURLs.REMOVE_REASON, removeReasonAccessibility);
-router.get(pageURLs.CONFIRM_COMPANY, companyDetailsAccessibility);
-router.get(pageURLs.CHECK_YOUR_ANSWERS, checkAnswersAccessibility);
-router.get(pageURLs.CONTINUED_ILLNESS, continuedIllnessAccessibility);
-router.get(pageURLs.ILLNESS_END_DATE, illnessEndDateAccessibility);
-router.get(pageURLs.PRINT_APPLICATION, printAppAccessibility);
-router.get(pageURLs.REASON_ILLNESS, whoWasIllAccessibility);
+router.get(pageUrls.REMOVE_REASON, removeReasonAccessibility);
+router.get(pageUrls.CONFIRM_COMPANY, companyDetailsAccessibility);
+router.get(pageUrls.CHECK_YOUR_ANSWERS, checkAnswersAccessibility);
+router.get(pageUrls.CONTINUED_ILLNESS, continuedIllnessAccessibility);
+router.get(pageUrls.ILLNESS_END_DATE, illnessEndDateAccessibility);
+router.get(pageUrls.PRINT_APPLICATION, printAppAccessibility);
+router.get(pageUrls.REASON_ILLNESS, whoWasIllAccessibility);
 
 export default router;
