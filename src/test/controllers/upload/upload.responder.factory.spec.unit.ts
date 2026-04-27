@@ -1,9 +1,4 @@
-jest.mock("redis", () => {
-  return {
-    createClient: jest.fn().mockReturnThis(),
-    on: jest.fn().mockReturnThis(),
-  }
-});
+jest.mock("redis", () => require('../../helpers/mock-redis')());
 
 import {createUploadResponder, UploadResponder} from "../../../controllers/upload/upload.responder.factory";
 import {HtmlUploadResponder} from "../../../controllers/upload/html.upload.responder";

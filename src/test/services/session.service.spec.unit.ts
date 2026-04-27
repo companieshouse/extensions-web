@@ -1,9 +1,4 @@
-jest.mock("redis", () => {
-  return {
-    createClient: jest.fn().mockReturnThis(),
-    on: jest.fn().mockReturnThis(),
-  }
-});
+jest.mock("redis", () => require('../helpers/mock-redis')());
 jest.mock("../../session/store/redis.store");
 
 import { IExtensionSession, IExtensionRequest } from "../../session/types";

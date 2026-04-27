@@ -1,9 +1,4 @@
-jest.mock("redis", () => {
-  return {
-    createClient: jest.fn().mockReturnThis(),
-    on: jest.fn().mockReturnThis(),
-  }
-});
+jest.mock("redis", () => require('../helpers/mock-redis')());
 jest.mock("../../services/session.service");
 
 import { Request, Response, NextFunction } from "express";

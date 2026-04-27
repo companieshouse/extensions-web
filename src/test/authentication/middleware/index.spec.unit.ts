@@ -1,14 +1,5 @@
-jest.mock('ioredis', () => {
-  return {
-    default: jest.fn().mockReturnThis()
-  }
-});
-jest.mock("redis", () => {
-  return {
-    createClient: jest.fn().mockReturnThis(),
-    on: jest.fn().mockReturnThis(),
-  }
-});
+jest.mock('ioredis', () => require('../../helpers/mock-ioredis')());
+jest.mock("redis", () => require('../../helpers/mock-redis')());
 jest.mock("../../../services/redis.service");
 
 import request from 'supertest';

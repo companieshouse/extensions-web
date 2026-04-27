@@ -3,16 +3,6 @@ import express from "express";
 import nunjucks from "nunjucks";
 import path from "path";
 import Redis from "ioredis";
-// ts-jest / test env can expose different module shapes; when running under Jest
-// prefer requiring the module so the constructor is available. In production the
-// TypeScript-style import is used for clarity.
-const RedisCtor: any = (process.env.JEST_WORKER_ID !== undefined)
-  ? (() => {
-      const mod = require("ioredis");
-      return (mod && (mod as any).default) ? (mod as any).default : mod;
-    })()
-  : ((Redis as any) && (Redis as any).default ? (Redis as any).default : Redis);
-
 
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 import { SessionMiddleware, SessionStore } from "@companieshouse/node-session-handler";
@@ -74,7 +64,7 @@ const cookieConfig = {
   cookieDomain: COOKIE_DOMAIN,
   cookieTimeToLiveInSeconds: parseInt(DEFAULT_SESSION_EXPIRATION, 10)
 };
-const sessionStore = new SessionStore(new RedisCtor(`redis://${CACHE_SERVER}`));
+const sessionStore = new SessionStore(new Redis(`redis://${CACHE_SERVER}`));
 app.use(EXCLUDED_PATHS, SessionMiddleware(cookieConfig, sessionStore));
 
 const csrfProtectionMiddleware = CsrfProtectionMiddleware({

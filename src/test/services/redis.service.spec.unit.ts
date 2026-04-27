@@ -2,12 +2,7 @@ jest.mock("ioredis");
 jest.mock("../../session/store/redis.store");
 jest.mock("../../feature.flag");
 jest.mock("../../logger");
-jest.mock("redis", () => {
-  return {
-    createClient: jest.fn().mockReturnThis(),
-    on: jest.fn().mockReturnThis(),
-  }
-});
+jest.mock("redis", () => require('../helpers/mock-redis')());
 
 import { loadSession, saveSession } from "../../services/redis.service";
 import Session from "../../session/session";

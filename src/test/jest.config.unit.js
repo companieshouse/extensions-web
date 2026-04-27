@@ -13,8 +13,6 @@ module.exports = {
   transform: {
     "^.+\\.tsx?$": ["ts-jest", { "tsconfig": "tsconfig.json" }],
   },
-  moduleNameMapper: {
-    "^ioredis$": "<rootDir>/src/test/__mocks__/ioredis.js"
-  },
+  setupFiles: ["<rootDir>/setup-mock-ioredis.js"],
   globalSetup: "./global.setup.ts"
 };

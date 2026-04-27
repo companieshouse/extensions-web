@@ -1,14 +1,5 @@
-jest.mock("ioredis", () => {
-  return {
-    default: jest.fn().mockReturnThis(),
-  };
-});
-jest.mock("redis", () => {
-  return {
-    createClient: jest.fn().mockReturnThis(),
-    on: jest.fn().mockReturnThis(),
-  };
-});
+jest.mock("ioredis", () => require('../../helpers/mock-ioredis')());
+jest.mock("redis", () => require('../../helpers/mock-redis')());
 jest.mock("../../../services/redis.service");
 jest.mock("../../../services/session.service");
 jest.mock("../../../client/apiclient");
@@ -54,7 +45,7 @@ beforeEach(() => {
     };
   });
   mockCacheService.mockClear();
-  mockCacheService.prototype.constructor.mockImplementationOnce((cookieId) => {
+  mockCacheService.prototype.constructor.mockImplementationOnce((cookieId: string) => {
     const session: Session = Session.newWithCookieId(cookieId);
     session.data = {
       [keys.SIGN_IN_INFO]: {
