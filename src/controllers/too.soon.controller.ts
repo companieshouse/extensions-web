@@ -4,7 +4,7 @@ import * as sessionService from "../services/session.service";
 import {ExtensionsCompanyProfile, getCompanyProfile} from "../client/apiclient";
 import * as templatePaths from "../model/template.paths";
 import * as errorMessages from "../model/error.messages";
-import {formatDateForDisplay} from "../client/date.formatter";
+import {formatISODateForDisplay} from "../client/date.formatter";
 
 export const render = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
@@ -19,9 +19,9 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
       canFileFromDate.setDate(canFileFromDate.getDate() - Number(process.env.TOO_SOON_DAYS_BEFORE_DUE_DATE));
       canFileFromDate.setHours(0, 0, 0, 0);
 
-      const formattedAccountsDueDate = formatDateForDisplay(company.accountsDue);
+      const formattedAccountsDueDate = formatISODateForDisplay(company.accountsDue);
       logger.info(`Company ${companyNumber} Too Soon - accountsDueDate = ${formattedAccountsDueDate}`);
-      const formattedCanFileFromDate = formatDateForDisplay(canFileFromDate.toUTCString());
+      const formattedCanFileFromDate = formatISODateForDisplay(canFileFromDate.toISOString());
       logger.info(`Company ${companyNumber} Too Soon - canFileFromDate = ${formattedCanFileFromDate}`);
 
       return res.render(templatePaths.TOO_SOON, {
