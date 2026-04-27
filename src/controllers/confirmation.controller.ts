@@ -44,7 +44,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
         }
       }
     } catch (e) {
-      logger.error("Error processing application " + JSON.stringify(e));
+      logger.error("Error processing application", e);
       await sessionService.updateExtensionSessionValue(req.chSession, keys.ALREADY_SUBMITTED, false);
       return next(e);
     }

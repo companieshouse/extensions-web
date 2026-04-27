@@ -144,7 +144,7 @@ export const addExtensionReasonToRequest = async (
   return await getApiData(config);
 };
 
-export const updateReason = async (request: IExtensionRequest, token: string, partialReason): Promise<any> => {
+export const updateReason = async (request: IExtensionRequest, token: string, partialReason: Partial<ReasonWeb>): Promise<any> => {
   const ADD_REASON_PATH =
     `${EXTENSIONS_API_URL}/company/${request.company_number}/extensions/` +
     `requests/${request.extension_request_id}/reasons/${request.reason_in_context_string}`;
