@@ -16,7 +16,7 @@ module.exports = {
   },
   transformIgnorePatterns: ["/node_modules/(?!(uuid|@companieshouse)/)"],
   moduleNameMapper: {
-    "^uuid$": "<rootDir>/node_modules/uuid/dist-node/index.js"
+    "^uuid$": path.resolve(__dirname, '../../node_modules/uuid/dist-node/index.js')
   },
   setupFiles: ["<rootDir>/setup-mock-ioredis.js"],
   globalSetup: "./global.setup.ts"
