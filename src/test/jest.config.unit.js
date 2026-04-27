@@ -1,9 +1,10 @@
+const path = require('path');
+
 module.exports = {
   roots: [
     "<rootDir>"
   ],
   testPathIgnorePatterns: [
-    "/node_modules/",
     "/dist/"
   ],
   preset: "ts-jest",
@@ -11,7 +12,11 @@ module.exports = {
   verbose: true,
   testMatch: ["**/test/**/*.spec.unit.[jt]s"],
   transform: {
-    "^.+\\.tsx?$": ["ts-jest", { "tsconfig": "tsconfig.json" }],
+    "^.+\\.[tj]sx?$": ["ts-jest", { "tsconfig": path.resolve(__dirname, 'tsconfig.jest.json') }]
+  },
+  transformIgnorePatterns: ["/node_modules/(?!(uuid|@companieshouse)/)"],
+  moduleNameMapper: {
+    "^uuid$": "<rootDir>/node_modules/uuid/dist-node/index.js"
   },
   setupFiles: ["<rootDir>/setup-mock-ioredis.js"],
   globalSetup: "./global.setup.ts"

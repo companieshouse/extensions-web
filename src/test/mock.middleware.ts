@@ -3,10 +3,11 @@
   Note: this needs to be imported before the 'app' component in each test module in order for 'app' to be able to mock it.
 */
 
+jest.mock("@companieshouse/web-security-node", () => ({
+  CsrfProtectionMiddleware: jest.fn()
+}));
 import { NextFunction, Request, Response } from "express";
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
-
-jest.mock("@companieshouse/web-security-node");
 jest.mock('ioredis', () => require('./helpers/mock-ioredis')());
 jest.mock("redis", () => require('./helpers/mock-redis')());
 
