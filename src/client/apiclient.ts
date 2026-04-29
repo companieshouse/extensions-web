@@ -4,7 +4,7 @@ import logger from "../logger";
 import { API_URL, EXTENSIONS_API_URL, EXTENSIONS_PROCESSOR_API_URL } from "../session/config";
 import  FormData from "form-data";
 import { ReasonWeb } from "model/reason/extension.reason.web";
-import {formatDateForDisplay} from "./date.formatter";
+import {formatISODateForDisplay} from "./date.formatter";
 import {Response} from "express";
 import { IExtensionRequest } from "session/types";
 
@@ -90,7 +90,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
   return {
     accountingPeriodEndOn: companyProfile.accounts.nextAccounts.periodEndOn,
     accountingPeriodStartOn: companyProfile.accounts.nextAccounts.periodStartOn,
-    accountsDue: companyProfile.accounts.nextDue ? formatDateForDisplay(companyProfile.accounts.nextDue) : "",
+    accountsDue: companyProfile.accounts.nextDue ? formatISODateForDisplay(companyProfile.accounts.nextDue) : "",
     address: {
       line_1: companyProfile.registeredOfficeAddress.addressLineOne,
       line_2: companyProfile.registeredOfficeAddress.addressLineTwo,
@@ -103,7 +103,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
     hasBeenLiquidated: companyProfile.hasBeenLiquidated,
     hasCharges: companyProfile.hasCharges,
     hasInsolvencyHistory: companyProfile.hasInsolvencyHistory,
-    incorporationDate: formatDateForDisplay(companyProfile.dateOfCreation),
+    incorporationDate: formatISODateForDisplay(companyProfile.dateOfCreation),
     isAccountsOverdue: companyProfile.accounts.overdue,
   };
 };

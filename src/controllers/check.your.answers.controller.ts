@@ -8,7 +8,7 @@ import {EXTENSIONS_CONFIRMATION} from "../model/page.urls";
 import * as apiClient from "../client/apiclient";
 import {IExtensionRequest} from "session/types";
 import {ReasonWeb} from "../model/reason/extension.reason.web";
-import {formatDateForDisplay} from "../client/date.formatter";
+import {formatISODateForDisplay} from "../client/date.formatter";
 import {buildCompanySummaryListRows} from "../global/summary.list.rows.builder";
 
 const recordLandingOnCheckDetailsPage = async (req: Request): Promise<void> => {
@@ -51,8 +51,8 @@ export const submit = async (req: Request, res: Response, next: NextFunction): P
 
 const formatReasonDates = (reasons: ReasonWeb[]): ReasonWeb[] => {
   reasons.forEach((reason: ReasonWeb) => {
-    reason.start_on = formatDateForDisplay(reason.start_on);
-    reason.end_on = formatDateForDisplay(reason.end_on);
+    reason.start_on = formatISODateForDisplay(reason.start_on);
+    reason.end_on = formatISODateForDisplay(reason.end_on);
   });
   return reasons;
 };

@@ -7,7 +7,7 @@ import * as errorMessages from "../model/error.messages";
 import * as apiClient from "../client/apiclient";
 import {IExtensionRequest, ISignInInfo, IUserProfile} from "session/types";
 import {ReasonWeb} from "../model/reason/extension.reason.web";
-import {formatDateForDisplay} from "../client/date.formatter";
+import {formatISODateForDisplay} from "../client/date.formatter";
 import * as keys from "../session/keys";
 import {buildCompanySummaryListRows} from "../global/summary.list.rows.builder";
 
@@ -54,8 +54,8 @@ const printApplicationRoute = async (req: Request, res: Response, next: NextFunc
 
 const formatReasonDates = (reasons: ReasonWeb[]): ReasonWeb[] => {
   reasons.forEach((reason: ReasonWeb) => {
-    reason.start_on = formatDateForDisplay(reason.start_on);
-    reason.end_on = formatDateForDisplay(reason.end_on);
+    reason.start_on = formatISODateForDisplay(reason.start_on);
+    reason.end_on = formatISODateForDisplay(reason.end_on);
   });
   return reasons;
 };

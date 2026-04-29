@@ -10,7 +10,7 @@ import * as reasonService from "../../services/reason.service";
 import * as sessionService from "../../services/session.service";
 import * as templatePaths from "../../model/template.paths";
 import { ReasonWeb } from "model/reason/extension.reason.web";
-import {formatDateForDisplay, formatDateForReason} from "../../client/date.formatter";
+import {formatISODateForDisplay, formatDateForReason} from "../../client/date.formatter";
 import logger from "../../logger";
 
 const ILLNESS_END_DAY_FIELD: string = "illness-end-day";
@@ -72,7 +72,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
     if (reason && reason.end_on) {
       dateStr = reason.end_on;
     }
-    const illnessStartDate: string = formatDateForDisplay(reason.start_on);
+    const illnessStartDate: string = formatISODateForDisplay(reason.start_on);
     if (dateStr) {
       const endDate: Date = new Date(dateStr);
       return res.render(templatePaths.ILLNESS_END_DATE, {
@@ -163,7 +163,7 @@ export const processForm = [extractFullDate, ...validators,
       isEndDateDayError: endDateDayErrorFlag,
       isEndDateMonthError: endDateMonthErrorFlag,
       isEndDateYearError: endDateYearErrorFlag,
-      startDate: formatDateForDisplay(illnessStartDate),
+      startDate: formatISODateForDisplay(illnessStartDate),
       templateName: templatePaths.ILLNESS_END_DATE,
     });
   }

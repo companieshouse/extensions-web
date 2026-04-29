@@ -106,7 +106,7 @@ describe("Authentication middleware", () => {
 });
 
 const setNotSignedIn = () => {
-  mockCacheService.prototype.constructor.mockImplementationOnce((cookieId) => {
+  mockCacheService.prototype.constructor.mockImplementationOnce((cookieId: string) => {
     const session: Session = Session.newWithCookieId(cookieId);
     session.data = {
       [keys.COMPANY_NUMBER]: "00006400",

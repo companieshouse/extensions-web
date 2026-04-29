@@ -8,7 +8,7 @@ import * as keys from "../../session/keys";
 import * as sessionService from "../../services/session.service";
 import * as reasonService from "../../services/reason.service";
 import { ReasonWeb } from "model/reason/extension.reason.web";
-import {formatDateForDisplay} from "../../client/date.formatter";
+import {formatISODateForDisplay} from "../../client/date.formatter";
 import logger from "../../logger";
 
 const validators = [
@@ -23,7 +23,7 @@ export const render = async (req: Request, res: Response, next: NextFunction): P
 
   try {
     const reason: ReasonWeb = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
-    const illnessStartDate: string = formatDateForDisplay(reason.start_on);
+    const illnessStartDate: string = formatISODateForDisplay(reason.start_on);
 
     if (reason && reason.continued_illness) {
       existingInformation = reason.continued_illness;
@@ -60,7 +60,7 @@ export const processForm = [...validators, async (req: Request, res: Response, n
   if (!errors.isEmpty()) {
     try {
       const reason = await reasonService.getCurrentReason(req.chSession) as ReasonWeb;
-      const illnessStartDate: string = formatDateForDisplay(reason.start_on);
+      const illnessStartDate: string = formatISODateForDisplay(reason.start_on);
       const errMsg: string = errors.array().map((err: ValidationError) => err.msg).pop() as string;
       if (errMsg) {
         const continuedIllnessError: GovUkErrorData = createGovUkErrorData(errMsg,
