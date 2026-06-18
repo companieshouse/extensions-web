@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
-import {check, validationResult, FieldValidationError} from "express-validator";
-import moment from "moment";
+import {check, validationResult, ValidationError} from "express-validator";
+import {DateTime} from "luxon";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
 import {EXTENSIONS_ACCOUNTS_INFORMATION} from "../../model/page.urls";
@@ -53,10 +53,10 @@ const validators = [
   // Check date is present, valid and not in the future
   check(ACCOUNTING_ISSUE_FULL_DATE_FIELD).escape().custom((fullDate, {req}) => {
     if (allDateFieldsPresent(req as Request)) {
-      if (!moment(fullDate, "YYYY-MM-DD", true).isValid()) {
+      if (!DateTime.fromFormat(fullDate, "yyyy-MM-dd").isValid) {
         throw Error(errorMessages.DATE_INVALID);
       }
-      if (moment().isBefore(fullDate)) {
+      if (DateTime.now() < DateTime.fromISO(fullDate)) {
         throw Error(errorMessages.DATE_FUTURE);
       }
     } else if (fullDate === "00-00-00") {
@@ -115,7 +115,8 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
     // Get the first error only for each field
     errors.array({ onlyFirstError: true })
-      .forEach((valErr: FieldValidationError) => {
+      .forEach((valErr: ValidationError) => {
+        if (valErr.type !== 'field') return;
         if (!href) {
           href = valErr.path;
         }

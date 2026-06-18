@@ -3,7 +3,7 @@ jest.mock("../../../client/apiclient");
 jest.mock("../../../services/reason.service");
 
 import request from "supertest";
-import moment from "moment";
+import {DateTime} from "luxon";
 
 import mockMiddlewares from "../../mock.middleware";
 import app from "../../../app";
@@ -365,16 +365,16 @@ describe("illness end date validation tests", () => {
     mockCacheService.prototype.constructor.mockImplementationOnce(
       fullDummySession
     );
-    const now = moment();
+    const now = DateTime.now();
     const res = await request(app)
       .post(pageUrls.EXTENSIONS_ILLNESS_END_DATE)
       .set("Accept", "application/json")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
-        "illness-end-day": now.format("DD"),
-        "illness-end-month": now.format("MM"),
-        "illness-end-year": now.format("YYYY"),
+        "illness-end-day": now.toFormat("dd"),
+        "illness-end-month": now.toFormat("MM"),
+        "illness-end-year": now.toFormat("yyyy"),
       });
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(ILLNESS_END_DATE_FUTURE);

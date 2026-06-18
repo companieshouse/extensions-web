@@ -3,7 +3,7 @@ jest.mock("../../../services/reason.service");
 jest.mock("../../../client/apiclient");
 
 import request from "supertest";
-import moment from "moment";
+import {DateTime} from "luxon";
 
 import mockMiddlewares from "../../mock.middleware";
 import app from "../../../app";
@@ -340,7 +340,7 @@ describe("illness start date validation tests", () => {
   });
 
   it("should not show error message if date is today", async () => {
-    const now = moment();
+    const now = DateTime.now();
 
     const res = await request(app)
       .post(pageUrls.EXTENSIONS_ILLNESS_START_DATE)
@@ -348,9 +348,9 @@ describe("illness start date validation tests", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
-        "illness-start-day": now.format("DD"),
-        "illness-start-month": now.format("MM"),
-        "illness-start-year": now.format("YYYY"),
+        "illness-start-day": now.toFormat("dd"),
+        "illness-start-month": now.toFormat("MM"),
+        "illness-start-year": now.toFormat("yyyy"),
       });
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(ILLNESS_START_DATE_FUTURE);

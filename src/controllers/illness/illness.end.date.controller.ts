@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
-import {check, validationResult, FieldValidationError} from "express-validator";
-import moment from "moment";
+import {check, validationResult, ValidationError} from "express-validator";
+import {DateTime} from "luxon";
 import * as errorMessages from "../../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../../model/govuk.error.data";
 import * as dateValidationUtils from "../../global/date.validation.utils";
@@ -44,15 +44,15 @@ const validators = [
 
   check(ILLNESS_END_FULL_DATE_FIELD).escape().custom(async (fullDate, {req}) => {
     if (allDateFieldsPresent(req as Request)) {
-      if (!moment(fullDate, "YYYY-MM-DD", true).isValid()) {
+      if (!DateTime.fromFormat(fullDate, "yyyy-MM-dd").isValid) {
         throw Error(errorMessages.DATE_INVALID);
       }
-      if (moment().isBefore(fullDate)) {
+      if (DateTime.now() < DateTime.fromISO(fullDate)) {
         throw Error(errorMessages.ILLNESS_END_DATE_FUTURE);
       }
       const reason = await getCurrentExtensionReason(req as Request);
       const illnessStartDate: string = reason.start_on;
-      if (moment(illnessStartDate, "YYYY-MM-DD", true).isAfter(fullDate)) {
+      if (DateTime.fromISO(illnessStartDate) > DateTime.fromISO(fullDate)) {
         throw Error(errorMessages.ILLNESS_END_BEFORE_START_DATE);
       }
     } else if (fullDate === "00-00-00") {
@@ -122,7 +122,8 @@ export const processForm = [extractFullDate, ...validators,
     const illnessStartDate: string = reasonErr.start_on;
 
     errors.array({ onlyFirstError: true })
-      .forEach((valErr: FieldValidationError) => {
+      .forEach((valErr: ValidationError) => {
+        if (valErr.type !== 'field') return;
         if (!href) {
           href = valErr.path;
         }

@@ -3,12 +3,12 @@ jest.mock("../../../services/reason.service");
 jest.mock("../../../client/apiclient");
 
 import request from "supertest";
+import {DateTime} from "luxon";
 
 import mockMiddlewares from "../../mock.middleware";
 import app from "../../../app";
 import * as pageUrls from "../../../model/page.urls";
 import { COOKIE_NAME } from "../../../session/config";
-import moment from "moment";
 import { EXTENSIONS_ACCOUNTS_INFORMATION } from "../../../model/page.urls";
 import { loadSession } from "../../../services/redis.service";
 import { fullDummySession } from "../../mock.utils";
@@ -363,7 +363,7 @@ describe("accounts date validation tests", () => {
   });
 
   it("should not show error message if date is today", async () => {
-    const now = moment();
+    const now = DateTime.now();
 
     const res = await request(app)
       .post(pageUrls.EXTENSIONS_REASON_ACCOUNTING_ISSUE)
@@ -371,9 +371,9 @@ describe("accounts date validation tests", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({
-        "accounts-date-day": now.format("DD"),
-        "accounts-date-month": now.format("MM"),
-        "accounts-date-year": now.format("YYYY"),
+        "accounts-date-day": now.toFormat("dd"),
+        "accounts-date-month": now.toFormat("MM"),
+        "accounts-date-year": now.toFormat("yyyy"),
       });
     expect(res.status).toEqual(302);
     expect(res.text).not.toContain(DATE_FUTURE);
