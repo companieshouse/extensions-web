@@ -4,7 +4,6 @@ const DISPLAY_DATE_FORMAT: string = "d MMMM y";
 const REASON_DATE_FORMAT: string = "y-MM-dd";
 
 export const formatISODateForDisplay = (inputDateAsISO: string): string => {
-  //return moment(inputDate).format(DISPLAY_DATE_FORMAT);
   return DateTime.fromISO(inputDateAsISO).toFormat(DISPLAY_DATE_FORMAT);
 };
 
