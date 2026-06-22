@@ -2,7 +2,8 @@ jest.mock("../../services/redis.service");
 jest.mock("../../client/apiclient");
 jest.mock("../../services/reason.service");
 
-import * as superTest from "supertest";
+
+import superTest = require("supertest");
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";
