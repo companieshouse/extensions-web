@@ -12,7 +12,7 @@ jest.mock("redis", () => {
 jest.mock("../../../services/redis.service");
 
 import app from '../../../app';
-import * as request from 'supertest';
+import request = require("supertest");
 import {COOKIE_NAME} from "../../../session/config";
 
 const UNAVAILABLE_TEXT = "service is unavailable";

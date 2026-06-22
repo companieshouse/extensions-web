@@ -2,7 +2,8 @@ jest.mock("../../services/redis.service");
 jest.mock("../../client/apiclient");
 jest.mock("../../services/session.service");
 
-import * as request from "supertest";
+
+import request = require("supertest");
 import * as fs from "fs";
 import * as path from "path";
 

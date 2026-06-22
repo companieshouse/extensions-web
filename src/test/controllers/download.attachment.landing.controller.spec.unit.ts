@@ -7,7 +7,8 @@ jest.mock("../../authentication/middleware/download", () => {
   }
 });
 
-import * as request from "supertest";
+
+import request = require("supertest");
 
 import mockMiddlewares from "../mock.middleware";
 import app from "../../app";

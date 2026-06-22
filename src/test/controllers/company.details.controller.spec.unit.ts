@@ -4,7 +4,8 @@ jest.mock("../../services/redis.service");
 jest.mock("../../services/session.service");
 jest.mock("../../logger");
 
-import * as request from "supertest";
+
+import request = require("supertest");
 
 import mockMiddlewares from "../mock.middleware";
 import {

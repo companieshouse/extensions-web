@@ -14,7 +14,8 @@ jest.mock("../../client/apiclient");
 
 import { CsrfError } from "@companieshouse/web-security-node";
 import {NextFunction, Request, Response} from "express";
-import * as request from "supertest";
+
+import request = require("supertest");
 
 import app from "../../app";
 import * as pageURLs from "../../model/page.urls";

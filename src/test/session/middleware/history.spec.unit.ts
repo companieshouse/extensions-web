@@ -14,7 +14,8 @@ jest.mock("../../../services/session.service");
 jest.mock("../../../client/apiclient");
 
 import app from "../../../app";
-import * as request from "supertest";
+
+import request = require("supertest");
 import Session from "../../../session/session";
 import * as keys from "../../../session/keys";
 import * as pageURLs from "../../../model/page.urls";
