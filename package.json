@@ -18,10 +18,10 @@
     "chs-dev": "nodemon --legacy-watch"
   },
   "dependencies": {
-    "@companieshouse/api-sdk-node": "^2.0.318",
-    "@companieshouse/node-session-handler": "^5.2.8",
-    "@companieshouse/web-security-node": "^4.4.14",
-    "axios": "^1.13.2",
+    "@companieshouse/api-sdk-node": "^2.0.354",
+    "@companieshouse/node-session-handler": "^5.2.15",
+    "@companieshouse/web-security-node": "^4.4.22",
+    "axios": "^1.18.1",
     "busboy": "^1.6.0",
     "cookie-parser": "~1.4.7",
     "express": "^5.2.1",
@@ -30,7 +30,7 @@
     "govuk-frontend": "^3.11.0",
     "http-errors": "~2.0.1",
     "ioredis": "^5.8.2",
-    "js-yaml": "^4.1.1",
+    "js-yaml": "4.2.0",
     "log4js": "^6.9.1",
     "moment": "^2.30.1",
     "msgpack5": "^6.0.2",
@@ -58,8 +58,11 @@
     "nodemon": "^3.1.11",
     "sonarqube-scanner": "^3.5.0",
     "supertest": "^7.1.4",
-    "ts-jest": "^29.4.6",
+    "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
+  },
+  "overrides": {
+    "js-yaml": "4.2.0"
   }
 }
