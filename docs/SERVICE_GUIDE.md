@@ -94,4 +94,3 @@ flowchart TD
 8. **Use supporting pages.** The service also provides application printing, attachment download, a download landing page, too-soon and extension-limit information, an accessibility statement, a health check and a configurable service-unavailable page.
 
 Reasons and evidence metadata are saved before final submission; evidence bytes are stored separately by the File Transfer Service. The processor rechecks the filing-period limit at submission. Automatic acceptance and CHIPS endpoint access are independent controls. Confirmation indicates submission, not approval or email delivery.
-

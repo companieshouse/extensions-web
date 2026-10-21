@@ -15,6 +15,7 @@ Please refer [Service Guide](docs/SERVICE_GUIDE.md) to understand the user journ
 - [How to Build](#how-to-build)
 - [How to Run](#how-to-run)
 - [How to Test](#how-to-test)
+- [How to Debug](#how-to-debug)
 - [Environment Variables](#environment-variables)
 - [Troubleshooting](#troubleshooting)
 - [Documents referred](#documents-referred)
@@ -84,7 +85,7 @@ You can also auto-fix minor linting errors by running `npm run lint:fix`
 
 ## How to Test
 
-## Unit test execution
+### Unit test execution
 
 The project defines the following npm scripts:
 
@@ -134,6 +135,35 @@ Or alternatively, you should be able to click the link(s) in the emails mentione
 6. Use mailhog to view emails in Docker: http://localhost:8025/#
 
 7. If you need to set up a user for downloading, you need to set the user roles up in the mongo DB, instructions can be found here [User role setup](https://companieshouse.atlassian.net/wiki/spaces/TTL/pages/1118765578/Upload+Download+for+Extensions+to+File+Service#chs-admin) 
+
+## How to Debug
+If running in vscode modify the `.vscode/launch.json` to attach your debugger to the process running on the chs-dev vagrant box
+```
+{
+  configurations: [
+    {
+      "name": "Debug extensions-web",
+      "type": "node",
+      "request": "attach",
+      "protocol": "inspector",
+      "sourceMaps": true,
+      "restart": true,
+      "port": 9922,
+      "address": "chs-dev",
+      "remoteRoot": "/home/vagrant/SingleService/extensions-web",
+      "localRoot": "${workspaceFolder}"
+    }
+    . . .
+  ]
+}
+```
+
+modify your [nodemon.json](./nodemon.json) file to "inspect" the debug port 9922 (_this is just a random port I have chosen for this example that will be available on chs-dev_)
+```
+"exec": "node -r ts-node/register --inspect=0.0.0.0:9922 ./src/bin/www.ts"
+```
+
+Click on the Debug button on the left pane of vscode and select "Debug extensions-web", after clicking the play button you should be in debug mode and your break points will be hit.
 
 ## Environment Variables
 
