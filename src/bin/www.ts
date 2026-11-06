@@ -7,14 +7,14 @@
 // import debug from 'extensions-web:server';
 // var debug = require('debug')('extensions-web:server');
 import * as http from "http";
-import * as yargs from "yargs";
 import app from "../app";
 import logger from "../logger";
 
 /**
- * Get port from environment and store in Express.
+ * Get port from command-line arguments or environment and store in Express.
  */
-const port = normalizePort(yargs.parseSync().PORT || yargs.parseSync()._[0]);
+const args = process.argv.slice(2).filter(arg => arg !== "--");
+const port = normalizePort(args[0] || process.env.PORT || "3000");
 app.set("port", port);
 /**
  * Create HTTP server.
